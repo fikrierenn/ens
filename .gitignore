@@ -1,0 +1,17 @@
+# ENS-dışı eski araçlar ve dökümler (kasıtlı hariç — bkz. push notu)
+TUM_PROJE_KODLARI.txt
+kod_toplayici.ps1
+kodlari_topla_v2.bat
+
+# Geçici / OS
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
+
+# Editör
+.vscode/
+.idea/
+
+# Yerel Claude ayarları (kişisel permission listesi)
+.claude/settings.local.json

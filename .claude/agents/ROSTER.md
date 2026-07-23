@@ -1,0 +1,41 @@
+# ENS Agent Roster
+
+**Yetki:** [ENS Anayasası, Madde XII](../../0000-constitution/ENS-0000-constitution.md)
+
+Agent'lar bağımlılık grafiğinin en altındadır: **felsefeyi tüketirler, üretmezler.**
+Değiştirilebilirler; Anayasa değildir. Roster, tam ekibi (kullanıcının 20-rollük tasarımı)
+ve her rolün hangi fazda devreye girdiğini belgeler. **JIT ilkesi:** bir agent, ancak fazı
+geldiğinde gerçek dosya olur; erken üretim boş dosya kalabalığıdır.
+
+## Aktif (dosya var)
+| Agent | Faz | Görev | Yazma alanı |
+|-------|-----|-------|-------------|
+| `ens-philosopher` | 0-2, 6 | Teori/Külliyat yazar ve korur | Külliyat, kitap |
+| `ens-skeptic` | 0-2 | Teoriye saldırır (SKR) | reviews/ |
+| `ens-researcher` | 0-2, 6 | Literatür/prior art/kanıt | research/ |
+| `ens-style-guardian` | 0+ | Terminoloji/künye/traceability tutarlılığı | biçimsel düzeltmeler |
+
+## Ertelenmiş (fazı gelince üretilecek)
+| Agent | Faz | Görev |
+|-------|-----|-------|
+| `ens-ceo` | tüm | Uzun vadeli hiza / teknik borç kararı (önemli kararlarda) |
+| `ens-chief-architect` | 3 | Genel mimari, bounded context, C4, ADR, tradeoff |
+| `ens-domain-modeler` | 3-4 | DDD: aggregate, value object, domain event, ubiquitous language |
+| `ens-rfc-writer` | 3+ | RFC / ADR / design proposal biçimlendirme |
+| `ens-ai-architect` | 3-4 | LLM, agent, GraphRAG, knowledge graph, memory, MCP, orchestration |
+| `ens-backend-architect` | 4-5 | .NET, CQRS, DDD, Event Sourcing, MediatR, Clean Architecture |
+| `ens-memory-engine` | 5 | Company Memory implementasyonu (Memory/Decision Graph) |
+| `ens-reasoning-engine` | 5 | Reasoning pipeline, hypothesis, confidence, explainability |
+| `ens-simulation-engine` | 5 | What-if, Monte Carlo, risk, senaryo |
+| `ens-frontend` | 5 | React/Next.js/Tailwind, decision & graph görselleştirme |
+| `ens-devops` | 4-5 | Docker, Kubernetes, Terraform, CI/CD, observability |
+| `ens-security` | 4-5 | RBAC/ABAC, zero trust, audit, encryption, compliance |
+| `ens-performance` | 4-5 | Caching, latency, scalability, benchmark |
+| `ens-test-engineer` | 4-5 | Unit/contract/integration/BDD, test stratejisi |
+| `ens-code-reviewer` | 4-5 | Her PR: mimari, naming, DDD, güvenlik, clean code |
+| `ens-product-manager` | 5 | Roadmap, epic, feature, MVP, release |
+| `ens-book-author` | 6 | Kitap; akademik dil, Mermaid, kaynak (kod yazmaz) |
+
+## Kural
+Ertelenmiş bir agent'ı üretmeden önce fazının açık olduğunu doğrula. Her agent, Anayasa'ya
+ve ilgili standartlara (`.claude/standards/`) atıf yapar; hiçbiri felsefe üretmez.
