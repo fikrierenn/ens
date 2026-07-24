@@ -15,3 +15,8 @@ Thumbs.db
 
 # Yerel Claude ayarları (kişisel permission listesi)
 .claude/settings.local.json
+
+# .NET build artifact'ları
+bin/
+obj/
+*.user
