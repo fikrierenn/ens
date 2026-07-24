@@ -3,14 +3,17 @@ id: ENS-0000
 title: ENS Anayasası
 type: constitution
 canon: true
+constitutive: true
+immutable_core_sections: [Madde III]
 origin: ENS projesinin kuruluş edimi
 depends_on: []
 referenced_by: [ENS-1000, ENS-3000, ENS-4000, "ALL"]
 principles: [P1, P2, P3, P4, P5, P6, P7, P8]
 status: ratified
 owner: ens-philosopher
-version: 0.2.0
-last_reviewed: 2026-07-23
+version: 0.3.0
+last_reviewed: 2026-07-24
+amended_by: [RFC-6001]
 ---
 
 # ENS Anayasası
@@ -21,6 +24,15 @@ last_reviewed: 2026-07-23
 
 **Anayasa tek doğruluk kaynağıdır. Agent'lar değiştirilebilir; Anayasa değildir.
 Hiçbir agent, araç veya model ENS felsefesini tanımlayamaz — onu yalnızca tüketir.**
+
+> **v0.3 notu (Madde XV değişikliği):** [RFC-6001](../6000-rfc/RFC-6001-constitutive-artifact-ayrimi.md)
+> kabul edildi (3 bağımsız skeptic turu — SKR-034/035/036 → survives; çift-owner kabul kapısı —
+> `ens-ceo` hiza [CEO-0002] + `ens-style-guardian` şema-imzası [STYLE-SIGNOFF-RFC-6001]). Madde IV,
+> Külliyat üyeliğini (`canon`) aralığa değil yapıt-türüne-uygun doğrulama yoluna bağlayacak biçimde
+> yeniden yazıldı — `constitutive`/`canon` iki bağımsız eksen oldu; Anayasa'nın kendisi bu vesileyle
+> tekdüze `constitutive` olmadığını (Madde III = immutable-core, geri kalanı = protective-belt)
+> açıkça işaretledi. Diğer Külliyat yapıtlarının `constitutive` alanı ve ENS-4000 canon-incelemesi
+> ayrı bir retrofit adımıdır (ROADMAP.md), bu değişiklikle hiçbir skeptic-kazanılmış grade sökülmedi.
 
 ---
 
@@ -61,7 +73,8 @@ etmektir.
 
 **ENS Külliyat**, değiştirilemez, **teknolojiden bağımsız** kavramların gövdesidir. Hiçbir
 Külliyat yapıtı herhangi bir teknolojiye, sağlayıcıya veya modele bağımlı olamaz — asla.
-Külliyat, numaralı deponun alt aralıklarını işgal eder:
+Külliyat, numaralı deponun alt aralıklarını işgal eder — aralık **alanı** belirler, canon'u
+değil:
 
 | Aralık | Külliyat içeriği | Dizin |
 |--------|---------------|-------|
@@ -71,10 +84,39 @@ Külliyat, numaralı deponun alt aralıklarını işgal eder:
 | `ENS-3xxx` | Enterprise Laws | `3000-laws/` |
 | `ENS-4xxx` | Ontoloji — Decision Ontology, Enterprise Ontology, Sözlük, Anti-pattern'ler | `4000-ontology/` |
 
-Külliyat üyeliği [`KULLIYAT.md`](../KULLIYAT.md) dosyasında kayıtlıdır ve her yapıtta
-`canon: true` ile beyan edilir. 0/1/3/4 aralıkları doğası gereği Külliyat'tır. Bir
-`2000-theory` kavramı ancak failure conditions'ını (başarısızlık koşullarını) belirtip
-skeptic incelemesinden sağ çıkınca Külliyat olur.
+Aralık, bir yapıtın **alanını** (hangi tür içeriğe ev sahipliği yaptığını) belirler; Külliyat
+üyeliğini (`canon`) tek başına belirlemez. Her Külliyat yapıtının iki **bağımsız** niteliği vardır:
+
+- **`constitutive`** — yapıt, ENS akıl yürütmesini *olanaklı kılan* bir kural, tanım ya da
+  tip-şeması mıdır (normatif; "X, C bağlamında Y sayılır" biçiminde kurucu), yoksa dünya hakkında
+  **yanlışlanabilir ampirik** bir iddia mı taşır? `constitutive: true` yapıt tanımla yürürlüktedir;
+  `constitutive: false` yapıt kanıtla.
+- **`canon`** — yapıt doğrulanıp Külliyat'a girmiş midir? Kazanılır, ilan edilmez.
+
+**Külliyat üyeliği hiçbir aralıkta aralığın kendisinden doğmaz:**
+
+- **`0` (Anayasa)** biricik **kendi kendini yetkilendiren** yapıttır: `constitutive: true`,
+  `canon: true`. Bu, ad hoc bir istisna değil, aksiyomatik bir sistemin **ilkeli zorunluluğudur:**
+  sonsuz gerilemeyi (Münchhausen trilemması) durdurmak için sistem tek bir öz-yetkilendiren köke —
+  Kelsen'in *Grundnorm*'una / Hart'ın *rule of recognition*'ına — dayanmak zorundadır. Onu üstten
+  doğrulayan bir yapıt yoktur; yanlışlanabilirlik ödevini (Madde X) kendi değişiklik yordamı
+  (Madde XV: RFC + skeptic) üzerinden yerine getirir. **Anayasa'nın kendisi tekdüze `constitutive`
+  değildir:** Madde III (P1-P8) ampirik yanlışlamaya kapalı **immutable-core** (Lakatosçu
+  hard core); Madde I/II/IV-XIV ise normal RFC ile revize edilebilen **protective belt**'tir. Bu
+  Madde'nin (RFC-6001 ile) değiştirilmiş olması, ikincinin revize-edilebilirliğinin kanıtıdır.
+- **`constitutive: true` yapıtlar** (Anayasa; felsefenin kurucu tezleri; yasa-çerçevesi;
+  ontolojinin tip/şema belgeleri; governance kuralları — 1/3/4 aralıklarında bulunabilir)
+  `canon: true` olmak için **ratifikasyon** yolunu izler: failure conditions'ını **tutarlılık/
+  örneklenebilirlik** kipinde belirtir (tanım tutarsız mı, örneklenemez mi, başka bir Külliyat
+  kuralıyla çelişir mi, daha iyi bir ayrım var mı) ve `ens-skeptic` bu tutarlılık incelemesinden
+  sağ çıkar. Ampirik kanıt zincirine (M5 / Faz-4) **tabi değildir**, çünkü ampirik iddia taşımaz.
+- **`constitutive: false` yapıtlar** (ampirik teori ve yasalar; `2000` aralığı doğası gereği
+  böyledir, `1/3/4` de olabilir) `canon: true` olmak için failure conditions'ını belirtip skeptic
+  incelemesinden sağ çıkarak `ratified` (M3) olur; **tam Canon (M5)** yalnızca reference platform
+  kanıt zinciriyle (Faz 4) kazanılır (bkz. [`maturity-model.md`](../.claude/standards/maturity-model.md)).
+
+Her iki durumda da failure conditions **zorunludur** (Madde X); yalnızca *yanılma kipi* türe göre
+değişir. Külliyat üyeliği [`KULLIYAT.md`](../KULLIYAT.md) dosyasında kayıtlıdır.
 
 ## Madde V — Tasarım İlkeleri
 
