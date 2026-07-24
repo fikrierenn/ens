@@ -1,3 +1,17 @@
+---
+id:            STD-TRACEABILITY
+title:         İzlenebilirlik Standardı (Traceability)
+type:          standard
+canon:         false
+origin:        ENS-0000 §VIII
+depends_on:    [ENS-0000]
+principles:    []
+status:        ratified
+owner:         ens-style-guardian
+version:       0.1.0
+last_reviewed: 2026-07-24
+---
+
 # İzlenebilirlik Standardı (Traceability)
 
 **Yetki:** [ENS Anayasası, Madde VIII — İzlenebilirlik Yasası](../../0000-constitution/ENS-0000-constitution.md)

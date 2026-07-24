@@ -1,3 +1,17 @@
+---
+id:            STD-MATURITY-MODEL
+title:         Olgunluk Modeli (Theory Maturity Model)
+type:          standard
+canon:         false
+origin:        ENS-0000 §IV, §VII
+depends_on:    [ENS-0000]
+principles:    []
+status:        ratified
+owner:         ens-philosopher
+version:       0.1.0
+last_reviewed: 2026-07-24
+---
+
 # Olgunluk Modeli (Theory Maturity Model)
 
 **Yetki:** [ENS Anayasası, Madde IV & VII](../../0000-constitution/ENS-0000-constitution.md)

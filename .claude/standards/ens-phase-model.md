@@ -1,3 +1,17 @@
+---
+id:            STD-ENS-PHASE-MODEL
+title:         ENS Faz Modeli
+type:          standard
+canon:         false
+origin:        ENS-0000 §VII
+depends_on:    [ENS-0000]
+principles:    []
+status:        ratified
+owner:         ens-ceo
+version:       0.1.0
+last_reviewed: 2026-07-24
+---
+
 # ENS Faz Modeli
 
 **Yetki:** [ENS Anayasası, Madde VII](../../0000-constitution/ENS-0000-constitution.md)

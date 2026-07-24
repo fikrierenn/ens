@@ -1,3 +1,17 @@
+---
+id:            STD-CODING-STANDARDS
+title:         Kod Standartları (Coding Standards)
+type:          standard
+canon:         false
+origin:        ENS-0000 §XIII
+depends_on:    [ENS-0000]
+principles:    []
+status:        ratified
+owner:         ens-architect
+version:       0.1.0
+last_reviewed: 2026-07-24
+---
+
 # Kod Standartları (Coding Standards)
 
 **Yetki:** [ENS Anayasası, Madde XIII](../../0000-constitution/ENS-0000-constitution.md)

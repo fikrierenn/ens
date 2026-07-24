@@ -1,3 +1,17 @@
+---
+id:            STD-LANGUAGE-POLICY
+title:         Dil Politikası (Language Policy)
+type:          standard
+canon:         false
+origin:        ENS-0000 §XIII
+depends_on:    [ENS-0000]
+principles:    []
+status:        ratified
+owner:         ens-style-guardian
+version:       0.1.0
+last_reviewed: 2026-07-24
+---
+
 # Dil Politikası (Language Policy)
 
 **Yetki:** [ENS Anayasası, Madde XIII](../../0000-constitution/ENS-0000-constitution.md)

@@ -1,3 +1,17 @@
+---
+id:            STD-VALIDATION-FRAMEWORK
+title:         Doğrulama Çerçevesi (Validation Framework)
+type:          standard
+canon:         false
+origin:        ENS-0000 §X
+depends_on:    [ENS-0000]
+principles:    []
+status:        ratified
+owner:         ens-skeptic
+version:       0.1.0
+last_reviewed: 2026-07-24
+---
+
 # Doğrulama Çerçevesi (Validation Framework)
 
 **Yetki:** [ENS Anayasası, Madde X](../../0000-constitution/ENS-0000-constitution.md)

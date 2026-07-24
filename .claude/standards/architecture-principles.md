@@ -1,3 +1,17 @@
+---
+id:            STD-ARCHITECTURE-PRINCIPLES
+title:         Mimari İlkeler (Architecture Principles)
+type:          standard
+canon:         false
+origin:        ENS-0000 §V, §VII, §VIII, §IX
+depends_on:    [ENS-0000]
+principles:    []
+status:        ratified
+owner:         ens-architect
+version:       0.1.0
+last_reviewed: 2026-07-24
+---
+
 # Mimari İlkeler (Architecture Principles)
 
 **Yetki:** [ENS Anayasası, Madde V, VII, VIII, IX](../../0000-constitution/ENS-0000-constitution.md)
