@@ -1,23 +1,23 @@
 ---
 id: ENS-4010
-title: Foundational Ontology (Semantic Type System)
+title: Foundational Ontology (Organizational Ontology)
 type: ontology
 canon: false
 origin: ENS-0000 §IV, ENS-4001, ENS-2001, ENS-2002, ENS-2003, ENS-2004
 depends_on: [ENS-0000, ENS-4001, ENS-2001, ENS-2002, ENS-2003, ENS-2004]
-referenced_by: []
+referenced_by: [ENS-4020]
 principles: [P1, P2, P3, P4, P5]
-status: ratified
-owner: ens-philosopher
-version: 0.2.0
+status: review
+owner: ens-architect
+version: 0.3.0
 last_reviewed: 2026-07-23
 failure_conditions: stated
-skeptic_review: SKR-020
+skeptic_review: [SKR-020, pending]
 maturity: M2
 evidence: {sci: E3, eng: E0, ops: E0, econ: E0}
 ---
 
-# ENS Foundational Ontology — Semantic Type System
+# ENS Foundational Ontology — Organizational Ontology
 
 > ENS'in **semantik çekirdeği** ve **tip sistemi**. Kurumsal bilişin (şirketten bağımsız)
 > node ve relation'larını, *makine-doğrulanabilir* biçimde tanımlar. `canon: false` (M1).
@@ -25,6 +25,29 @@ evidence: {sci: E3, eng: E0, ops: E0, econ: E0}
 > **v0.2 notu:** [SKR-019](reviews/SKR-019-foundational-ontology.md)'un 5 bulgusu tek tek
 > yamanmadı; kök neden çözüldü — ontoloji bir **tip sistemine** dönüştü (Node Registry,
 > Relation Registry, Semantic Profiles, Namespace, Composition, Semantic Closure). §Yanıt sonda.
+>
+> **v0.4 notu — YENİDEN KONUMLANMA (EXPERIMENTAL, [ENS-4001](ENS-4001-meta-model.md) v0.4'teki
+> "Ontolojik Katmanlar" bölümüne bağlı):** Bu belge artık "primitif tip sistemi" iddia etmiyor. ENS-4001'e eklenen
+> **Computational Ontology** (Identity/Event/Capability, deneysel) bulgusuyla, buradaki
+> node'lar (Decision, Context, Memory, Goal, Constraint, Policy, Learning...) **primitif
+> değil — Event akışı üzerinde `projects` ile türeyen Organizational Construct'lardır.**
+> Aşağıdaki tablo bu yeniden-çerçevelemeyi gösterir; Node/Relation Registry içeriği **değişmedi**
+> (hâlâ geçerli, `ens-core:` namespace'inde), yalnızca ontolojik statüleri düzeltildi.
+>
+> | Node | Eski çerçeve | Yeni çerçeve (v0.4) |
+> |---|---|---|
+> | Decision | atom, primitif | `projects(EventStream, "commitment-view") → Organizational Construct`; commitment-anı bir ayrıcalıklı **Event**'tir (Model B, açık soru) |
+> | Context | — | `project(Snapshot/EventStream, relevance≥θ)` — ENS-2002'nin kendi formülü |
+> | Memory | — | `project(Decision×Learning-events, zaman-indeksli)` |
+> | Constraint | bağımsız primitif | `project(Events: Declared\|Modified\|Revoked)` — artık primitif değil |
+> | Goal | node, zayıf şema | `project(Intent-türü-Event, "yorumlama") + şema` |
+> | Policy | Constraint bundle | `f(Constraint-projeksiyonu, Actor-rolü) → yükümlülük` — kural, ham bundle değil |
+> | Learning | — | `Δ(Expected(Decision), Observed(Snapshot'))` — ENS-2004'ün kendi formülü |
+> | Actor | bağımsız node | **Principal**'ın specialization'ı (ENS-4001 Emitter/Principal ayrımı) |
+>
+> Bu, Node/Relation Registry'yi **geçersiz kılmaz** — yalnızca "bunlar computational-primitif"
+> iddiasını geri çeker, "bunlar organizational-construct, Event'ten türer" der. Semantic
+> Profiles, Allowed/Forbidden, Closure hepsi geçerli kalır.
 
 ## Prior art (dürüst konumlandırma)
 Bu tip sistemi özgün değildir: **OWL** (domain/range/transitive/symmetric/inverse = object

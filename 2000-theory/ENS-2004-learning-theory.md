@@ -6,7 +6,7 @@ canon: false
 maturity: M3
 origin: ENS-0000 §III (P4), ENS-2001, ENS-2003
 depends_on: [ENS-0000, ENS-1000, ENS-2001, ENS-2002, ENS-2003, ENS-4000]
-referenced_by: [ENS-2002, ENS-2003]
+referenced_by: [ENS-2002, ENS-2003, ENS-4010]
 principles: [P4, P3, P6, P7]
 status: ratified
 owner: ens-philosopher

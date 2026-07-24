@@ -9,10 +9,10 @@ referenced_by: []
 principles: [P6, P2]
 status: ratified
 owner: ens-philosopher
-version: 0.1.0
+version: 0.1.1
 last_reviewed: 2026-07-23
 failure_conditions: stated
-skeptic_review: SKR-022
+skeptic_review: SKR-022  # + SKR-031 D-1 düzeltmesi (v0.1.1): proof-trace örneği Registry'ye hizalandı
 maturity: M2
 evidence: {sci: E3, eng: E0, ops: E0, econ: E0}
 ---
@@ -72,12 +72,24 @@ evidence: {sci: E3, eng: E0, ops: E0, econ: E0}
 
 ## Proof trace biçimi
 ```
-Decision-42 --serves--> Purpose-3 --supports--> Strategy-1
-   ⇒ [IR-001 Composition: serves∘supports]
-   ⊢ Decision-42 indirectly_supports Strategy-1   (conf = min(0.8, 0.7) = 0.7)
+Decision-42 --serves--> Purpose-3 <--supports-- Capability-7
+   ⇒ [IR-001 Composition: serves ⋈ supports on Purpose-3]
+   ⊢ Decision-42 indirectly_supported_by Capability-7   (conf = min(0.8, 0.7) = 0.7)
 ```
 Her `⊢` (türetim) bir kural kimliği ve confidence taşır; geriye izlenebilir. Bu, ENS'in
 "Decision Intelligence + explainability" vizyonuyla birebir hizalı.
+
+> **Düzeltme (v0.1.1, SKR-031 D-1 kaynaklı).** Bu örneğin önceki hâli
+> (`Purpose-3 --supports--> Strategy-1 ⊢ Decision-42 indirectly_supports Strategy-1`) ENS-4010
+> Relation Registry ile **üç biçimde** çelişiyordu: (a) `Strategy` node'u Node Registry'de **yok**;
+> (b) `supports`'un domain'i `{Capability, Evidence}` — `Purpose`'u içermez, yani
+> `Purpose --supports--> ...` **Forbidden**; (c) `supports`'un range'i `{Purpose, Claim}` —
+> `Strategy`'yi içermez. SKR-022 (ratified turu) bu illicit örneği **kaçırmıştı**; SKR-031
+> (ENS-4031 saldırısı, D-1) açığa çıkardı. Örnek, Registry-sadık **co-target join** biçimine
+> hizalandı: `serves` (Decision→Purpose) ile `supports` (Capability→Purpose) **aynı** Purpose'a
+> bakar; türetilen `indirectly_supported_by` ENS-4010 §Relation Composition (line 154) ile
+> birebirdir. Registry tek kaynaktır (Madde XII): düzeltme yönü **örneği Registry'ye hizalamak**,
+> tersi değil. Bu bir düzeltmedir, yeni bir iddia değil — L1-L8 sözleşmesi değişmedi.
 
 ## Inference Rules bu sözleşmeye uymalı (ENS-4031)
 Her kural: OWA-uyumlu (L1), monotonic-temporal (L2, L5), explicit-negation (L4), namespace-sınırlı
@@ -93,6 +105,12 @@ Her kural: OWA-uyumlu (L1), monotonic-temporal (L2, L5), explicit-negation (L4),
   ölçek maliyeti (Faz 4).
 - **Formal dil Faz 4.** Bu sözleşme yarı-formaldir; makine-çalıştırılabilir semantiği (SHACL +
   bir kural motoru) Faz 4'te bağlanır. Şimdilik niyet + sözleşme.
+- **Örnek↔Registry sürüklenmesi (kapatıldı, D-1).** Bu belgenin ilk proof-trace örneği
+  (`Purpose --supports--> Strategy`) Relation Registry'ce lisanslı değildi ve SKR-022 turunda
+  kaçtı; SKR-031 D-1 ile yakalandı, v0.1.1'de Registry'ye hizalandı (bkz. §Proof trace düzeltme
+  notu). Ders: ratified bir yapıt bile örnek düzeyinde Registry ile silent biçimde çelişebilir —
+  formal-checker (G-09/10) yazılınca "her illüstrasyon kenarı Registry-domain/range'e uyar mı?"
+  invariant'ı bu sınıf kusuru mekanik yakalamalı.
 
 ---
 
