@@ -14,6 +14,7 @@ version: 0.2.0
 last_reviewed: 2026-07-23
 failure_conditions: stated
 skeptic_review: SKR-012
+evidence: {sci: E3, eng: E1, ops: E0, econ: E0}
 ---
 
 # Decision Entropy
@@ -85,8 +86,8 @@ commitment anında (ENS-2001, event-sourced) bir **intent** taşır: `exploit | 
   istenmeyen değildir, korunur.
 Etiket commitment'ta (sonuçtan önce) konduğundan, kötü sonucu "keşifti" diye post-hoc
 etiketlemek mümkün değildir (event-sourcing). Böylece ayrım niyet temelli, sonuçtan bağımsız.
-*(Not: bu, Decision Object'e bir `intent` alanı ekler — ENS-2001'e additive obligation, OL1
-ile aynı sınıf.)*
+*(Not: bu, Decision Object'e bir `intent` alanı ister — **ENS-2001 v0.3'te OE1 olarak eklendi**
+(§Model 2/3, faz = Commitment; bağımsız skeptic turu bekliyor). OL1 (ExpectedValue) ile aynı sınıf.)*
 
 ### 4. Büyüme yasası ve memory azaltıcı kuvvet
 Owner çeşitliliği ve decision-surface büyüdükçe, ortak prior yoksa `H(A|C)` (özellikle level

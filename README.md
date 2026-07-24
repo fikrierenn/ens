@@ -14,7 +14,9 @@ ENS bir ürün değil, bir **disiplin** ve onunla birlikte gelen bir **standartt
 1. Önce [Anayasa](0000-constitution/ENS-0000-constitution.md) — değişmez ilkeler ve kurallar.
 2. Sonra [KULLIYAT.md](KULLIYAT.md) — değiştirilemez, teknolojiden bağımsız çekirdek.
 3. Sonra [REGISTRY.md](REGISTRY.md) — numaralandırma (ENS-3021, RFC-6042 ...).
-4. Yürütme kuralları: [`.claude/standards/`](.claude/standards/).
+4. **Sonra [ROADMAP.md](ROADMAP.md) — açık işler, kalıcı kayıt.** Yeni oturum başlarken buradan
+   devam edilir; hiçbir görev yalnızca sohbet geçmişinde yaşamaz.
+5. Yürütme kuralları: [`.claude/standards/`](.claude/standards/).
 
 ## Depo yapısı (ISO-tarzı numaralı)
 ```

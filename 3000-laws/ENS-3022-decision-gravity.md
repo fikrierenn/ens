@@ -14,6 +14,7 @@ version: 0.2.0
 last_reviewed: 2026-07-23
 failure_conditions: stated
 skeptic_review: SKR-014
+evidence: {sci: E3, eng: E1, ops: E0, econ: E0}
 ---
 
 # Decision Gravity

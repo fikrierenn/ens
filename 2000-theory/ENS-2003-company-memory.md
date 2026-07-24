@@ -6,7 +6,7 @@ canon: false
 maturity: M3
 origin: ENS-0000 §III (P3), ENS-2001, ENS-2002
 depends_on: [ENS-0000, ENS-1000, ENS-2001, ENS-2002, ENS-4000]
-referenced_by: [ENS-2004]
+referenced_by: [ENS-2004, ENS-4010]
 principles: [P3, P4, P5, P2]
 status: ratified
 owner: ens-philosopher
@@ -14,6 +14,7 @@ version: 0.2.0
 last_reviewed: 2026-07-23
 failure_conditions: stated
 skeptic_review: SKR-008
+evidence: {sci: E3, eng: E1, ops: E0, econ: E0}
 ---
 
 # ENS Company Memory
