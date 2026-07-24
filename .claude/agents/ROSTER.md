@@ -14,6 +14,8 @@ geldiğinde gerçek dosya olur; erken üretim boş dosya kalabalığıdır.
 | `ens-skeptic` | 0-2 | Teoriye saldırır (SKR) | reviews/ |
 | `ens-researcher` | 0-2, 6 | Literatür/prior art/kanıt | research/ |
 | `ens-style-guardian` | 0+ | Terminoloji/künye/traceability tutarlılığı | biçimsel düzeltmeler |
+| `ens-architect` | 3+ (freeze şimdi) | Katman/bağımlılık/roadmap/refactor/hedef mimari | 5000-architecture/ |
+| `ens-ai-architect` | 3-4 | Cognitive Kernel, açık kaynak LLM, agent runtime, bounded autonomy | 5000/7000 |
 
 ## Ertelenmiş (fazı gelince üretilecek)
 | Agent | Faz | Görev |
