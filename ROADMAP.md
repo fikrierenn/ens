@@ -307,7 +307,43 @@ implementasyonu olarak değerlendirilecek.
 - **Evolution Strategy** — 2035'te ENS nasıl değişir; teori ekleme/deprecate/paradigma-değişimi tek model (en kritik eksik dendi)
 - **Repository Registry şeması yükseltmesi** — REGISTRY.md'ye ID/Owner/Status/Lifecycle/Maturity/Validator/Namespace kolonları
 
-## Sıradaki adım (karar) — 2026-07-24 güncellendi (3. kez)
+## Sıradaki adım (karar) — 2026-07-26 güncellendi (4. kez)
+
+**Aktif hat: kernel kusur borcunun mimari kapanışı.** 2026-07-26'da
+`7000-reference-implementation/DEFECT-REGISTER.md` yazıldı: 68 açık `AUDIT_DEFECT_*` +
+8 `AUDIT_FINDING_*`. Bunların **34'ü o güne dek hiçbir denetim raporunda yoktu** —
+yalnızca test adı olarak vardılar (SECURITY dalgasının ajanı raporunu yazamadan öldü).
+
+> **Okuma uyarısı:** 373/373 test geçiyor, ama burada yeşil panel sağlık değil
+> **envanterdir**. `AUDIT_DEFECT_*` testinin geçmesi kusurun **var** olduğunu gösterir.
+
+**1. öncelik — 6 mimari karar (33 kusuru birden kapatır).** Kusurlar bağımsız değil;
+6 kalıptan doğuyorlar. Tek tek yamamak yanlış strateji. ADR-0001'e girmeli:
+
+| # | Kalıp | Kusur | Karar |
+|---|---|---|---|
+| 1 | Public record = taklit edilebilir yetki (E3, W4a, W15, H1 → P7 düşüyor) | 6 | İmzalı gate-token |
+| 2 | Kimlik normalizasyonu yok (homoglyph, case, NUL, boşluk) | 9 | Normalize edilmiş kimlik tipi (case/NFC/trim) |
+| 3 | Zaman çağırandan geliyor, doğrulanmıyor | 5 | Monoton saat portu + gelecek-tarih reddi |
+| 4 | Eşik `0` = sessiz global kapatma anahtarı | 5 | Nullable eşik + açık `Disabled` durumu |
+| 5 | Reflection her değişmezi deliyor | 3 | Kernel içi mi, process sınırı mı? **Açıkça karar ver** |
+| 6 | Canlı koleksiyon dönüyor | 5 | Dönüş tiplerinde zorunlu `ToImmutable*` |
+
+**2. öncelik — bekleyen iki bağımsız doğrulama (ikisi de yarım):**
+- `SKR-045` (ENS-2003 v0.4.0 / D-5) — ajan **üç kez** API stall ile öldü, iskelet diskte,
+  gövde yok. **ENS-2003 v0.4.0 ve ENS-2004 v0.3.3 `review` olarak kalıyor.**
+- `AUDIT-WAVE2-SECURITY.md` — iskelet diskte, gövde yazılıyor.
+- `DEFECT-REGISTER.md` şiddet atamaları **bağımsız değil** (oturum sahibi atadı) —
+  G2/G3 gereği bağımsız gözden geçirme borcu, belgenin §9'unda açık.
+
+**3. öncelik — D-4 (Memory Graph yok).** `CompanyMemory` hâlâ 5 alanlı bir `List`,
+sıfır kenar; ENS-2003 §1 beş kenar tipi ve "tüm Decision Object alanları" istiyor.
+Üç ayrı borcun ortak kök nedeni (ENS-2002 relevance kestirimi, ENS-3022 PeerContext
+uyumu, ENS-2004 §4a "hangi varsayım" analizi). Büyük mimari iş — sahip kararı bekliyor.
+
+---
+
+### Önceki karar (2026-07-24, 3. kez) — tarihsel kayıt
 K4 (ADR-0001 CEO-0001, ADR-0002 CEO-0003) **ikisi de kapandı** — kernel hattı K1-K4 tam.
 K5'in ilk kolu (pusula/sema→Memory) da kapandı: ENS-2003 v0.3.1 **ratified** (SKR-040 wounded→
 SKR-041 survives), Faz-4 kod (`CompanyMemory.cs`) confidence-koşullu sürekli decay + curator
