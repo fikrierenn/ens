@@ -3,6 +3,7 @@ id: GOV-020
 title: Capability Matrix
 type: standard
 canon: false
+constitutive: true
 origin: GOV-000, GOV-010
 depends_on: [GOV-000, GOV-010, ENS-4001]
 referenced_by: [GOV-030]

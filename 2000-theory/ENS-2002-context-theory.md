@@ -3,6 +3,7 @@ id: ENS-2002
 title: Context Theory (ENS)
 type: theory
 canon: false
+constitutive: false
 maturity: M3
 origin: ENS-0000 §III (P2, P5), ENS-2001
 depends_on: [ENS-0000, ENS-1000, ENS-2001, ENS-4000]

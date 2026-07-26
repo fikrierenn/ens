@@ -3,6 +3,7 @@ id: GOV-010
 title: Governance Rolleri
 type: standard
 canon: false
+constitutive: true
 origin: GOV-000
 depends_on: [GOV-000, ENS-4001]
 referenced_by: [GOV-020, GOV-030]

@@ -3,6 +3,7 @@ id: GOV-000
 title: Governance İlkeleri
 type: standard
 canon: false
+constitutive: true
 origin: ENS-0000, ENS-4001
 depends_on: [ENS-0000, ENS-4001]
 referenced_by: [GOV-010, GOV-020, GOV-030]

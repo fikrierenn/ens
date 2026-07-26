@@ -3,6 +3,7 @@ id: ENS-3023
 title: Decision Capital
 type: law
 canon: false
+constitutive: false
 maturity: M3
 origin: ENS-0000 §III (P3, P4), ENS-2003, ENS-2004
 depends_on: [ENS-0000, ENS-2001, ENS-2003, ENS-2004, ENS-3000, ENS-4000]

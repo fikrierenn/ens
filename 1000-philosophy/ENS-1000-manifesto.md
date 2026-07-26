@@ -3,6 +3,7 @@ id: ENS-1000
 title: ENS Manifestosu
 type: philosophy
 canon: true
+constitutive: true
 origin: ENS-0000 §I, §III
 depends_on: [ENS-0000]
 referenced_by: [ENS-4000]

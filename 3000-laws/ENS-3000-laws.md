@@ -3,6 +3,7 @@ id: ENS-3000
 title: Enterprise Laws (Kayıt)
 type: law
 canon: true
+constitutive: true
 origin: ENS-0000 §III, §VII
 depends_on: [ENS-0000]
 referenced_by: []

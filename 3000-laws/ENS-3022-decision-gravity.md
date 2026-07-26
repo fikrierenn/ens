@@ -3,6 +3,7 @@ id: ENS-3022
 title: Decision Gravity
 type: law
 canon: false
+constitutive: false
 maturity: M3
 origin: ENS-0000 §III (P2, P5), ENS-3000 (LAW-DECISION-GRAVITY), ENS-2001, ENS-2002
 depends_on: [ENS-0000, ENS-2001, ENS-2002, ENS-2003, ENS-2004, ENS-3000, ENS-4000]

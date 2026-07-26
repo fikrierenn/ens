@@ -3,6 +3,7 @@ id: ENS-2001
 title: Decision Theory (ENS)
 type: theory
 canon: false
+constitutive: false
 maturity: M3
 origin: ENS-0000 §III (P1), ENS-1000 §II
 depends_on: [ENS-0000, ENS-1000, ENS-4000]

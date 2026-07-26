@@ -3,6 +3,7 @@ id: GOV-030
 title: Canonical Process
 type: standard
 canon: false
+constitutive: true
 origin: GOV-000, GOV-020, maturity-model, evidence-standard
 depends_on: [GOV-000, GOV-010, GOV-020, ENS-4001]
 referenced_by: []

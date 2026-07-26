@@ -3,13 +3,14 @@ id: ENS-4000
 title: Sözlük — Kanonik Terminoloji
 type: ontology
 canon: true
+constitutive: true
 origin: ENS-0000 §IV
 depends_on: [ENS-0000]
 referenced_by: [ENS-2001, ENS-2002, ENS-2003, ENS-2004, ENS-3021, ENS-3022, ENS-3023, ENS-4001]
 principles: [P1, P2, P3, P4, P5]
 status: review
 owner: ens-style-guardian
-version: 0.2.2
+version: 0.2.5   # v0.2.5: Reflective Double-Loop terimi (ENS-2004 v0.3 §4a) M1 eklendi; skeptic bekliyor
 last_reviewed: 2026-07-24
 ---
 
@@ -89,6 +90,38 @@ eksen var, karıştırılmaz (bkz. KULLIYAT.md constitutive/canonical ayrımı):
 - **Company Memory** — yalnızca *ne*'yi değil *neden*'i saklayan; örgütün karar belleği.
   **M3** (ENS-2003, ratified — SKR-008)
 - **Living Knowledge** — sonuçlar ölçüldükçe güncellenen bilgi. **M0** (teori belgesi yok)
+- **Salience Decay** — bir memory assertion'ın **saf tazelik faktörünün** (`decayFactor = exp(−λ_π·Δt)`,
+  aralık `(0,1]`) zamanla sürekli sönümü. Sönüm hızı **Purpose-tipinin context değişim hızına**
+  bağlıdır (`λ_π = ln2/τ_π`), attribution confidence'a **değil** — `c`'yi sönüme de koymak, onu zaten
+  içeren retrieval ağırlığıyla **çift-sayım** üretiyordu (v0.3'ün hatası; AUDIT-WAVE2/D-5).
+  Bu, retrieval-sıralama bileşiği **`Salience = value(m) × decayFactor`**'in yalnızca tazelik
+  terimidir. **M1** (ENS-2003 v0.4.0 §3a; skeptic bekliyor)
+- **Context Half-Life** (`τ_π`) — bir Purpose-tipinin kararlarını geçerli kılan bağlamın yarı yarıya
+  bayatlaması için geçen süre (gün). Sönümün **tek** kalibrasyon parametresi; Enterprise Ontology'de
+  Purpose-tipi sınıfının bir özelliği olarak yaşar. **M1** (ENS-2003 v0.4.0 §3a; skeptic bekliyor)
+- **Retention Priority** — bir memory kaydının *kaybolmama* önceliği: `RetentionPriority(m) =
+  |Learning(m)|`. Attribution confidence'tan **bağımsızdır** — atfı zayıf bir ders daha az güvenle
+  konuşmalıdır (düşük `value`), ama daha az korunmayı hak etmez. Retrieval ağırlığı (`value = |L|·c`,
+  ENS-3023 §Model 1) ile **karıştırılmamalıdır**. **M1** (ENS-2003 v0.4.0 §3; skeptic bekliyor)
+- **Counter-Survivorship Floor** — kesme (truncation) invariant'ı: bir Purpose-tipinden `k ≥ 1` kayıt
+  alındığında, o tipin `argmax RetentionPriority` kaydı kümede kalmak **zorundadır** — `c`'si ne kadar
+  düşük, yaşı ne kadar büyük olursa olsun. §3'ün "sıkıştır ama en az bir başarısızlık örneğini koru"
+  politikasının genelleştirilmiş, zorlanabilir hâli. **M1** (ENS-2003 v0.4.0 §3; skeptic bekliyor)
+- **Weakly-Attributed Flag** — `c(m) < c_min` olan bir assertion'a konan **epistemik eksen** inceleme
+  bayrağı; anlamı *"attribution seviyesini yükselt"*tir (ENS-2004 §4a adım 3(iii)), *"yeniden doğrula"*
+  değil (o `stale`'dir). Bir sinyaldir; silme/mutasyon değil ve `RetentionPriority`'yi düşürmez.
+  **M1** (ENS-2003 v0.4.0 §3a/§3b; skeptic bekliyor)
+- **`asserted_at`** (Assertion Time) — bir memory assertion'ın ilk-keşif/ilk-kayıt anı;
+  **değişmez** audit çapası. P6/Explainability. **M1** (ENS-2003 v0.3 §3a; skeptic bekliyor)
+- **`last_verified`** (Verification Time) — bir assertion'ın en son teyit anı; yeniden-
+  doğrulanınca güncellenir, sönüm saatinin başlangıcı. **M1** (ENS-2003 v0.3 §3a; skeptic bekliyor)
+- **Stale Flag** — saf `decayFactor`'ı yeniden-doğrulama eşiğini (`θ`, saf tazelik ekseninde) geçmiş
+  assertion'a konan **tazelik ekseni** bayrağı; anlamı *"bağlam değişmiş olabilir, yeniden doğrula"*.
+  Bir **inceleme sinyalidir**, otomatik silme/mutasyon değil. Epistemik eksendeki kardeşi
+  `Weakly-Attributed Flag`'tir. **M1** (ENS-2003 v0.4.0 §3a; skeptic bekliyor)
+- **Memory Curator** — periyodik/inactivity-tetikli uzlaştırma turu; bayat/çelişen assertion'ları
+  incelemeye çıkarır ve yeniden-doğrulama *önerir* — asla otonom commit/silme yapmaz (P7).
+  **M1** (ENS-2003 v0.3 §3b; skeptic bekliyor)
 - **Memory Graph** — Company Memory'nin grafik yapısı.
   *constitutive* (ENS-4001 Meta Model yapısal deseni)
 - **Knowledge Graph** — kurumsal varlıkların ve ilişkilerin bağlı temsili (Layer 1).
@@ -109,6 +142,12 @@ eksen var, karıştırılmaz (bkz. KULLIYAT.md constitutive/canonical ayrımı):
   *constitutive* (Layer modeli; teorisi ENS-2003 M3)
 - **Learning Layer / Learning Engine** — sonuçları ölçer, belleği günceller, reasoning'i
   iyileştirir (Layer 6). *constitutive* (Layer modeli; teorisi ENS-2004 **M3**, ratified — SKR-010)
+- **Reflective Double-Loop** — geçmiş commit-edilmiş kararların proof-trace'ini (ENS-4025 L8)
+  okuyup sistematik öngörü hatasının **"neden"**'ini analiz eden ve Assumptions / relevance-model /
+  attribution-seviyesi için **hedefli bir iyileştirme önerisi** üreten öğrenme mekanizması; öneri
+  **hiçbir zaman otomatik uygulanmaz — insan onayı (P7) gerekir**. Yeni yasa değil; §4 double-loop +
+  P7 + attribution-merdiveninin sentezi (prior art: GEPA/DSPy/Hermes self-evolution). **M1** (ENS-2004
+  v0.3 §4a; skeptic bekliyor)
 - **Enterprise IQ / Organizational Intelligence** — bir örgütün kaliteli karar üretme
   ölçülebilir yetisi. **M0** (teori belgesi yok)
 
