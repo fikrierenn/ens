@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/Ens.OntologyLinter/Ens.OntologyLinter.csproj" />
+  <Project Path="tests/Ens.OntologyLinter.Tests/Ens.OntologyLinter.Tests.csproj" />
+</Solution>
