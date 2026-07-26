@@ -2,7 +2,24 @@
 
 Her ENS oturumuna uygulanır. `paths:` filtresi yok — compact ve clear sonrası da geçerli.
 
-> **Prior art:** `D:\Dev\operax\.claude\rules\plan-first.md`. **Kopyalanmadı, türetildi.**
+> ### ⚠️ İDDİA GERİ ÇEKİLDİ (bağımsız SKR, 2026-07-26 — `REVIEW-tier3-discipline.md`)
+> Bu kural ilk sürümde **"kopyalanmadı, türetildi"** diyordu. Bağımsız inceleme bu iddiayı
+> **`refuted`** buldu ve haklıydı. operax ile yapısal izomorfizm: aynı **3** Tier, aynı **6**
+> sinyal, aynı **14** gün, aynı `BYPASS-<tarih>` ve `[plan-skipped:]` token'ları, aynı
+> `git mv` komutu, birebir aynı "Şüphede kal?" cümlesi ve aynı 5 lens.
+> **6 sinyalin sıfırı InfoNeed'den hesaplanıyor.** Dahası, asıl yükü taşıyan `IsIrreversible`
+> ENS-3022'de **hiç geçmez** — kaynağı ADR-0001 ve kernel'dir.
+>
+> **Dürüst konum:** bu kural operax'tan **uyarlanmıştır**. ENS-3022 bağı bir *çerçeve*dir,
+> bir *türetme* değil — eşikler nitel (yüksek/orta/düşük), formülden hesaplanmıyor.
+> Türetme iddiası, kalibrasyon yapılıp eşikler InfoNeed'den **sayısal olarak** üretildiğinde
+> yeniden ileri sürülebilir. O güne kadar burada yazmıyor.
+>
+> Gerçekten ENS'e özgü olan parçalar şunlardır ve kaynakları ENS-3022 değil **ENS'in kendi
+> hata sicilidir**: araç çalışmıyorsa uydurmama kuralı (SKR-041), tautoloji/residual uyarısı
+> (`DecisionEntropy.cs:48`), ve öz-beyan kaçağı tartışması (`W8d`).
+
+> **Prior art:** `D:\Dev\operax\.claude\rules\plan-first.md`. **Uyarlandı.**
 > operax'ın Tier sinyalleri (3+ klasör, schema, kullanıcı-görünür…) Razor/SP/migration'a
 > özgü heuristiklerdir. ENS'in kendi formülü zaten var: `InfoNeed = Stake × (1 − Confidence)`
 > (ENS-3022, Howard 1966 VOI). ENS'te Tier, heuristikten değil **bu formülden** okunur.
@@ -74,7 +91,10 @@ planlara da uygulanır.
 
 - **Tier 1 trivial** — typo, künye alanı, bozuk link, format düzeltmesi.
 - **Acil düzeltme:** yayınlanmış bir yapıtta yanlış/yanıltıcı iddia bulunduğunda plan
-  beklenmez — Madde X düzeltmeyi geciktirmeyi yasaklar. Ama: (1) sahibine "bypass
+  beklenmez. **Dayanak uyarısı:** bu, BU KURALIN politika tercihidir, türetilmiş bir yetki
+  DEĞİLDİR — Anayasa'da düzeltme hızını düzenleyen madde yoktur; ilk sürüm Madde X'e böyle
+  bir yetkiyi YANLIŞLIKLA atfetmişti (Madde X yanlışlanabilirlik ödevidir, hız hakkında
+  hüküm içermez). Ama: (1) sahibine "bypass
   yapıyorum" denir, (2) commit `(plan: BYPASS-<tarih>)` taşır, (3) sonradan retro plan
   `plans/archive/BYPASS-<tarih>.md` yazılır.
 - **Sahibi "hızlıca yap" derse:** Tier 3 sinyali varsa yine uyarılır ("bu 3 katmana

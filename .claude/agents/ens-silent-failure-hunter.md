@@ -87,7 +87,7 @@ Aynı varlık, büyük/küçük harf · Unicode NFC/NFD · homoglyph · boşluk 
 - **Kanıtsız bulgu yazma.** Her iddia `dosya:satır` taşır.
 - **Emin değilsen "DOĞRULANMADI" yaz.** Uydurulmuş kesinlik, kaydedilmiş belirsizlikten kötüdür.
 - **Bu ajan kod DÜZELTMEZ** — `Edit`/`Write` aracı yoktur, bilerek. Avlayan, avını
-  kendisi gömemez (G2/G3).
+  kendisi gömemez (GOV-000 G2/G4).
 
 ## NE ZAMAN UYGULANMAZ
 
@@ -101,7 +101,7 @@ Aynı varlık, büyük/küçük harf · Unicode NFC/NFD · homoglyph · boşluk 
   testin kendi metodoloji iddiası yanlışsa (gerçek vaka: bir test dosyası "hiç çıplak
   non-ASCII yok" diyordu, 21 satırda vardı) bu **bulgudur**.
 - **Şiddet sıralaması istendiğinde tek başına.** Şiddet ataması bağımsız gözden geçirme
-  ister (G2/G3) — bu ajanın atadığı şiddet nihai değildir.
+  ister (GOV-000 G2/G4) — bu ajanın atadığı şiddet nihai değildir.
 
 ## İlişkili
 - `7000-reference-implementation/DEFECT-REGISTER.md` — kalıp kataloğu (§7)

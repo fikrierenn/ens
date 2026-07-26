@@ -15,7 +15,7 @@ color: blue
 > gerçekten yeşil olduğunu da doğrulayamadı.
 >
 > Bu boşluk `work-protocol.md` adım 4'ü ("Kanıtla") tek bir kişiye — oturum sahibine —
-> bağımlı kılıyordu. Tek nokta = G2/G3 açısından zayıf. Bu ajan o adımı bağımsız
+> bağımlı kılıyordu. Tek nokta = GOV-000 G2/G4 açısından zayıf. Bu ajan o adımı bağımsız
 > çalıştırılabilir hâle getirir.
 
 ## Görev
@@ -113,7 +113,7 @@ DEFECT-REGISTER.md başlığı: n / n → ✅ uyuşuyor | ❌ UYUŞMUYOR (fark: 
 operax `.claude/agents/test-runner.md` (+ `build-validator`). Oradan alınan: ajanın
 `Bash` taşıması, sayısal rapor formatı, başarısızları dosya+metotla listeleme.
 **ENS'e eklenen:** `AUDIT_*` hüküm semantiği (geçen `AUDIT_DEFECT_*` = açık kusur),
-kanonik envanter komutu ve `Edit`/`Write` yetkisinin **bilerek verilmemesi** (G2/G3).
+kanonik envanter komutu ve `Edit`/`Write` yetkisinin **bilerek verilmemesi** (GOV-000 G2/G4).
 
 ## NE ZAMAN UYGULANMAZ
 
@@ -129,4 +129,4 @@ kanonik envanter komutu ve `Edit`/`Write` yetkisinin **bilerek verilmemesi** (G2
 - `.claude/rules/work-protocol.md` adım 4 — Kanıtla
 - `7000-reference-implementation/DEFECT-REGISTER.md` — envanterin sahibi
 - `.claude/skills/adversarial-test/SKILL.md` — testleri üreten taraf
-- Anayasa Madde X — yanlışlanabilirlik; G2/G3 — yazan ≠ doğrulayan
+- Anayasa Madde X — yanlışlanabilirlik; GOV-000 G2 (yazar kendi işini Canonical yapamaz) + G4 (≥2 bağımsız validator)

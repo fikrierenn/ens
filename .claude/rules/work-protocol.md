@@ -5,7 +5,7 @@ yönetişim değişikliği — istisnasız. `paths:` yok — compact sonrası da
 **Tier 1 trivial hariç.**
 
 > **Prior art:** operax `work-protocol.md` (Danış → Yap → Kontrol Ettir → Smoke).
-> **3. adım ENS'te yeniden kurulmadı** — ENS'in SKR zinciri + G2/G3 kapısı, operax'ın
+> **3. adım ENS'te yeniden kurulmadı** — ENS'in SKR zinciri + GOV-000 G2/G4 kapısı, operax'ın
 > reviewer zincirinden zaten güçlüdür. Bu kural onu *referans alır*, kopyalamaz.
 > (`footprint-ladder.md` anti-pattern: "zaten olanı tekrar kurmak.")
 
@@ -28,10 +28,24 @@ Uygula. İlgili disipline uy: `plan-first`, `footprint-ladder`, künye şeması
 
 ## 3. SKR'YE SOK — bağımsız + adversarial (üretimden SONRA)
 
-**Öz-onay YOK.** Anayasa G2/G3: yazan doğrulayamaz. Bu, ENS'te *zaten* anayasal bir
-kuraldır — bu protokol onu tekrar etmiyor, uygulanmasını zorunlu kılıyor.
+**Öz-onay YOK.** Dayanak `governance/000-governance-principles.md` (GOV-000) — **Anayasa
+değil**; G-ilkeleri anayasa metninde geçmez:
 
-| Yapıt türü | Kapı |
+| İlke | Tam metni | Bu protokole etkisi |
+|---|---|---|
+| **G2** | "Bir yapıtı **yazan**, onu **Canonical yapamaz**." | Yazar kendi işini kanonlaştıramaz. *Doğrulayamaz demek DEĞİLDİR.* |
+| **G3** | "Validation ve approval **ayrıdır**. Doğrulayan onaylamaz; onaylayan doğrulamaz." | Skeptic verdict'i **onay değildir** |
+| **G4** | "Her Canonical yapıtın **≥2 bağımsız validator'ı** vardır (farklı boyutlardan)." | Aşağıdaki tablo **tek kapı**dır — Canonical için **yetmez** |
+
+> ### ⚠️ Bu bölümün bilinen eksiği (SKR, 2026-07-26)
+> İlk sürüm "GOV-000 G2/G3: yazan doğrulayamaz" diyordu. **İkisi de yanlıştı:** kaynak
+> Anayasa değil GOV-000; G3 "yazan doğrulayamaz" değil "doğrulayan onaylamaz". Ayrıca
+> aşağıdaki tablo her yapıta **bir** kapı atıyor — G4 ve `governance/canonical-process.md:44`
+> **≥2 bağımsız boyut validator'ı** istiyor. Yani bu tablo mevcut yönetişimden *daha
+> gevşektir*. **Canonical hedefleyen yapıtlarda GOV-030 canonical-process bağlayıcıdır,
+> bu tablo değil.** Tablo yalnız *üretim-sonrası ilk kapı* olarak okunur.
+
+| Yapıt türü | İlk kapı (Canonical için TEK BAŞINA yetmez) |
 |---|---|
 | Teori / felsefe / ontoloji (Faz 0-2) | **`ens-skeptic` → SKR kaydı** (verdict: survives / wounded / refuted) |
 | ADR / mimari | Bağımsız `ens-architect` context + gerekiyorsa hizalama incelemesi |
@@ -73,11 +87,10 @@ Emin değilse **DOĞRULANMADI** yaz — uydurma.
   kapı üretim sonrasına, adım 3'e kayar.
 - **Adım 4 muafiyeti:** yalnız-doküman değişikliğinde `dotnet test` beklenmez; ama iddia
   koda atıfta bulunuyorsa atıf **doğrulanır**.
-- **Acil düzeltme:** yayınlanmış yanlış iddia bulunduğunda adım 1 atlanabilir (Madde X
-  gecikmeyi yasaklar) — ama adım 3 ve 4 **atlanamaz**.
+- **Acil düzeltme:** yayınlanmış yanlış iddia bulunduğunda adım 1 atlanabilir (bu, BU KURALIN politika tercihidir, türetilmiş bir yetki DEĞİLDİR — Anayasa'da düzeltme hızını düzenleyen madde yoktur; ilk sürüm Madde X'e böyle bir yetkiyi YANLIŞLIKLA atfetmişti) — ama adım 3 ve 4 **atlanamaz**.
 
 ## İlişkili
 - `.claude/rules/advisor-skills.md` — adım 1 kataloğu
 - `.claude/rules/plan-first.md` — Tier tespiti (bu döngünün ne zaman zorunlu olduğu)
 - `.claude/skills/adversarial-test/SKILL.md` — adım 3, kod tarafı
-- Anayasa Madde X (Yanlışlanabilirlik), G2/G3 (yazan ≠ doğrulayan)
+- Anayasa Madde X (Yanlışlanabilirlik), GOV-000 G2 (yazar kanonlaştıramaz) + G4 (≥2 bağımsız validator)

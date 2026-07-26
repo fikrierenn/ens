@@ -40,7 +40,7 @@ Oturum sonunda gün içinde olanları kalıcı journal'a yazar; **ROADMAP.md'yi 
 
 ## Validation Durumu
 - Hangi SKR'ler yazıldı, verdict ne (survives/wounded/refuted)
-- G2/G3 uyarısı: inline mi bağımsız mı validate edildi
+- GOV-000 G2/G4 uyarısı: inline mi bağımsız mı validate edildi
 
 ## ROADMAP.md Değişiklikleri
 - Kapanan blocking'ler / açılan yeni işler

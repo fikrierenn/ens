@@ -1,7 +1,7 @@
 # Danışma Kuralı — üretimden ÖNCE danış
 
 > **Prior art:** operax `advisor-skills.md`. ENS'te danışman **skill** değil çoğunlukla
-> **ajan**dır — çünkü ENS'in ajan kadrosu zaten rol-ayrımlıdır (Madde XIV) ve G2/G3
+> **ajan**dır — çünkü ENS'in ajan kadrosu zaten rol-ayrımlıdır (Madde XIV) ve GOV-000 G2/G4
 > bağımsız context zorunluluğu getirir.
 
 ## Temel ilke
@@ -44,10 +44,10 @@ kaynakları verir. Kararı sen verirsin — ama **gerekçeyle**.
 | Testlerin **gerçekten** çalıştırılması + AUDIT envanteri | **`ens-test-runner`** |
 
 > `ens-test-runner` ve `ens-silent-failure-hunter`'ın **`Edit`/`Write` aracı yoktur** —
-> bilerek. Ölçen, ölçtüğünü düzeltemez (G2/G3).
+> bilerek. Ölçen, ölçtüğünü düzeltemez (GOV-000 G2/G4).
 
 Bu ikisi **danışman değildir** — `work-protocol.md` adım 3'e aittir. Danışman ile denetleyen
-**aynı context olamaz** (Madde G2/G3: yazan doğrulayamaz).
+**aynı context olamaz** (GOV-000 G2: yazar kendi işini Canonical yapamaz).
 
 ## Kural
 
@@ -64,10 +64,10 @@ Bu ikisi **danışman değildir** — `work-protocol.md` adım 3'e aittir. Danı
 - **Zaten danışılmış ve kararı verilmiş** konuda tekrar üretim — plan referansı yeterli.
 - **Danışman kendi alanının yapıtını yazıyorsa** kendine danışmaz (ör. `ens-philosopher`
   teori yazarken). Bu durumda kapı üretim *sonrasındadır*: `ens-skeptic` turu.
-- Acil düzeltme (yanlış/yanıltıcı yayınlanmış iddia) — Madde X gecikmeyi yasaklar.
+- Acil düzeltme (yanlış/yanıltıcı yayınlanmış iddia) — bu, BU KURALIN politika tercihidir, türetilmiş bir yetki DEĞİLDİR — Anayasa'da düzeltme hızını düzenleyen madde yoktur; ilk sürüm Madde X'e böyle bir yetkiyi YANLIŞLIKLA atfetmişti.
 
 ## İlişkili
 - `.claude/rules/work-protocol.md` — 4 adımlı döngü (bu katalog = adım 1)
 - `.claude/rules/footprint-ladder.md` — yeni danışman üretme basamağı
 - `.claude/agents/ROSTER.md` — kadro
-- Anayasa Madde XIV — rol ayrımı; G2/G3 — yazan ≠ doğrulayan
+- Anayasa Madde XIV — rol ayrımı; GOV-000 G2 (yazar kendi işini Canonical yapamaz) + G4 (≥2 bağımsız validator)

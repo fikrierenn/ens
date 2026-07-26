@@ -44,7 +44,7 @@ hangisi tetikledi. "3+ dosya" gibi heuristik yeterli değil — formüle bağla.
 |---|---|---|
 | | | |
 
-> **Zorunlu satır:** "Planı yazan, planı doğrulayan olur — G2/G3 ihlali" riski her planda
+> **Zorunlu satır:** "Planı yazan, planı doğrulayan olur — GOV-000 G2/G4 ihlali" riski her planda
 > vardır. Azaltması yazılmazsa plan eksiktir.
 
 ## 8. Done criteria

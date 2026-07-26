@@ -69,7 +69,7 @@ kurmak."* ENS'te operax'ın protokolünün bazı adımları başka adla mevcut:
 
 | operax adımı | ENS'teki karşılığı | Durum |
 |---|---|---|
-| 3. Kontrol Ettir (bağımsız, öz-onay yok) | **SKR zinciri** + Anayasa **G2/G3** | ✅ Var, güçlü |
+| 3. Kontrol Ettir (bağımsız, öz-onay yok) | **SKR zinciri** + Anayasa **GOV-000 G2/G4** | ✅ Var, güçlü |
 | 3. Adversarial geri-götür | `.claude/skills/adversarial-test/` | ✅ Var |
 | Kanıt disiplini / DOĞRULANMADI | Madde X + `E0–E4` kanıt seviyeleri | ✅ Var |
 | Doküman değişmezliği | EC-001 audit invariant, SKR'ler silinmez | ✅ Var |
@@ -159,7 +159,7 @@ bloke etmez.
 | ENS'in mevcut SKR/G2-G3'ü ile çakışır, çift kapı | Orta | §3 tablosu bağlayıcı: kontrol katmanı yeniden kurulmaz, yalnız referans verilir |
 | operax heuristikleri sızar, türetme iddiası boşa düşer | Orta | Her Tier eşiği ENS-3022 terimleriyle yazılır; heuristik örnek olarak verilir, ölçüt olarak değil |
 | Faz 2 ADR-0001'i şişirir | Orta | Ayrı ADR olarak yazılabilir; karar Faz 1 sonrası |
-| Kuralı yazan (ben) kuralı doğrulayan olur — G2/G3 ihlali | **Yüksek** | Faz 1 çıktısı bağımsız `ens-architect` + `ens-skeptic` turuna sokulur |
+| Kuralı yazan (ben) kuralı doğrulayan olur — GOV-000 G2/G4 ihlali | **Yüksek** | Faz 1 çıktısı bağımsız `ens-architect` + `ens-skeptic` turuna sokulur |
 
 ---
 

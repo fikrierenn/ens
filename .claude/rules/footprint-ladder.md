@@ -17,7 +17,7 @@ basamak yetmezse çık.
 | 1 | **Mevcut yapıtı genişlet** | Var olan ENS-NNNN'e bölüm/satır/alan eklemek çözüyorsa | ~0 yeni yüzey |
 | 2 | **Yeni skill** | Tekrarlanan iş akışı; tetik-bazlı yüklenir | Düşük — sadece tetiklenince |
 | 3 | **Yeni rule** | Kalıcı davranış kuralı (her oturum geçerli) | Orta — her oturum bağlamda |
-| 4 | **Yeni agent** | Özelleşmiş, bağımsız-context rol (G2/G3 için gerekli olabilir) | Orta — tanım + ROSTER kaydı |
+| 4 | **Yeni agent** | Özelleşmiş, bağımsız-context rol (GOV-000 G2/G4 için gerekli olabilir) | Orta — tanım + ROSTER kaydı |
 | 5 | **Yeni ENS-NNNN yapıtı** | Külliyat'a yeni belge | **Yüksek** — REGISTRY numarası, künye, SKR turu, bağımlılık grafiği |
 | 6 | **Yeni katman / faz (SON ÇARE)** | Yeni NNNN-bandı ya da yeni bağımlılık yönü | **Çok yüksek** — ADR + mimari donma etkisi + Tier 3 plan |
 
@@ -40,7 +40,7 @@ basamak yetmezse çık.
 - ❌ **Yeni skill/agent yaratmadan önce mevcut listeyi kontrol ETMEMEK** → `.claude/skills/`,
   `.claude/agents/` ve ROSTER'a bak; aynısı varsa **genişlet**, yaratma.
 - ❌ **Dış repodan "esin" diye ENS'te zaten olanı tekrar kurmak.** ENS'te kontrol katmanı
-  (SKR zinciri, G2/G3, Madde X kanıt disiplini) zaten güçlüdür; operax'ın "kontrol ettir"
+  (SKR zinciri, GOV-000 G2/G4, Madde X kanıt disiplini) zaten güçlüdür; operax'ın "kontrol ettir"
   adımını yeniden kurmak çift kapı üretir. Bkz. `work-protocol.md` §3.
 
 ## NE ZAMAN UYGULANMAZ
@@ -48,7 +48,7 @@ basamak yetmezse çık.
 - Anayasa ya da RFC'nin **kendisi** yeni bir yapıt talep ediyorsa — merdiven tartışılmaz,
   yapıt açılır.
 - SKR/review kayıtları merdivene tabi değildir: bağımsız bir inceleme her zaman kendi
-  dosyasına yazılır (G2/G3 gereği izlenebilir olmalı).
+  dosyasına yazılır (GOV-000 G2/G4 gereği izlenebilir olmalı).
 
 ## İlişkili
 - `.claude/rules/plan-first.md` — 5-6. basamak = Tier 3

@@ -19,7 +19,7 @@ model: inherit
 1. Mevcut bir yapıtı/skill'i/rule'u **genişleterek** çözülür mü? → genişlet, üretme.
 2. Tekrarlanan bir iş akışı mı? → **skill** (tetik-bazlı, ucuz).
 3. Her oturumda geçerli kalıcı davranış kuralı mı? → **rule** (bağlam maliyeti var).
-4. Bağımsız context gerektiren bir rol mü (G2/G3)? → **agent**.
+4. Bağımsız context gerektiren bir rol mü (GOV-000 G2/G4)? → **agent**.
 5. Mekanik, tekrar eden bir doğrulama mı? → **hook**.
 6. Yeni bir kavram/belge mi? → **ENS-NNNN yapıtı** — Tier 3, plan zorunlu.
 
@@ -32,11 +32,11 @@ model: inherit
 |---|---|---|
 | **skill** | Tekrarlanan, tetiklenebilir iş akışı | Tek kullanımlık iş |
 | **rule** | Her oturumda geçerli olması gereken davranış | "Bazen faydalı" olan şey |
-| **agent** | **Bağımsız context** gerekiyorsa (yazan ≠ doğrulayan) | Ana bağlamda yapılabilecek iş |
+| **agent** | **Bağımsız context** gerekiyorsa (yazar kendi işini kanonlaştıramaz) | Ana bağlamda yapılabilecek iş |
 | **hook** | Mekanik, insan yargısı gerektirmeyen kontrol | Yargı gerektiren denetim |
 
 > **ENS'e özgü kural:** denetleyici bir rol üretiyorsan **agent** olmalı, skill değil —
-> G2/G3 bağımsız context ister. Ve o ajanın `Edit`/`Write` aracı **olmamalı**: ölçen,
+> GOV-000 G2/G4 bağımsız context ister. Ve o ajanın `Edit`/`Write` aracı **olmamalı**: ölçen,
 > ölçtüğünü düzeltemez.
 
 ## 2. Zorunlu içerik

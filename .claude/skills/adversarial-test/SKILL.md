@@ -15,7 +15,7 @@ model: inherit
 > güvenlik açığı (P7 gate'inin NaN altında fail-open olması) bulundu.
 >
 > Bu skill, o denetimde işe yarayan saldırı desenlerini **tekrarlanabilir** kılar. Governance
-> G2/G3'ün ("yazar kendi işini doğrulayamaz") koda uygulanmış hâlidir.
+> GOV-000 G2'nin ("yazar kendi işini Canonical yapamaz") koda uygulanmış hâlidir.
 
 ## Temel kural
 

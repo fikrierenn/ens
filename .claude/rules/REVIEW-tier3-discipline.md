@@ -728,12 +728,268 @@ yükümlülüğüdür.
 
 ## 7. Plan kendi şablonuna uyuyor mu?
 
-_(doldurulacak)_
+**Hayır. İki zorunlu bölüm eksik ve eksiklerden biri kuralın 1. adımının kendisi.** `refuted`.
+
+### D-7.1 — Bölüm bölüm karşılaştırma
+
+| # | `feature-template.md` zorunlu bölüm | `plans/01-tier3-discipline.md` |
+|---|---|---|
+| 1 | Problem | ✅ `:19` |
+| 2 | **Tier gerekçesi** | ❌ **YOK** — yerinde "Ana içgörü" (`:40`) var |
+| 3 | Kapsam | ✅ `:86` (numarası 4) |
+| 4 | Reddedilen alternatifler (≥2) | ✅ `:105` — 3 tane (A/B/C), iyi |
+| 5 | **Danışıldı mı? tablosu** | ❌ **YOK** |
+| 6 | Fazlar | ✅ `:125` |
+| 7 | Riskler | ✅ `:154` |
+| 8 | Done criteria | ✅ `:166` |
+| 9 | Rollback | ✅ `:177` |
+| 10 | Beş lens | ✅ `:185` — beşi de dolu, içerikli |
+| 11 | Açık sorular | ✅ `:207` — ama bkz. D-7.4 |
+
+Not: plan, şablondan **önce** yazılmış olabilir (ikisi de aynı gün). Bu bir mazeret değil:
+`plan-first.md:59` "şablonu kopyala" diyor ve `plans/01:168` done criteria'sı *"`plans/` +
+template var, **bu plan orada**"* diyerek planı şablonun kapsamına sokuyor.
+
+### D-7.2 — §2 "Tier gerekçesi" yok — ve yerine konan cümle şablonun YASAKLADIĞI şey
+
+Şablon `:16-18`:
+> ## 2. Tier gerekçesi
+> *"Neden Tier 3? `plan-first.md` tablosuna göre: Stake / Confidence / IsIrreversible hangisi
+> tetikledi. **'3+ dosya' gibi heuristik yeterli değil — formüle bağla.**"*
+
+`plans/01`'in Tier gerekçesi olarak sunduğu tek cümle (`:13`):
+> *"**Bu planın kendisi bir Tier-3 işidir** (**3+ klasör**, yeni pattern, mimari karar)."*
+
+Üç ölçüt de operax'ın heuristikleri (`operax/plan-first.md:21,22,26`). `Stake`, `Confidence`,
+`IsIrreversible` **hiçbiri geçmiyor**. Yani plan, kendi şablonunun **açıkça yasakladığı**
+gerekçelendirmeyi kullanıyor.
+
+**Bu, D-1'in en temiz deneysel doğrulamasıdır.** Yazar, ENS-3022 formülünü savunan belgeyi
+yazarken, kendi işinin Tier'ını belirlemek için **refleks olarak operax heuristiğine** başvurdu.
+Formül, gerçek bir karar anında kullanılmadı. Türetme iddiasının "süs" olduğunun kanıtı,
+iddiayı öne süren belgenin kendi ilk satırlarındadır.
+
+### D-7.3 — §5 "Danışıldı mı?" tablosu yok: kural, kendi 1. adımını ihlal ederek doğdu
+
+Şablon `:30-33` bu tabloyu zorunlu kılıyor ve `work-protocol.md` adım 1'e bağlıyor.
+`plans/01`'de tablo **yok**, ve metinde herhangi bir danışma kaydı da yok.
+
+İşin türü (`advisor-skills.md` kataloğuna göre neyin gerekliydi):
+- ENS-3022'den Tier eşiği türetmek → **teori/terminoloji işi** → `ens-philosopher` (`:20`)
+- "operax'ın heuristikleri ENS'te prior art'tır" iddiası → **prior art / literatür** →
+  `ens-researcher` (`:21`)
+- Yeni bir `.claude/rules/` **katmanı** açmak (Madde XII grafiğine dokunur) → **katman /
+  bağımlılık yönü** → `ens-architect` (`:22`)
+- Faz 2'de `LlmTier.Critical`'a kapı bağlamak → **agent runtime / bounded autonomy** →
+  `ens-ai-architect` (`:23`)
+
+Dördü de gerekliydi; **hiçbiri yapılmadı.** Ve `advisor-skills.md:11` kendi yaptırımını
+yazıyor: *"Danışılmadan yazılan teori/mimari/ontoloji işi **eksik kabul edilir**."*
+
+**Kendi ölçütüne göre bu plan eksiktir.** Muafiyet aranırsa: `advisor-skills.md:58-59`
+"danışman kendi alanının yapıtını yazıyorsa kendine danışmaz" — uygulanmaz, çünkü planı yazan
+bu ajanlardan biri değil, oturum sahibidir. `:60` acil düzeltme — uygulanmaz, ortada yayınlanmış
+yanlış bir iddia yok. Yani **geçerli hiçbir istisna yok.**
+
+Bu, kural katmanı için özellikle ağırdır: `plans/01:81-83` ENS'in eksiğini "**üretim öncesi
+kapı**" diye teşhis etti; o kapıyı kuran belge, kapıdan geçmeden üretildi.
+
+### D-7.4 — §11'in "onay öncesi cevaplanmalı" dediği üç soru cevapsız, ama implementasyon yapıldı
+
+`plans/01:207` başlığı: *"## 11. Açık sorular (**onay öncesi cevaplanmalı**)"*. Üç soru:
+
+1. `:209` Faz 2 ADR-0001'e mi girer, ayrı ADR-0003 mü?
+2. `:210-211` `advisor-skills` zorunlu mu, öneri mi? — *"operax'ta 'danışılmadan yazılan iş
+   eksik sayılır'; **ENS'te bu kadar sert olmalı mı?**"*
+3. `:212-214` Tier eşiklerinin sayısal değerleri? — *"ENS-3022'nin kendi **kalibrasyon borcu
+   açık**; eşikler de aynı borcu miras alır. Kabul mü, yoksa nitel mi kalsın?"*
+
+Durum: `.claude/rules/`'ın 4 dosyası da **yazıldı** (`status` alanı bile yok, `plans/01`
+`status: draft`). Yani:
+- Soru 2 sessizce "**evet, sert olsun**" diye cevaplandı — `advisor-skills.md:11`'de aynı
+  operax cümlesi aynen yer alıyor. Karar kaydı yok.
+- Soru 3 sessizce "**nitel kalsın**" diye cevaplandı — `plan-first.md`'nin tablosu nitel.
+  Karar kaydı yok. Kalibrasyon borcu miras alındı ve **hiçbir yerde belgelenmedi**
+  (`plan-first.md`'de "kalibrasyon" sözcüğü geçmiyor).
+- Soru 1 açık.
+
+`plan-first.md:61`'in kendi kuralı: *"**Onay** — sahibine göster. **Onay olmadan üretme.**"*
+Plan `status: draft` ve blocking soruları cevapsızken 4 kural üretildi. **Kural katmanı, kendi
+onay kapısını atlayarak doğdu.**
+
+Bu, D-5.4'teki "3. halka" sorununun canlı örneğidir: protokolü yazan ile ondan muaf olan aynı
+taraf olduğunda, protokol ilk uygulanacağı yerde uygulanmıyor.
+
+### D-7.5 — Katıldığım nokta: §7 risk tablosu ve §10 lensleri dürüst
+
+Bunu kaydetmezsem incelemem eksik olur. `plans/01:162`:
+> *"| Kuralı yazan (ben) kuralı doğrulayan olur — G2/G3 ihlali | **Yüksek** | Faz 1 çıktısı
+> bağımsız `ens-architect` + `ens-skeptic` turuna sokulur |"*
+
+Risk **doğru teşhis edilmiş**, şiddeti **doğru atanmış**, ve azaltma **fiilen uygulanmış** —
+şu anda okuduğunuz belge o azaltmanın kendisidir. `plans/01:173-174` done criteria'sı da
+verdict'i açıkça talep ediyor: *"kurallar ENS-3022'den **türetilmiş mi**, yoksa operax'tan
+kopya mı? Verdict alınmış."* Yazar, kendi iddiasını çürütebilecek soruyu **kendisi
+formüle etmiş** ve bağımsız incelemeye sokmuş.
+
+`:191-194` First Principles lensi de dürüst: *"Cevap kural eksikliği değil de araç
+kırılganlığıysa, rule yazmak semptomu tedavi eder. **Bu plan her iki cevabı da kapsamıyor.**"*
+`:199-201` Outsider lensi ise en keskin cümle: *"Denetim güçlü, niyet kayıtsız."*
+
+Bu bölümler, `refuted` verdiğim iddiaların *yanında* duran gerçek entelektüel dürüstlüktür ve
+kural katmanının kurtarılabilir olmasının nedenidir. Madde X'in istediği şey tam olarak budur:
+kendi yanlışlanma koşulunu yazmak. Plan bunu yaptı — ve şimdi o koşul gerçekleşti.
 
 ## Katıldığım noktalar
 
-_(doldurulacak)_
+Saldırı, yalnızca zayıflığı değil gücü de raporlamak zorundadır; aksi hâlde kendisi kalibre
+değildir.
+
+1. **Teşhis edilen boşluk gerçektir.** ENS'in tüm yönetişimi **üretim sonrasıdır** (SKR, G2/G3,
+   maturity, evidence). Üretim öncesi hiçbir kapı yoktu. `plans/01:117-121` (alternatif C'nin
+   reddi) bunu doğru gerekçelendiriyor: *"SKR üretimden sonra çalışır … Kontrol katmanı ne
+   kadar güçlü olursa olsun, yanlış başlayan işi ucuzlatmaz."* Bu argümana **katılıyorum** ve
+   kural katmanının varlık sebebini haklı buluyorum.
+
+2. **W8d atfı birebir doğru.** `plan-first.md:35-39`'un `AdversarialWave_SecurityTests.cs:958`
+   atfını doğruladım: satır numarası, test adı ve davranış tarifi (`conf=1.0` → InfoNeed,
+   AttentionPriority, tier, gate hepsi birden) **tam olarak doğru**. Bu, uydurulmuş bir atıf
+   değil, okunmuş bir testtir. Denetlenen katmanın en sağlam atfı budur.
+
+3. **ADR-0001 §5.6 atfı geçerli.** `plan-first.md:26`'nın "geri alınamazlık ayrı bir eksendir
+   (ADR-0001 §5.6, P7)" atfı doğrulandı (`ADR-0001:336-371`). Kaynak metin, kuralın iddia
+   ettiğinden **daha güçlüdür** — bu, kuralın aleyhine kullanıldı (D-4.5) ama atfın kendisi
+   dürüsttür.
+
+4. **`work-protocol.md:44-46` — ölüm kalım kuralı.** *"Denetleyen ajan bir aracı
+   çalıştıramıyorsa … bunu **dürüstçe bildirir ve sonuç UYDURMAZ**. SKR-041 emsali.
+   Çalıştırılamayan test, geçmiş test değildir."* Bu, denetlenen katmandaki **en değerli tek
+   cümledir** ve operax'ta karşılığı yoktur — gerçek bir ENS katkısıdır. Bu incelemede
+   uyguladım (D-6.3'te `Explore`/`Plan` için "DOĞRULANMADI" yazdım).
+
+5. **`work-protocol.md:53-60` — tautoloji uyarısı.** *"Bir sayı kendi tanımından değil artık
+   (residual) olarak hesaplanıyorsa, onu içeren özdeşliği test etmek hiçbir şeyi yanlışlamaz"*
+   + `DecisionEntropy.cs:48` vakası. Bu, gerçek bir metodolojik içgörüdür, operax'ta yoktur ve
+   ENS'in kendi acı deneyiminden türetilmiştir. **Bu, kural katmanında gerçekten türetilmiş
+   olan tek parçadır** — ve dikkat edin: ENS-3022'den değil, ENS'in **kendi hata sicilinden**
+   türetilmiş. Türetmenin nasıl göründüğünün örneği budur.
+
+6. **`footprint-ladder.md` merdiveni ENS'e gerçekten uyarlanmış.** 5. basamağın "yeni ENS-NNNN
+   yapıtı" olması ve gerekçesi (`:31-33`: REGISTRY numarası geri alınamaz → `IsIrreversible`)
+   ENS'e özgüdür ve doğrudur. `:29`'daki gözlem — *"geniş çözümü küçültmek ENS'te
+   **imkânsızdır**, çünkü yayınlanmış yapıt geri çekilmez, yalnızca `deprecated` olur"* —
+   EC-001 ile tutarlı ve keskin.
+
+7. **Katalogda uydurma ajan yok** ve `ens-ceo`'nun yokluğu **açıkça** belgelenmiş (§6). Bu,
+   `plans/01:172` done criteria'sının gerçekten karşılandığı tek maddedir.
+
+8. **Plan, kendi yanlışlanma koşulunu yazdı** (`plans/01:162, 173-174`) ve bağımsız turu
+   kendisi talep etti. Madde X'in ruhu budur. Bu incelemedeki `refuted` maddeler, planın
+   başarısızlığı değil — planın **kendi kurduğu sınavın çalıştığının** kanıtıdır.
+
+---
 
 ## Sahibine talepler
 
-_(doldurulacak)_
+Kapıyı geçmek için. Sıra, şiddet sırasıdır.
+
+### Bloke edici (bunlar kapanmadan kural katmanı yürürlüğe girmemeli)
+
+- **T-A (uydurma atıf — 3 dosya).** *"Madde X gecikmeyi yasaklar"* ifadesi
+  `plan-first.md:78`, `advisor-skills.md:60`, `work-protocol.md:76` üçünden de **kaldırılır**.
+  Madde X'in metni bunu içermiyor (`ENS-0000:174-179`). Yerine ya doğru bir dayanak bulunur ya
+  da çıkarım olarak işaretlenir: *"(Madde X'in ruhundan çıkarım — metinde açık hüküm yok.)"*
+
+- **T-B (yanlış yetki kaynağı).** *"Anayasa G2/G3"* → **`governance/000-governance-principles.md`
+  (GOV-000) G2/G3**. `plan-first.md`, `advisor-skills.md:43,66`, `footprint-ladder.md:43`,
+  `work-protocol.md:31` düzeltilir. G2/G3 Anayasa'da **yok** (grep: 0 sonuç).
+
+- **T-C (G3'ün içeriği geri konur).** `work-protocol.md:29-40` yeniden yazılır: G2 = Author ≠
+  Validator, **G3 = Validator ≠ Governance** (doğrulayan onaylamaz). "Kapı" tablosu GOV-030
+  `canonical-process.md:41-48` zinciriyle hizalanır; **G4 (≥2 bağımsız boyut validator'ı)**
+  eklenir. Skeptic verdict'i *validation*'dır, *approval* değildir — tablo bunu ayırt etmeli.
+
+- **T-D (öz-beyan tabanı — D-5.1).** `plan-first.md:18-33` tablosuna taban satırı eklenir:
+  `Tier3 ⟺ (Stake yüksek) ∨ IsIrreversible`. InfoNeed Tier-3 kapısından çıkarılır; InfoNeed
+  yalnızca *toplanacak context miktarını* belirler. Aksi hâlde §"Öz-beyan kaçağı — KAPALI"
+  başlığı **yanlış beyandır** ve kaldırılmalıdır.
+
+- **T-E (istisna tabanı — D-4.5).** İki istisnaya sert taban: `IsIrreversible` işlerde,
+  Anayasa'da, `governance/` yapıtlarında ve ratified yapıtların `status` değişiminde
+  **uygulanmaz**. Anayasa yalnızca Madde XV (RFC) yoluyla değişir. Sahip iradesiyle atlanan
+  Tier 3 işi, git'e düşen kalıcı bir kayıt üretir (ADR-0001 §5.6 Exception-Policy karşılığı) —
+  görev kaydı yeterli değildir.
+
+- **T-F (ana iddia geri çekilir).** `plan-first.md:5`, `footprint-ladder.md:3`,
+  `advisor-skills.md:3`, `work-protocol.md:7`, `plans/01:40,59` — *"kopyalanmadı, türetildi"*
+  iddiası, D-1.1'in yapısal izomorfizm tablosu karşısında savunulamaz. Önerilen dürüst ifade:
+  > *"operax'tan **uyarlandı**. Yapı (Tier'lar, workflow, istisna kalıbı, stale kuralı,
+  > 5 lens) korunmuştur; ENS'e özgü olan: sinyallerin içeriği, footprint merdiveninin ENS
+  > basamakları, `NE ZAMAN UYGULANMAZ` disiplini ve `work-protocol` adım 3-4'ün kanıt
+  > kuralları. ENS-3022 ilişkisi bir **türetme değil, bir hizalama denemesidir** ve
+  > kalibrasyon borcu açıktır."*
+
+  Bu geri çekme kuralın değerini düşürmez; **`plans/01:59-61`'in "ENS bir disiplin
+  iddiasındadır; kuralları türetemiyorsa iddiası boştur" cümlesini kurtarır** — çünkü asıl
+  disiplin iddiası, doğru olmayan bir türetmeyi savunmak değil, onu tespit edip geri çekmektir.
+
+### Yüksek (bloke etmez, ama açık borç olarak kaydedilmeli)
+
+- **T-G (çift kapı denetimi tekrarlanır).** `plans/01` §3 tablosu **depoya karşı** yeniden
+  yapılır: GOV-000, GOV-010 (`roles.md`), GOV-020 (`capability-matrix.md`), GOV-030
+  (`canonical-process.md`), `.claude/standards/maturity-model.md`, `evidence-standard.md`,
+  `validation-framework.md` satır satır eklenir. Her satırda: "zaten var / yeni kural bunu
+  tekrar mı kuruyor / gevşetiyor mu?"
+
+- **T-H (katmanın yeri).** `.claude/rules/` Madde XII grafiğinde konumlandırılır. İki yol:
+  (a) `.claude/standards/` altında bir standart olarak yeniden konumlanır (grafikte yeri var),
+  (b) Madde XII grafiğine yeni düğüm eklenir → **Madde XV gereği RFC**. Mevcut hâli — grafikte
+  yeri olmayan, ajan davranışını bağlayan katman — yetkisizdir.
+
+- **T-I (yükleme mekanizması).** `plan-first.md:3`'ün *"her ENS oturumuna uygulanır"* iddiası
+  ya doğrulanır (kök `CLAUDE.md` / `.claude/settings.json` içine yükleme eklenir) ya da
+  **kaldırılır**. Bugün ENS'te kök `CLAUDE.md` yok; kurallar hiçbir oturuma girmiyor.
+  `work-protocol.md:50` "'yazıldı' YETMEZ" kuralı önce kendine uygulanmalı.
+
+- **T-J (kalibrasyon borcu yazılı hâle gelir).** `plans/01:212-214`'ün 3. sorusu sessizce
+  cevaplandı. `plan-first.md`'ye açık bir bölüm: *"**Kalibrasyon borcu:** eşikler niteldir;
+  ENS-3022 `ops: E0`'dır (`evidence-standard.md:27` — 'Opinion, destek yok'). Bu kural,
+  seviyesini aşan kesinlik iddia etmez (`evidence-standard.md:45`)."*
+  Ve **T-1**: her arşivlenen plana Tier-öngörüsü tutma/tutmama işareti; 10 planda ölçüm.
+
+- **T-K (özyineleme sonlandırılır).** `work-protocol.md` "NE ZAMAN UYGULANMAZ"'a: review/SKR
+  kayıtları adım 3'ten muaftır; itiraz yolu **G6** (`canonical-process.md:48`).
+
+- **T-L (mini-plan tanımlanır).** `plan-first.md:80` mini-plandan söz ediyor ama tanımı yok.
+  4 bölümlük hafif şablon (`plans/mini-template.md`): Problem + Tier gerekçesi + 2 alternatif
+  + rollback.
+
+### Orta
+
+- **T-M** `plans/01`'e eksik **§2 Tier gerekçesi** ve **§5 Danışıldı mı?** bölümleri eklenir.
+  §5 dürüstçe doldurulur: *"Danışılmadı — bu plan `advisor-skills.md:11`'e göre **eksiktir**;
+  eksiklik bilinerek kabul edildi, gerekçe: …"* Boş tablo, olmayan tablodan iyidir.
+- **T-N** `plans/01` §11'in üç sorusuna yazılı cevap; §11 kapanmadan `status: draft` değişmez.
+- **T-O** `advisor-skills.md` kataloğuna **Faz** sütunu (ROSTER ile senkron); `ens-architect`
+  için "freeze" notu; `ens-memory-engine` için "erken materyalize" notu. Alternatif ve daha dar
+  çözüm (`footprint-ladder.md:40-41` gereği): ROSTER'a "Danışılacak iş türü" sütunu eklemek.
+- **T-P** `Explore` / `Plan` satırları ROSTER ile senkronlanır ya da "platform ajanı, ROSTER
+  kapsamı dışı" diye işaretlenir (`advisor-skills.md:50`'nin kendi kuralı).
+- **T-Q** `advisor-skills.md:66`'daki "Madde XIV — rol ayrımı" → **Madde XII** (ajan yetkisi,
+  `ROSTER.md:3` ile tutarlı) + **GOV-010 `roles.md`** (rol ayrımı).
+- **T-R** `ens-ceo` yokluğunun Madde XIV sonucu (`:245` "önemli kararlarda hiçbiri atlanmaz")
+  ROADMAP'e açık borç olarak kaydedilir.
+
+---
+
+## Tekrar-sınav koşulu
+
+T-A … T-F kapandığında **yeni ve bağımsız** bir tur açılmalıdır (bu kaydın yazarı o turu
+yapamaz — G2). O turda sınanacak tek soru: *"Geri çekilmiş türetme iddiasının yerine konan
+'uyarlama' beyanı, kural metninin geri kalanıyla tutarlı mı; yoksa formül dili belgede
+kalıntı olarak duruyor mu?"*
+
+Ayrıca **bu kayıt kendisi de bir yapıttır** ve `work-protocol.md:3`'e göre substantive iştir;
+D-3.3'teki özyineleme sorunu kapatılmadıkça bu kaydın hangi kapıdan geçeceği tanımsızdır.
+İtiraz yolu bugün için **G6**'dır (`governance/canonical-process.md:48`): gerekçeli itiraz
+yeni bir validation turu açar.
