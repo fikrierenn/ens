@@ -63,7 +63,7 @@ Detay: [`7000-reference-implementation/README.md`](7000-reference-implementation
 | 1 · Teori | Decision/Context/Memory/Learning (ENS-2001–2004) | **Ratified (M3)** — her biri en az bir skeptic turundan sağ çıktı |
 | 2 · Bilim | Entropy/Gravity/Capital (ENS-3021–23), Ontoloji (ENS-4000 ailesi) | **Ratified/M2–M3** — Computational Ontology katmanı hâlâ deneysel |
 | 3 · Mimari | Cognitive Kernel (ADR-0001, Accepted), Operations Capability (ADR-0002) | ADR-0001 kabul edildi; ADR-0002 küçük açık talepler taşıyor |
-| 4 · Reference Platform | `Ens.Kernel` — fizik üçlüsü + Context Score + Memory + Bounded-Autonomy Gate | **54/54 test geçiyor**, gerçek `dotnet run` demosu var |
+| 4 · Reference Platform | `Ens.Kernel` — fizik üçlüsü + Context Score + Memory + Bounded-Autonomy Gate | **373/373 test geçiyor** (2026-07-27, sahibi tarafından çalıştırıldı; bunlardan 75 tanesi `AUDIT_DEFECT_*`, yani açık kusur — bkz. `7000-reference-implementation/DEFECT-REGISTER.md`), gerçek `dotnet run` demosu var |
 | 5 · Ürün / 6 · Kitap | — | Henüz başlamadı |
 
 Bu satır satır değil, canlı bir kayıt: [ROADMAP.md](ROADMAP.md)'de güncel tutulur.

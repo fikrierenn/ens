@@ -21,6 +21,7 @@ geldiğinde gerçek dosya olur; erken üretim boş dosya kalabalığıdır.
 | `ens-memory-engine` | 4-5 (erken materyalize, 2026-07-24 — K5 aktif iş) | Company Memory/Context Score Faz-4 kodu, confidence/decay, K5 dış-repo değer-değerlendirmesi | 7000/Domain, K5 araştırma |
 | `ens-test-runner` | 4+ (2026-07-26) | `dotnet test`'i **gerçekten** çalıştırır; AUDIT envanterini makineyle üretip DEFECT-REGISTER ile karşılaştırır. `Edit`/`Write` **yok** — ölçen düzeltemez | 7000/*.Tests |
 | `ens-silent-failure-hunter` | 4+ (2026-07-26) | Sessiz başarısızlık avı: fail-open sayısal kapı, eşik=0 kapatma anahtarı, yutulan event, izsiz geçiş, çıktı kapısı yok, kalibre edilmemiş öz-beyan. `Edit`/`Write` **yok** | 7000/Ens.Kernel |
+| `ens-code-reviewer` | 4+ (2026-07-27) | Konvansiyon + **TRACE sadakati** (kod, iddia ettiği ADR'ye gerçekten uyuyor mu) + tip tasarımı (DEFECT-REGISTER §7'nin 6 kalıbından 4'ü tip sorunudur) + ölü kod. `Edit`/`Write` **yok** | 7000/Ens.Kernel, tools/ |
 
 > **2026-07-26 notu — neden bu iki ajan var:** `ens-test-runner`, denetim ajanlarının
 > kronik *"`dotnet test` çalıştıramadım"* boşluğunu kapatır (SKR-041, SKR-045,
