@@ -16,6 +16,9 @@ geldiğinde gerçek dosya olur; erken üretim boş dosya kalabalığıdır.
 | `ens-style-guardian` | 0+ | Terminoloji/künye/traceability tutarlılığı | biçimsel düzeltmeler |
 | `ens-architect` | 3+ (freeze şimdi) | Katman/bağımlılık/roadmap/refactor/hedef mimari | 5000-architecture/ |
 | `ens-ai-architect` | 3-4 | Cognitive Kernel, açık kaynak LLM, agent runtime, bounded autonomy | 5000/7000 |
+| `ens-backend-architect` | 4-5 | .NET, CQRS, DDD, Event Sourcing, MediatR, Clean Architecture | 7000/ |
+| `ens-test-engineer` | 4-5 | Unit/contract/integration/BDD, test stratejisi | 7000/*.Tests |
+| `ens-memory-engine` | 4-5 (erken materyalize, 2026-07-24 — K5 aktif iş) | Company Memory/Context Score Faz-4 kodu, confidence/decay, K5 dış-repo değer-değerlendirmesi | 7000/Domain, K5 araştırma |
 
 ## Ertelenmiş (fazı gelince üretilecek)
 | Agent | Faz | Görev |
@@ -24,16 +27,12 @@ geldiğinde gerçek dosya olur; erken üretim boş dosya kalabalığıdır.
 | `ens-chief-architect` | 3 | Genel mimari, bounded context, C4, ADR, tradeoff |
 | `ens-domain-modeler` | 3-4 | DDD: aggregate, value object, domain event, ubiquitous language |
 | `ens-rfc-writer` | 3+ | RFC / ADR / design proposal biçimlendirme |
-| `ens-ai-architect` | 3-4 | LLM, agent, GraphRAG, knowledge graph, memory, MCP, orchestration |
-| `ens-backend-architect` | 4-5 | .NET, CQRS, DDD, Event Sourcing, MediatR, Clean Architecture |
-| `ens-memory-engine` | 5 | Company Memory implementasyonu (Memory/Decision Graph) |
 | `ens-reasoning-engine` | 5 | Reasoning pipeline, hypothesis, confidence, explainability |
 | `ens-simulation-engine` | 5 | What-if, Monte Carlo, risk, senaryo |
 | `ens-frontend` | 5 | React/Next.js/Tailwind, decision & graph görselleştirme |
 | `ens-devops` | 4-5 | Docker, Kubernetes, Terraform, CI/CD, observability |
 | `ens-security` | 4-5 | RBAC/ABAC, zero trust, audit, encryption, compliance |
 | `ens-performance` | 4-5 | Caching, latency, scalability, benchmark |
-| `ens-test-engineer` | 4-5 | Unit/contract/integration/BDD, test stratejisi |
 | `ens-code-reviewer` | 4-5 | Her PR: mimari, naming, DDD, güvenlik, clean code |
 | `ens-product-manager` | 5 | Roadmap, epic, feature, MVP, release |
 | `ens-book-author` | 6 | Kitap; akademik dil, Mermaid, kaynak (kod yazmaz) |
