@@ -6,7 +6,7 @@ canon: false
 constitutive: false
 origin: ENS-0000 §IV, §VIII, §XI
 depends_on: [ENS-0000, ENS-4000]
-referenced_by: []
+referenced_by: [ENS-4010, ENS-4020, ENS-4030, ENS-4031, GOV-000, GOV-010, GOV-020, GOV-030]
 principles: [P1, P2]
 status: review
 owner: ens-architect

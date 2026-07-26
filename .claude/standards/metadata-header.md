@@ -52,8 +52,21 @@ immutable_core_sections: [Madde III]   # opsiyonel — yalnızca hard-core taş�
 ```
 
 ## Değer kümeleri
-- `type`: `constitution | philosophy | theory | law | ontology | adr | rfc | module | book | standard | command | agent`
-- `status`: `draft | review | skeptic-challenged | ratified | superseded`
+- `type`: `constitution | philosophy | theory | law | ontology | adr | rfc | module | book | standard | command | agent | skeptic-review | ceo-review | style-signoff | audit-report | plan | scan-report`
+  (son 6 değer inceleme/hiza/tarama katmanına aittir: `skeptic-review` = SKR-*, `ceo-review` =
+  Madde XIV hiza incelemesi [CEO-*], `style-signoff` = çift-owner kabul kapısının
+  `ens-style-guardian` yarısı, `audit-report`/`scan-report` = governance tarama raporları
+  [SCAN-*], `plan` = çalışma planı [PLAN-*]. Bu değer öbeği SCAN-02 (2026-07-27) taramasında
+  şemaya eklendi — 45+ dosya zaten fiilen bu değerleri kullanıyordu, şema geriden geliyordu.)
+- `status`: `draft | review | skeptic-challenged | ratified | superseded | skeptic-cleared | accepted | final`
+  (`skeptic-cleared` = skeptic incelemesi sağ çıktı ama ratifikasyon ayrı bir governance edimi
+  olarak bekletiliyor [ör. ontoloji katmanı]; `accepted`/`final` **ADR/RFC/style-signoff'un kendi
+  terminal-durum alt-kümesidir** — ADR'ler geleneksel `Proposed → Accepted → Deprecated →
+  Superseded` durum makinesini, RFC'ler ve style-signoff'lar `draft → … → accepted`/`final`
+  izler; bunlar genel `draft|review|…|ratified` ekseninin YERİNE değil, YANINDA kullanılan
+  tür-özel bir alt-küme. Bu ayrım SCAN-02 taramasında netleştirildi: değerlerin kendisi hatalı
+  değildi, şema onları belgelemiyordu — bu bir şema boşluğuydu, dosyalar suçlu değildi. Casing
+  tektir: küçük harf `accepted` [ADR-0001/0002 ve RFC-6001 arasında tekleştirildi].)
 - `constitutive`: `true | false` — yapıt normatif/kurucu mu (kural/tanım/tip-şeması, tanımla
   yürürlükte) yoksa yanlışlanabilir ampirik bir iddia mı taşıyor (RFC-6001 §4)
 - `canon`: `true | false` (bkz. [KULLIYAT.md](../../KULLIYAT.md)) — kazanılır, ilan edilmez.

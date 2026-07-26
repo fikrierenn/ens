@@ -319,7 +319,9 @@ mühendisliğinin ENS'in zaten söz verdiği ilkelere — ve ENS'in kendi v0.2 d
 Bu ikili, "kaydı asla silme" ilkesini **denetlenebilir** kılar: bir olgu bayatladıktan sonra
 bile onun ne zaman girdiği ve en son ne zaman doğru-teyit edildiği görülebilir (P6/Explainability).
 
-> **Adlandırma (alias yasağı, Anayasa Madde IV):** `asserted_at`, P6'nın Decision Object
+> **Adlandırma (alias yasağı — Anayasa Madde VI "terminoloji sürüklenmesi" +
+> [ENS-4000](../4000-ontology/ENS-4000-glossary.md) §Kapsam: sessiz takma ad yok):**
+> `asserted_at`, P6'nın Decision Object
 > `Evidence` (gerekçe/kanıt *içeriği*) alanı **değildir** — farklı kavram (zaman damgası vs.
 > gerekçe). Bu yüzden zaman damgası için `evidence` adı kullanılmadı; sözlüğe ayrı terim girer.
 
@@ -338,8 +340,9 @@ decayFactor(m, t) = exp( −λ_π · Δt ) ,     λ_π = ln 2 / τ_π ,     τ_�
   Enterprise Ontology'de (ENS-4xxx) o sınıfın bir özelliği olarak yaşar.
 
 - **`value(m)` — epistemik ağırlık ekseni.** **Yeni bir kavram değildir:** ENS-3023 §Model 1'in
-  `value(d) = |Learning(d)| · attribution_confidence(d)` niceliğinin ta kendisidir (alias yasağı,
-  Anayasa Madde IV — bu yüzden ona ayrı bir ad verilmemiştir). Zamanı **içermez**.
+  `value(d) = |Learning(d)| · attribution_confidence(d)` niceliğinin ta kendisidir (alias yasağı —
+  Anayasa Madde VI "terminoloji sürüklenmesi" + ENS-4000 §Kapsam; bu yüzden ona ayrı bir ad
+  verilmemiştir). Zamanı **içermez**.
 
 - **`Salience(m, t)` — retrieval sıralaması için *bileşik* nicelik.** İki ekseni yalnızca *sıralama
   amacıyla* çarpımsal birleştirir:
@@ -717,7 +720,8 @@ LAW-ORG-MEMORY'yi keskinleştirir (§3). Decision Capital ve Decision Entropy, M
 | **D3 (blocking)** — `γ≥1` gerekçesiz beyan + kod guard'ı yalnızca `γ>0` zorluyor + pusula γ<1 istiyor | ✅ kapatıldı | §3a formül: `γ ≥ 1` → **`γ > 0`** (kodla tutarlı); 4. "Neden bu aile" bulleti: γ serbest, alt taban yok; §Failure conditions: 3 çapa-noktası hiçbir tek γ ile fit edilemez (endpoint γ≈0.72 vs orta γ≈2.04), savunma yalnızca yapısal argümana dayanır |
 | **Talep 4 (non-blocking)** — failure-condition'ı bağımsız bulguyla güçlendir | ✅ eklendi | §Failure conditions (yukarıda) — 3-anchor / tek-γ imkânsızlığı ve endpoint-γ<taban bulgusu dürüstçe yazıldı |
 
-> **Öz-onay yok (Anayasa G2/G3):** Bu tur yazar tarafından `survives` işaretlenemez. D1/D2/D3
+> **Öz-onay yok ([GOV-000](../governance/000-governance-principles.md) G4):** Bu tur yazar
+> tarafından `survives` işaretlenemez. D1/D2/D3
 > kapatıldı ama doğrulama **bağımsız 2. `ens-skeptic` turuna** aittir. Homonim/Hermes non-blocking
 > notları (SKR-040 talep 5-6) sonraki turda ele alınabilir; ratified'ı bloke etmezler.
 >
@@ -771,7 +775,8 @@ hâlâ kodlanmadı. (4) Faz-4'te iki adversarial bulgu **yapısal olarak** kapan
 denetimsiz sönüm muafiyeti ve büyük `γ`'nın rate'i sıfıra underflow ettirmesi — ikisi de `c`/`γ`
 sönümden çıktığı için artık mümkün değil.
 
-> **Öz-onay yok (Anayasa G2/G3).** Bu tur **`survives` değildir.** v0.4.0 bir formül değişikliğidir
+> **Öz-onay yok ([GOV-000](../governance/000-governance-principles.md) G2+G4).** Bu tur
+> **`survives` değildir.** v0.4.0 bir formül değişikliğidir
 > ve **hiçbir bağımsız skeptic turu görmemiştir**; `status: review`. Yazar kendi düzeltmesini
 > onaylamaz — özellikle bu düzeltme, iki turun kaçırdığı bir hatayı kapattığını iddia ederken.
 > Ayrıca: **bu turda `dotnet build`/`dotnet test` çalıştırılamadı** (context'te shell aracı yok);
@@ -815,7 +820,8 @@ olay vardır. Fark kabul edilir ve §Failure conditions'a ayrı madde olarak yaz
 | **T10 (non-blocking)** — `contextDecayRate` varsayılanı kaldırılsın (zorunlu parametre) | ❌ **bu belgede yapılmadı** | Bu **saf kod işidir** (`ens-philosopher` kod yazmaz). Teori tarafındaki karşılığı yazılmıştır: §Prior art ve §Failure artık kalibre edilmemiş global `τ`'nin bir **borç** olduğunu ve bağlamayı boşa düşürdüğünü açıkça söyler. Faz-4 talimatı: varsayılan kaldırılıp parametre zorunlu yapılmalıdır — sessiz varsayılan, belgenin ilan ettiği fail-closed duruşuyla çelişir. |
 | **Kod değişiklikleri** (`MemoryRecord.AttributionLevel`, `CounterSurvivorshipFloor` eşiği, `AdversarialAuditTests` güncellemesi, baypas testi, `FindWeaklyAttributed`'ın L0'ı içermesi) | ⏳ **ayrı iş** | Bu tur **yalnızca teoridir**. Kodlanabilir sözleşme §3'te ("Faz-4'e talimat"), §3b'de ve §5'te açıkça yazılmıştır. Kod hizalanana kadar teori-kod desenkronu **açıktır** ve bu, SKR-040/D-sınıfının bilinçli olarak kabul edilmiş bir tekrarıdır: bu turda hiçbir test çalıştırılmamış, hiçbir çıktı iddia edilmemiştir. |
 
-> **Öz-onay yok (Anayasa G2/G3).** v0.4.1 **`survives` değildir.** T1 bir yapı değişikliğidir
+> **Öz-onay yok ([GOV-000](../governance/000-governance-principles.md) G2+G4).** v0.4.1
+> **`survives` değildir.** T1 bir yapı değişikliğidir
 > (yeni bir kapı) ve kendi risk yüzeyini getirir (§Failure). Doğrulama **bağımsız bir 2. `ens-skeptic`
 > turuna** aittir. `status: review` kalır, `canon: false` kalır.
 

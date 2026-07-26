@@ -5,7 +5,7 @@ type:          adr
 canon:         false
 origin:        ENS-0000 §III (P1, P5, P6, P7), §V, §IX, ENS-0000 architecture-principles §Layer 3-6
 depends_on:    [ENS-0000, ENS-2001, ENS-2002, ENS-2003, ENS-2004, ENS-3022, ENS-4010, ENS-4025]
-referenced_by: []
+referenced_by: [ADR-0002]
 realizes:      [ENS-2001, ENS-2004]
 principles:    [P1, P5, P6, P7]
 status:        accepted

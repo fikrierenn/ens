@@ -6,7 +6,7 @@ canon: false
 constitutive: false
 origin: ENS-0000 §IV, ENS-4001, ENS-2001, ENS-2002, ENS-2003, ENS-2004
 depends_on: [ENS-0000, ENS-4001, ENS-2001, ENS-2002, ENS-2003, ENS-2004]
-referenced_by: [ENS-4020]
+referenced_by: [ENS-4020, ENS-4025, ENS-4030, ENS-4031, ADR-0001, ADR-0002]
 principles: [P1, P2, P3, P4, P5]
 status: skeptic-cleared
 owner: ens-architect

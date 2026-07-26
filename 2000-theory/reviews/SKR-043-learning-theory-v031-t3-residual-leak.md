@@ -14,7 +14,8 @@ last_reviewed: 2026-07-24
 > **Bağımsızlık beyanı (G2/G3).** Bu tur, ENS-2004 v0.3.1'i (SKR-042'ye yanıtı) yazan agent
 > çağrısından tamamen ayrı, taze context'te yürütüldü. SKR-042 (1. tur) `wounded` idi; bu tur
 > o üç talebin gerçekten kapanıp kapanmadığını ve düzeltmelerin yeni bir kaçak açıp açmadığını
-> bağımsız sınar. Yazar öz-onay veremez (Anayasa G2/G3).
+> bağımsız sınar. Yazar öz-onay veremez
+> ([GOV-000](../../governance/000-governance-principles.md) G4 — bağımsız validator).
 
 ## Verdict
 **wounded** — SKR-042'nin üç talebinden **T1 ve T2 tam kapandı**; ama **T3 yalnızca kısmen

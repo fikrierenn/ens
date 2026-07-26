@@ -12,6 +12,7 @@ status: review
 owner: ens-philosopher
 version: 0.1.0
 last_reviewed: 2026-07-23
+failure_conditions: pending
 maturity: M1
 evidence: {sci: E1, eng: E0, ops: E0, econ: E0}
 ---

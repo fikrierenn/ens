@@ -24,6 +24,10 @@ ENS bir **standart** gibi yönetilir. Numaralar kalıcı adreslerdir: bir gün b
 | `LAW-*` | — | Yasa kimlikleri | `3000-laws/` |
 | `SKR-*` | — | Skeptic incelemeleri | ilgili yapıt içinde |
 | `STD-*` | — | Standartlar (Madde XII "Standards" katmanı; Külliyat'ın numaralı aralığı dışında, dosya-adı tabanlı kimlik) | `.claude/standards/` |
+| `CEO-NNNN` | — | Madde XIV uzun-vade hiza incelemeleri (`ens-ceo`) | `5000-architecture/reviews/` |
+| `STYLE-SIGNOFF-*` | — | `ens-style-guardian` şema/tutarlılık imzaları (çift-owner kabul kapısı, ör. RFC-6001 §7.5) | ilgili yapıtın `reviews/` dizini |
+| `PLAN-*` | — | Çalışma planları — Külliyat numaralandırmasına tabi değil, dosya-adı tabanlı kimlik | `plans/` |
+| `SCAN-*` | — | Tutarlılık/uyum tarama raporları (ör. SCAN-01/02/03) — Külliyat numaralandırmasına tabi değil, dosya-adı tabanlı kimlik | `governance/` |
 
 ## Ayrılmış numaralar (allocated)
 | id | Başlık | Statü |
@@ -49,7 +53,7 @@ ENS bir **standart** gibi yönetilir. Numaralar kalıcı adreslerdir: bir gün b
 | ENS-4025 | Semantic Logic | ratified (M2, SKR-022; v0.1.1 — SKR-031 D-1 düzeltmesi: proof-trace örneği Registry'ye hizalandı) |
 | ENS-4030 | Semantic Axioms | ratified (M2, SKR-021) |
 | ENS-4031 | Inference Rules | skeptic-cleared (M0, v0.3.0 — canon:false; 8 kural IR-001..IR-008; SKR-031 wounded→B1/B2/D-1 düzeltildi→SKR-032 survives; B1 ✅ kapandı — IR-002/IR-005 `part_of` artık Registry-lisanslı, ENS-4010 v0.5.0 + SKR-038/039; ratified/canon ayrı governance edimi) |
-| ADR-0001 | ENS Agent Runtime & Bounded Autonomy | draft/Proposed (v0.3 — 3. bağımsız tur SKR-029 **survives**: Bulgu A/B gerçekten kapandı; Accepted için ens-ceo hiza incelemesi bekliyor, Madde XIV) |
+| ADR-0001 | ENS Agent Runtime & Bounded Autonomy | **Accepted** (v0.3.1, 2026-07-24 — 3. bağımsız tur SKR-029 **survives**: Bulgu A/B gerçekten kapandı; CEO-0001 ile ens-ceo hiza incelemesi ONAYLANDI — Proposed → Accepted, Madde XIV) |
 | ADR-0002 | Operations Capability Pack | **Accepted** (v0.3.1, 2026-07-24 — SKR-025+027 wounded → v0.3 düzeltme → SKR-037 survives [bağımsız operax dosya-denetimi] → K4 ens-ceo hiza CEO-0003 Accepted. operax'ın aktif geliştirmesi durdu [kullanıcı kararı], K1 zemini bugünkü koda dayandığından etkilenmiyor.) |
 | ENS-4020 | Enterprise Ontology (Operations/operax) | review (**M2**, v0.3 — SKR-028+SKR-030 iki bağımsız validator → G4; C.a/C.b düzeltmeleri teyit edildi; ratified ayrı governance edimi) |
 | SKR-024 | ADR-0001 Validation (inline, G2/G3 riski) | review (wounded — SKR-026 ile bağımsız yeniden yargılandı) |
@@ -76,14 +80,16 @@ ENS bir **standart** gibi yönetilir. Numaralar kalıcı adreslerdir: bir gün b
 | STD-CODING-STANDARDS | Kod Standartları | ratified (v0.1.0, G-04 2026-07-24) |
 | STD-DOCUMENTATION-STYLE | Doküman Stili | ratified (v0.1.0, G-04 2026-07-24) |
 | STD-ENS-PHASE-MODEL | ENS Faz Modeli | ratified (v0.1.0, G-04 2026-07-24) |
+| CEO-0001 | ADR-0001 Uzun-Vade Hiza İncelemesi (Madde XIV) | ratified (2026-07-23 — ONAYLANDI: Proposed → Accepted; SKR-024/026/029 zincirine dayanır) |
+| CEO-0002 | RFC-6001 Uzun-Vade Hiza İncelemesi (Madde XIV) | ratified (2026-07-24 — `ens-ceo` hiza onayı verildi; Madde XIV'in yalnızca `ens-ceo` yarısı, `Accepted` için STYLE-SIGNOFF-RFC-6001 de gerekliydi) |
+| CEO-0003 | ADR-0002 Uzun-Vade Hiza İncelemesi (Madde XIV) | ratified (2026-07-24 — ONAYLANDI: Proposed → Accepted; operax'ın aktif-geliştirme-durdu kararının ADR'yi zayıflatmadığı teyit edildi) |
+| STYLE-SIGNOFF-RFC-6001 | RFC-6001 Şema/Tutarlılık İmzası (Madde XIV çift-owner kapısının `ens-style-guardian` yarısı) | final (v0.1.0, 2026-07-24 — itirazsız; RFC-6001 `Accepted` durumunu CEO-0002 ile birlikte açtı) |
 
 ## Örnek hedef tahsisatlar (henüz yazılmadı)
 | id | Planlanan başlık |
 |----|------------------|
-| ENS-2001 | Decision Theory |
 | ENS-2010 | Enterprise Physics |
 | ENS-2021 | Company Memory / Organizational Memory |
-| ENS-3021 | Decision Entropy |
 | RFC-6042 | Reasoning Engine Interface Specification |
 
 > Yeni numara tahsisi: yapıt oluşturulurken bu tabloya satır eklenir. Numara asla

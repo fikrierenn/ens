@@ -6,7 +6,7 @@ canon: true
 constitutive: true
 origin: ENS-0000 §I, §III
 depends_on: [ENS-0000]
-referenced_by: [ENS-4000]
+referenced_by: [ENS-2001, ENS-2002, ENS-2003, ENS-2004]
 principles: [P1, P2, P3, P4, P5, P6, P7, P8]
 status: ratified
 owner: ens-philosopher

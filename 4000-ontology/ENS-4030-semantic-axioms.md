@@ -6,7 +6,7 @@ canon: false
 constitutive: true
 origin: ENS-4001, ENS-4010
 depends_on: [ENS-0000, ENS-4001, ENS-4010]
-referenced_by: []
+referenced_by: [ENS-4025, ENS-4031]
 principles: [P8]
 status: ratified
 owner: ens-philosopher

@@ -12,9 +12,10 @@ last_reviewed: 2026-07-24
 
 # SKR-037 — ADR-0002 v0.3 Öz-Düzeltmesinin Bağımsız Sınaması
 
-> **Bağımsızlık beyanı (G2/G3):** Bu inceleme, ADR-0002'yi v0.3'e taşıyan (SKR-025/027 Bulgu 1/2/3
+> **Bağımsızlık beyanı ([GOV-000](../../governance/000-governance-principles.md) G4):** Bu
+> inceleme, ADR-0002'yi v0.3'e taşıyan (SKR-025/027 Bulgu 1/2/3
 > öz-düzeltmesini yapan) önceki ens-architect/agent çağrısından **tamamen ayrı, taze context'te**
-> üretildi. Yazar kendi düzeltmesini onaylayamaz (Anayasa G2/G3); bu kayıt v0.3'ün üç kapatma
+> üretildi. Yazar kendi düzeltmesini onaylayamaz (GOV-000 G2+G4); bu kayıt v0.3'ün üç kapatma
 > iddiasını **operax koduna ve ENS kod tabanına karşı bağımsız yeniden denetler** — SKR-025/027'yi
 > doğrulamak için değil, v0.3'ün gerçekten kapattığını *ölçmek* için.
 

@@ -16,7 +16,8 @@ last_reviewed: 2026-07-24
 > ve SKR-043 (2. tur) `wounded` idi. SKR-043'ün en sert uyarısı — "owner çelişkiyi bir yerde
 > kapatıp ikizini bıraktı; kısmi tarama" — bu turda **dosyanın tamamı** otomatik-yazma /
 > edilgen-güncelleme dili için sistematik tarandı, yalnızca değişen satırlara bakılmadı. Yazar
-> öz-onay veremez (Anayasa G2/G3); bu bağımsız tur o boşluğu doldurur.
+> öz-onay veremez ([GOV-000](../../governance/000-governance-principles.md) G4 — bağımsız
+> validator); bu bağımsız tur o boşluğu doldurur.
 
 ## Verdict
 **survives** — SKR-043'ün tek kalan yarası (T3-artığı: §Theoretical model §1'in otomatik-yazma

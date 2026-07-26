@@ -9,7 +9,7 @@ depends_on:    [ENS-0000]
 principles:    []
 status:        draft
 owner:         ens-style-guardian
-version:       0.1.0
+version:       0.2.0
 last_reviewed: 2026-07-27
 ---
 
@@ -22,6 +22,18 @@ bütünlüğü, `status` dağılımı, cross-doc atıf bütünlüğü, dil polit
 **Not:** `2000-theory/ENS-2003-company-memory.md`, `2000-theory/ENS-2004-learning-theory.md`
 ve `governance/SCAN-01-authority-citations.md` başka ajanlar tarafından eş-zamanlı
 düzenlendiği için yalnızca okunmuş, değiştirilmemiştir.
+
+**Uygulama notu (2026-07-27, takip turu):** Aşağıdaki mekanik bulgular koordinatör onayıyla
+doğrudan uygulandı: B-2 (REGISTRY ADR-0001 satırı), B-5 (REGISTRY çelişkili örnek-tahsis
+satırları silindi), B-3 (REGISTRY aralık şeması + CEO-*/STYLE-SIGNOFF-* satırları eklendi),
+A-6/C-1/E-2 (SKR-045 çakışması → `.claude/rules/SKR-046-tier3-discipline-rules.md` olarak
+taşındı ve yeniden numaralandı — bu adım başka bir ajan tarafından yapıldı), E-1
+(`referenced_by` — 12 dosyadan **10'u** düzeltildi; `ENS-2003`/`ENS-2004` yasaklı kaldığı için
+**uygulanamadı**, aşağıda işaretli), A-2 (metadata-header.md `type` enum'u genişletildi),
+A-3 (`status` enum'u genişletildi + `accepted` casing'i RFC-6001'de tekleştirildi), A-5
+(GOV-ailesinin 4 dosyasına `failure_conditions: pending` eklendi). Aşağıdaki bulgu metinleri
+**tarama anındaki orijinal hâliyle** korunmuştur (tarihsel kayıt); güncel durumu bu not ve
+madde başlarındaki `[UYGULANDI]`/`[KISMEN UYGULANDI]` etiketleri yansıtır.
 
 ## Özet (sayılarla)
 
@@ -343,27 +355,36 @@ orijinal bırakılmış, ilk-kullanım açıklamaları genel olarak mevcut. Yayg
 
 Anlam değiştirmeyen, doğrudan uygulanabilir düzeltmeler — tek commit'te kapatılabilir:
 
-1. **[B-2]** `REGISTRY.md:52` — ADR-0001 satırını "draft/Proposed … bekliyor" yerine
-   "**Accepted** (CEO-0001 ratified, 2026-07-23)" olacak şekilde güncelle.
-2. **[B-5]** `REGISTRY.md:80-87` — "Örnek hedef tahsisatlar" tablosundan `ENS-2001` ve
-   `ENS-3021` satırlarını sil (zaten tahsis edilmiş/yazılmış, tabloyla çelişiyor).
-3. **[B-3]** `REGISTRY.md` "Aralık şeması" tablosuna `CEO-*`, `STYLE-SIGNOFF-*` satırları
-   ekle (SKR-* modeliyle: "ilgili yapıt içinde"); `PLAN-*`/`SCAN-*` için dipnot ekle.
-   "Ayrılmış numaralar" tablosuna CEO-0001/0002/0003 ve STYLE-SIGNOFF-RFC-6001 satırları ekle.
-4. **[A-6/C-1/E-2]** `.claude/rules/REVIEW-tier3-discipline.md` künyesindeki `id: SKR-045`
-   değerini **`SKR-046`** yap (dosya adı/konumu ayrı bir karar — bkz. E-2, semantik/politika).
-5. **[E-1]** Aşağıdaki 9 dosyanın `referenced_by:` alanını E-1 tablosundaki hesaplanmış
-   değerlerle değiştir: ENS-1000, ENS-2001, ENS-2002, ENS-2003, ENS-2004, ENS-3000, ENS-4000,
-   ENS-4001, ENS-4010, ENS-4025, ENS-4030, ADR-0001 (toplam 12 dosya — E-1 tablosundaki tümü).
-6. **[A-2]** `.claude/standards/metadata-header.md` §Değer kümeleri `type` enum'una
-   `skeptic-review | ceo-review | style-signoff | audit-report | plan` ekle.
-7. **[A-3]** `.claude/standards/metadata-header.md` §Değer kümeleri `status` enum'una
-   `skeptic-cleared | accepted | final` ekle (ya da ADR/RFC alt-kümesini ayrı belgele);
-   `accepted`/`Accepted` casing'ini ADR-0001/ADR-0002/RFC-6001 arasında tekleştir.
-8. **[A-5]** Şu 4 dosyaya `failure_conditions: pending` (veya uygun değer) ekle:
+1. **[B-2] [UYGULANDI]** `REGISTRY.md` — ADR-0001 satırı "draft/Proposed … bekliyor" yerine
+   "**Accepted** (CEO-0001 ratified, 2026-07-23)" olacak şekilde güncellendi.
+2. **[B-5] [UYGULANDI]** `REGISTRY.md` — "Örnek hedef tahsisatlar" tablosundan `ENS-2001` ve
+   `ENS-3021` satırları silindi (zaten tahsis edilmiş/yazılmış, tabloyla çelişiyordu).
+3. **[B-3] [UYGULANDI]** `REGISTRY.md` "Aralık şeması" tablosuna `CEO-NNNN`, `STYLE-SIGNOFF-*`,
+   `PLAN-*`, `SCAN-*` satırları eklendi. "Ayrılmış numaralar" tablosuna CEO-0001/0002/0003 ve
+   STYLE-SIGNOFF-RFC-6001 satırları eklendi. (GOV-* için aralık şeması satırı bu turun
+   kapsamında değildi, ayrı bırakıldı — bkz. B-3 orijinal metni.)
+4. **[A-6/C-1/E-2] [UYGULANDI — başka ajan tarafından]** `.claude/rules/REVIEW-tier3-discipline.md`
+   → `.claude/rules/SKR-046-tier3-discipline-rules.md` olarak taşındı, `id: SKR-046` yapıldı,
+   atıfları güncellendi.
+5. **[E-1] [KISMEN UYGULANDI — 10/12]** Aşağıdaki 10 dosyanın `referenced_by:` alanı E-1
+   tablosundaki hesaplanmış değerlerle değiştirildi: ENS-1000, ENS-2001, ENS-2002, ENS-3000,
+   ENS-4000, ENS-4001, ENS-4010, ENS-4025, ENS-4030, ADR-0001. **`ENS-2003` ve `ENS-2004`
+   UYGULANMADI** — bu iki dosya başka bir ajanın çalışma alanında olduğu için dokunulmadı;
+   bu iki dosyanın `referenced_by` düzeltmesi (E-1 tablosundaki değerler hâlâ geçerli) ileride
+   ilgili ajan/philosopher tarafından ya da bu dosyalar serbest kaldığında style-guardian
+   tarafından tamamlanmalı.
+6. **[A-2] [UYGULANDI]** `.claude/standards/metadata-header.md` §Değer kümeleri `type` enum'una
+   `skeptic-review | ceo-review | style-signoff | audit-report | plan | scan-report` eklendi.
+7. **[A-3] [UYGULANDI]** `.claude/standards/metadata-header.md` §Değer kümeleri `status` enum'una
+   `skeptic-cleared | accepted | final` eklendi, ADR/RFC/style-signoff'un tür-özel terminal-durum
+   alt-kümesi olduğu açıkça not edildi (şema boşluğu, dosya hatası değil); `RFC-6001`'in
+   `status: Accepted` değeri `accepted` olarak küçültülüp ADR-0001/ADR-0002 ile tekleştirildi.
+8. **[A-5] [UYGULANDI]** Şu 4 dosyaya `failure_conditions: pending` eklendi (dosyalarda konuya
+   ilişkin bir bölüm bulunmadığından `stated` değil, dürüst `pending` değeri kullanıldı):
    `governance/000-governance-principles.md`, `governance/roles.md`,
-   `governance/capability-matrix.md`, `governance/canonical-process.md`. (ADR-0001/0002 ve
-   ENS-4000 için değer ataması içerik bilgisi gerektirebilir — bkz. semantik liste.)
+   `governance/capability-matrix.md`, `governance/canonical-process.md`. (ADR-0001/ADR-0002 ve
+   `ENS-4000`'in `failure_conditions` eksikliği bu turun kapsamı dışında bırakıldı — talimat
+   yalnızca `governance/` altındaki 4 dosyayı belirtti.)
 
 ## Semantik / anlam sorunları — devredilecek
 

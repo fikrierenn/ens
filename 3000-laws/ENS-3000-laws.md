@@ -2,16 +2,16 @@
 id: ENS-3000
 title: Enterprise Laws (Kayıt)
 type: law
-canon: true
+canon: false
 constitutive: true
 origin: ENS-0000 §III, §VII
 depends_on: [ENS-0000]
-referenced_by: []
+referenced_by: [ENS-3021, ENS-3022, ENS-3023]
 principles: [P1, P2, P3, P4, P5]
 status: draft
 owner: ens-philosopher
-version: 0.1.0
-last_reviewed: 2026-07-23
+version: 0.1.1
+last_reviewed: 2026-07-27
 failure_conditions: stated
 skeptic_review: pending
 ---

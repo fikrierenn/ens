@@ -279,7 +279,8 @@ bunu başarısızlık kodlamaz; belleğe *karar kalitesini* yazar, yalnızca son
 - **Nicel katmanın temeli:** Decision Entropy/Gravity/Capital, L1+ attribution'lı learning'e
   ve karar-kalitesi ayrımına dayanır.
 - **Memory *retrieval ağırlığı*** = `|learning_signal| × attribution_confidence`. Bu nicelik
-  **ENS-3023 §Model 1'in `value(d)`'sidir** (yeni kavram değil, alias yasağı — Anayasa Madde IV):
+  **ENS-3023 §Model 1'in `value(d)`'sidir** (yeni kavram değil, alias yasağı — Anayasa Madde VI
+  "terminoloji sürüklenmesi" + [ENS-4000](../4000-ontology/ENS-4000-glossary.md) §Kapsam):
   bir dersin yeni bir kararı *ne kadar ağırlıkla yönlendireceğini* söyler.
   **Retention önceliği bundan AYRIDIR ve `attribution_confidence` ile ÖLÇEKLENMEZ**
   (ENS-2003 v0.4.1 §3): neyin *kaybolmayacağı* ile neyin *ne kadar
@@ -415,7 +416,8 @@ aynı disiplin). Katkı bir yasa değil, bir **operasyonel desendir** ve P7'ye t
 
 > **v0.3 additive değişiklik (skeptic bekliyor):** §4a Reflective double-loop, §Prior art
 > (GEPA/DSPy/Hermes atıfları), +1 failure condition, Laws'ta "yeni yasa değil" netleştirmesi,
-> `depends_on: +ENS-4025`. **Öz-onay yok (Anayasa G2/G3):** bu tur yazar tarafından `survives`
+> `depends_on: +ENS-4025`. **Öz-onay yok ([GOV-000](../governance/000-governance-principles.md)
+> G4):** bu tur yazar tarafından `survives`
 > işaretlenemez; `status: review` bağımsız bir `ens-skeptic` turunu bekler. Sözlüğe 1 terim
 > (Reflective Double-Loop) M1 olarak girdi (ENS-4000, skeptic bekliyor).
 
@@ -426,7 +428,8 @@ aynı disiplin). Katkı bir yasa değil, bir **operasyonel desendir** ve P7'ye t
 | **T2.** P5'i devreye al + öneri-yorgunluğu failure condition ekle; hacmi neyle sınırladığını yanıtla | künye `principles: +P5`; §4a "Dikkat kıt kaynaktır (P5)" paragrafı; §Failure "Öneri-yorgunluğu" koşulu | P5 principles'a eklendi; hacim→rubber-stamp/ignore riski adlandırıldı; Hermes'in makine-gate'inin insan-yükünü kıstığı, ENS'in gate'inin yalnızca biçimi kısıtladığı kabul edildi; önceliklendirmenin ENS-3022 (Decision Gravity)/eşik/batch'e bağlanabileceği ama **henüz operasyonelleşmediği** dürüstçe not düşüldü (E1) |
 | **T3.** §1 Definition ↔ §4a gate'ini uzlaştır (otomatik kayıt ≠ P7-gate'li model revizyonu) | §1 Definition (yeniden yazım + "İki farklı yazım" paragrafı) | Edilgen "ilgililik/varsayım modeline yazılan güncelleme" → "güncelleme *önerisine* dönüştürülmesi"; ayrıca (a) sonucun kayda geçmesi=otomatik olgu-kaydı ile (b) model revizyonu=P7-gate'li öneri açıkça ayrıştırıldı |
 
-> **Öz-onay yok (Anayasa G2/G3):** bu düzeltmeler yazar tarafından `survives` işaretlenemez;
+> **Öz-onay yok ([GOV-000](../governance/000-governance-principles.md) G4):** bu düzeltmeler
+> yazar tarafından `survives` işaretlenemez;
 > `status: review` **bağımsız 2. bir `ens-skeptic` turunu** bekler. Yazar kendi yanıtını onaylamaz.
 
 ## SKR-043'e yanıt (v0.3.2 — T3-artığı kapanışı) ve SKR-044 kapanışı
@@ -488,7 +491,8 @@ conditions **değişmemiştir**; SKR-042/043/044'ün kapattığı hiçbir madde 
 | §Implications 2. madde | "Memory retention = \|learning_signal\| × attribution_confidence" | "Memory **retrieval ağırlığı** = \|learning_signal\| × attribution_confidence (= ENS-3023 `value(d)`); **retention önceliği ayrıdır ve `c`'den bağımsızdır**" |
 | §Implications (yeni madde) | — | `weakly-attributed` sinyali (ENS-2003 v0.4.0 §3b) → §4a adım 3(iii)'ün tetikleyicisi |
 
-> **Öz-onay yok (Anayasa G2/G3):** `status: ratified → review`. Bu hizalama yazar tarafından
+> **Öz-onay yok ([GOV-000](../governance/000-governance-principles.md) G2+G4):**
+> `status: ratified → review`. Bu hizalama yazar tarafından
 > `survives` işaretlenemez; **bağımsız bir `ens-skeptic` turu** bekler. Skeptic'e özel soru:
 > *bu değişiklik gerçekten additive mi, yoksa §5(iii) kalibrasyon argümanının bir öncülünü sessizce
 > mi değiştiriyor?* — **Cevaplandı: SKR-045/Q3. Additive değil, BREAKING (yukarıdaki kutu).**
@@ -517,7 +521,8 @@ iki ekran arayla yan yana durur hâle geldi. Tespit kabul edilir.
 | **T9/N3** — `confidence` homonimi (Decision / Attribution / Memory) ENS-4000'de ayrılsın | ❌ **yapılmadı** | Sözlük ayrı bir yapıttır; bu tur ona dokunmadı. SKR-045 ayrıca bunun SKR-040/N3'ün "assertion" homonimiyle **birlikte** kapatılmasını istiyor — ikisi tek bir sözlük turunda ele alınmalıdır. Kısmi telafi: §v0.3.3 kutusunda Decision Confidence ile Attribution Confidence'ın farklı şeyler olduğu **açıkça** ayrıldı. Tam ayrım hâlâ **açık borç**. |
 | **Kod işi** (`MemoryRecord.AttributionLevel`, `CounterSurvivorshipFloor` eşiği, test güncellemeleri) | ⏳ **ayrı iş** | `ens-philosopher` kod yazmaz. Kodlanabilir sözleşme §3, §Laws ve §Failure'da açıkça yazılıdır. Bu turda hiçbir test çalıştırılmamış, hiçbir çıktı iddia edilmemiştir. |
 
-> **Öz-onay yok (Anayasa G2/G3).** v0.4.0 **`survives` değildir** ve **BREAKING**'tir. `status: review`
+> **Öz-onay yok ([GOV-000](../governance/000-governance-principles.md) G2+G4).** v0.4.0
+> **`survives` değildir** ve **BREAKING**'tir. `status: review`
 > kalır, `canon: false` kalır. Doğrulama bağımsız bir 2. `ens-skeptic` turuna aittir.
 
 ---

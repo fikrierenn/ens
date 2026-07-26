@@ -74,13 +74,20 @@ konvansiyon → `.claude/standards/`; açık iş → `ROADMAP.md`. "Konuşmada k
 
 ## İlke 7 — Ralph pattern (agent orkestrasyonu)
 **Primary context = scheduler.** Büyük/bağımsızlık-gerektiren iş (validation, derin repo analizi)
-subagent'a devredilir, primary'nin context'i şişmez; agent'ı yazan zihin onu validate etmez
-(G2/G3, bu projede bir kez ihlal edilip düzeltildi — bkz. SKR-024→026, SKR-025→027 dersi).
+subagent'a devredilir, primary'nin context'i şişmez; bir yapıtı yazan zihin onu **Canonical
+yapamaz** ([GOV-000](../../governance/000-governance-principles.md) **G2**) ve Canonical statü
+**≥2 bağımsız validator** ister (**G4**) — bu yüzden validation ayrı, taze bir context'te
+koşar. (Bu projede bir kez ihlal edilip düzeltildi — bkz. SKR-024→026, SKR-025→027 dersi.)
+
+> **Düzeltme notu (2026-07-27, SCAN-01/U-1):** bu satır önceden *"agent'ı yazan zihin onu
+> validate etmez (G2/G3)"* diyordu. Bu, **hiçbir ilkede bulunmayan** bir hükümdü: G2 canonization'ı
+> yasaklar (validation'ı değil), G3 ise *doğrulayan onaylamaz*'dır. Bağımsız-validator gerekçesi
+> **G4**'tür. Kaynak belge de eksikti (G-ilkeleri Anayasa'da değil, GOV-000'dedir).
 
 | İş türü | Primary mi, subagent mi? |
 |---------|---------------------------|
 | Dosya okuma, grep, küçük edit | Primary |
-| Bağımsız validation (Scientific/Ontology/Engineering) | **Her zaman subagent** (G2/G3 zorunlu) |
+| Bağımsız validation (Scientific/Ontology/Engineering) | **Her zaman subagent** (GOV-000 **G4** — bağımsız validator; **G2** — yazar kanonlaştıramaz) |
 | Derin dış-repo analizi (CrewOps/operax gibi) | Subagent |
 | Hızlı künye/REGISTRY güncellemesi | Primary |
 

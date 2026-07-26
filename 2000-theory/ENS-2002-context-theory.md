@@ -7,7 +7,7 @@ constitutive: false
 maturity: M3
 origin: ENS-0000 §III (P2, P5), ENS-2001
 depends_on: [ENS-0000, ENS-1000, ENS-2001, ENS-4000]
-referenced_by: [ENS-4010]
+referenced_by: [ENS-2003, ENS-2004, ENS-3021, ENS-3022, ENS-4010, ADR-0001, ADR-0002]
 principles: [P2, P5, P3]
 status: ratified
 owner: ens-philosopher

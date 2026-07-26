@@ -6,7 +6,7 @@ canon: true
 constitutive: true
 origin: ENS-0000 §IV
 depends_on: [ENS-0000]
-referenced_by: [ENS-2001, ENS-2002, ENS-2003, ENS-2004, ENS-3021, ENS-3022, ENS-3023, ENS-4001]
+referenced_by: [ENS-2001, ENS-2002, ENS-2003, ENS-2004, ENS-3021, ENS-3022, ENS-3023, ENS-4001, RFC-6001]
 principles: [P1, P2, P3, P4, P5]
 status: review
 owner: ens-style-guardian

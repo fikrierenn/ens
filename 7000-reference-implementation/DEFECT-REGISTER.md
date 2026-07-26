@@ -69,14 +69,91 @@ raporda değil.** 68 kusurun 34'ü bugüne kadar yalnızca test adı olarak var 
 | `AuditFixed_CommitmentProofTraceTests.cs` | 2 | 0 | `AUDIT-WAVE2-FIDELITY.md` |
 | **Toplam** | **68** | **8** | |
 
-Şiddet dağılımı (benim değerlendirmem):
+> ### ⚠️ Yukarıdaki tablo BAYAT (v1 sayıları) — v2 düzeltmeleri §1.5'te
+> Satır toplamları 68/8'dir; gerçek 75/9. `…SecurityTests.cs` satırı 19/4 diyor, bağımsız
+> sayım **26/5** buldu. Dosya-bazlı yeniden sayım yapılmadan bu tablo güncellenmiyor —
+> **uydurulmuş bir düzeltme, kayıtlı bir hatadan kötüdür.**
 
-| Şiddet | Adet | Tanım |
+### Şiddet dağılımı — **GERİ ÇEKİLDİ**
+
+| Şiddet | ~~v1 iddiası~~ | Durum |
 |---|---|---|
-| **K (Kritik)** | 14 | Anayasal bir güvenceyi tek satırda geçersiz kılar (P6/P7 ihlali) |
-| **Y (Yüksek)** | 27 | Yönetişim güvencesini sessizce kapatır ya da iz bırakmadan bozar |
-| **O (Orta)** | 21 | Yanlış sonuç üretir ama izlenebilir |
-| **D (Düşük)** | 6 | Kozmetik / dayanıklılık |
+| **K (Kritik)** | ~~14~~ | Geçersiz |
+| **Y (Yüksek)** | ~~27~~ | Geçersiz |
+| **O (Orta)** | ~~21~~ | Geçersiz |
+| **D (Düşük)** | ~~6~~ | Geçersiz |
+
+Bağımsız denetim (`DEFECT-REGISTER-VERIFICATION.md`, T10) bu dağılımın **dört kovada da
+yanlış** olduğunu gösterdi — o 68 için gerçek değerler 17/25/22/4'tü. Toplamı tutup
+bileşenleri tutmayan bir tablo, **sayılmadığının kanıtıdır.**
+
+Yeni bir dağılım **yazılmadı**, çünkü 75 kusurun tam şiddet analizi henüz yapılmadı ve
+şiddet ataması bağımsız gözden geçirme ister (GOV-000 G4). Sayı uydurmaktansa boş bırakmak
+tercih edildi.
+
+---
+
+## 1.5 v2 düzeltmeleri (bağımsız denetimler sonrası)
+
+### (a) Sicilde HİÇ olmayan 8 bulgu — eklendi
+
+| ID | Kusur | Dosya:satır |
+|---|---|---|
+| **W8d** | Tek bir öz-beyan `confidence = 1.0`, `stake = 1e12`'de bile InfoNeed'i, AttentionPriority'yi, tier'ı **ve** gate'i birlikte sıfırlıyor | `…SecurityTests.cs:958` |
+| **W5d** | `Resolve` ilk `CanHandle=true` diyeni **kayıt sırasına** göre seçiyor → ADR-0001 §5.3'ün "yüksek InfoNeed → güçlü model" iddiası kodda karşılıksız | `…SecurityTests.cs:488` |
+| **W5e** | `null` `LlmResponse` geçip proof-trace substratını yok ediyor | `…SecurityTests.cs:507` |
+| **W5f** | Önceden iptal edilmiş token yine de "başarılı" yanıt veriyor | `…SecurityTests.cs:520` |
+| **W7h** | Boş ve boşluklu context key'ler ayrı evrenler üretiyor | `…SecurityTests.cs:912` |
+| **W8a** | `ReuseROI` iki ölçülebilir girdiden `+∞` dönüyor | `…SecurityTests.cs:931` |
+| **W8b** | `DeltaCapital` sonlu girdilerden sonsuza taşıyor | `…SecurityTests.cs:940` |
+| **W8c** *(FINDING)* | Doc yorumu "mutlak learning" diyor, kod negatif learning'i reddediyor | `…SecurityTests.cs:947` |
+
+**W8d, kernel'in muhtemelen en ağır kusurudur** ve sicilde hiç yoktu. İki bağımsız denetim
+de onu **Kritik** verdi; v1'in Orta ataması ("kabul edilmiş borç") reddedildi — gerekçe
+sicilin kendi §0 ilkesi: *borcu ilan etmek dürüst yapar, hafif yapmaz.*
+
+### (b) Şiddet itirazları — kabul edilenler
+
+| ID | v1 | Düzeltilmiş | Gerekçe |
+|---|---|---|---|
+| **H1** | Kritik | **FINDING** | Gövde yalnız `CompanyMemory.Record`'un public olduğunu kanıtlıyor, "öneri uygulanabiliyor"u değil (`AdversarialAuditTests.cs:1020-1033`) |
+| **W16** | Düşük | **Kritik** | `toolAuthorization: null` → Autonomous; `Scheduler.Schedule` imzasında registry yok. W4a'dan **daha ucuz** bir atlatma — sahte nesne bile gerekmiyor |
+| **W2_R4** | Yüksek | **Kritik** | Testin kendi yorumu "EN AĞIR BULGU"; Individuation mührü **public API** ile deliniyor, reflection gerekmiyor |
+| **W2d** | Düşük | **Yüksek** | `Reason`, P7 altında insana gösterilen tek bağlam; RTL-override onay istemini **tersine çevirir** |
+| **W7f** | Orta | **Yüksek** | İzlenebilir *değil* — iki `double`, iz yok; sicilin kendi "Orta" tanımını karşılamıyor |
+| **W3c** | Kritik | **Düşük (kod) / Yüksek (iddia)** | Testi yazan ajan `…SecurityTests.cs:328`'de harfiyen `// KUSUR (dusuk siddet, YUKSEK iddia-hatasi)` yazmış. Kalıcı kusur `CapabilityRegistry.cs:41`'in mutlak "gerçekten sabittir" iddiası |
+| **W8** | Kritik | **Yüksek** | W9 ile aynı satır, aynı exception, aynı kök — biri K biri O olamaz |
+| **W6d** | Orta | **Düşük** | `W6e` yönün güvenli olduğunu 200 örnekle kanıtladı |
+| **W5f** | DEFECT | **FINDING** | Kanıt tümüyle `EchoLlmAdapter` test-double'ı hakkında; interface iptali zorlayamaz |
+
+### (c) §2'nin ortak-özellik cümlesi — geri çekildi
+
+*"Bu kusurların ortak özelliği: saldırgana özel yetki gerekmiyor"* cümlesi **7 üye için
+yanlıştı**: `E5`/`W3c` reflection ister, `W2c` Pack tescil yetkisi ister, `W1a–W1d` saldırgan
+değil **operatör hatası**dır. Ölçüt uygulanırsa bu yedisi §2'den çıkar; `W16`, `W2_R4`,
+`W2_R2`, `W8d` girer.
+
+### (d) 7. ve 8. kalıp — §7'ye eklendi
+
+| # | Kalıp | Üyeler | Karar |
+|---|---|---|---|
+| **7** | **"Girdi kapısı var, ÇIKTI kapısı yok"** — adı benim değil, kaynakta yazılı (`…SecurityTests.cs:927`) | W8a, W8b, W17, H4, W5e, W3 | Çıktı postcondition kapısı / `Measured<double>` |
+| **8** | **"Öz-beyan kalibre edilmemiş"** | W8d, W7, W7d, B2, B1, D1_residual, G5, W2_P4 | Confidence provenance/kalibrasyon portu (ENS-3022 borcu) |
+
+### (e) §7'nin yanlışlanabilirliği — kabul edilen kusur
+
+Bağımsız denetim §7'yi **yanlışlanamaz** buldu ve haklıydı: hangi kusurun hangi kalıba ait
+olduğu **hiç listelenmemişti**, dolayısıyla "33 kapanır" ne doğrulanabilir ne çürütülebilirdi.
+Bu, sicilin kendi yetki kaynağı olan Madde X'in ihlalidir — **kendi kuralımı çiğnedim.**
+
+Düzeltilmiş sayılar: kalıp 4 → 4 (W10 çıkar), kalıp 5 → 2 (W5a/W5b downcast'tir, testleri
+"REFLECTION GEREKMEZ" diyor), kalıp 2 → ≥11 (W1a–W1d + W7h girer). **Kalıp 5 "kapanan"
+hanesinden tümüyle çıkarıldı** — §8.3'ün kendi ifadesiyle o bir *kapsam kararıdır*, kapsam
+dışına almak kapatmak değildir.
+
+**Sonuç: "33/68 kapanır" → "~29-31/75".** Üyelik listeleri yazılmadan bu sayı da
+yanlışlanamaz kalır; listeler §7'ye yazılana kadar **iddia olarak değil, tahmin olarak**
+okunmalıdır.
 
 ---
 
@@ -221,7 +298,8 @@ mekanizmasını **hata vermeden** kapatıyor. Hiçbiri belgede yazılı değil.
 ## 6. FINDING'ler — kusur değil, ama iddia zayıf
 
 Bunlar kod hatası değildir. **Yanlış olan, kodun ne kanıtladığına dair iddiadır.** ENS'te
-bu daha ciddidir: Madde X, doğrulanmamış iddiayı yasaklar.
+bu daha ciddidir: Madde VI, yanlışlanamaz/doğrulanmamış iddiayı **reddeder**; Madde X ise
+böyle bir iddia taşıyan yapıtı **eksik** sayar (Madde X yasak koymaz, ödev yükler).
 
 | ID | Gözlem | Neden önemli |
 |---|---|---|
@@ -299,4 +377,5 @@ Beş kusur, **kapatılmadığı için değil, ADR-0001'in henüz bir karar verme
   `AUDIT-WAVE2-SCHEDULER.md`
 - **Eksik rapor:** `AUDIT-WAVE2-SECURITY.md` (yazılmadı)
 - Saldırı yöntemi: `.claude/skills/adversarial-test/SKILL.md`
-- Yetki: Anayasa Madde X (Yanlışlanabilirlik Ödevi), Madde VI (İzlenebilirlik)
+- Yetki: Anayasa Madde X (Yanlışlanabilirlik Ödevi), Madde VIII (İzlenebilirlik Yasası),
+  Madde VI (Anti-Pattern'ler — black-box çıktı)

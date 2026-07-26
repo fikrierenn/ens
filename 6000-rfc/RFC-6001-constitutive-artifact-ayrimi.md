@@ -7,7 +7,7 @@ origin:        ENS-0000 §XV
 depends_on:    [ENS-0000, ENS-4000, STD-METADATA-HEADER, STD-MATURITY-MODEL]
 referenced_by: []
 principles:    [P8]
-status:        Accepted
+status:        accepted
 owner:         ens-philosopher
 version:       0.3.0
 last_reviewed: 2026-07-24
