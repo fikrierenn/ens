@@ -3,16 +3,17 @@ id: ENS-4031
 title: Inference Rules
 type: ontology
 canon: false
+constitutive: true
 origin: ENS-4025 §"Inference Rules bu sözleşmeye uymalı"
 depends_on: [ENS-0000, ENS-4025, ENS-4030, ENS-4001, ENS-4010]
 referenced_by: []
 principles: [P6, P2]
 status: skeptic-cleared
 owner: ens-philosopher
-version: 0.2.0
-last_reviewed: 2026-07-23
+version: 0.3.0
+last_reviewed: 2026-07-25
 failure_conditions: stated
-skeptic_review: [SKR-031, SKR-032]  # SKR-031 wounded → B1/B2/D-1 düzeltildi → SKR-032 (bağımsız 2. tur) survives. ratified/canon:true AYRI governance edimi.
+skeptic_review: [SKR-031, SKR-032]  # SKR-031 wounded → B1/B2/D-1 düzeltildi → SKR-032 (bağımsız 2. tur) survives. v0.3.0: B1 upstream (ENS-4010 v0.5.0, `part_of` domain-widening; SKR-038+SKR-039 iki bağımsız tur, survives/M2) kapandı → IR-002/IR-005-part_of artık Registry-lisanslı; bu düzeltme yeni iddia eklemez, kapanmış borcu propagate eder. ratified/canon:true AYRI governance edimi.
 maturity: M0
 evidence: {sci: E1, eng: E0, ops: E0, econ: E0}
 requires: [ENS-4025, ENS-4010, ENS-4001]
@@ -26,9 +27,11 @@ consumed_by: [reasoning engine (Faz 4), Validation Rules]
 > çıkarım, hangi öncüllerden, hangi kural kimliğiyle, hangi confidence ile üretilir?" Her kural,
 > ENS-4010 **Relation Registry**'sindeki *gerçek* relation'lara **veya** — ilgili durumlarda —
 > ENS-4001 **Meta Model**'deki gerçek, tipli relation'lara (ör. IR-007'nin `contradicts`'i)
-> dayanır (uydurma yok) ve ENS-4025'in sekiz taahhüdüne (L1-L8) uymak zorundadır. **v0.2.0 —
-> `canon: false`; SKR-031 `wounded` sonrası düzeltildi (B1/B2 kapatıldı), bağımsız 2. skeptic
-> turu bekliyor.**
+> dayanır (uydurma yok) ve ENS-4025'in sekiz taahhüdüne (L1-L8) uymak zorundadır. **v0.3.0 —
+> `canon: false`; SKR-031 `wounded` → düzeltildi → SKR-032 `survives` (skeptic-cleared). B1
+> (IR-002/IR-005 `part_of` çok-hop lisansı) ✅ **kapandı**: upstream düzeltme ENS-4010 v0.5.0'da
+> yapıldı (`part_of` domain'i `Actor/Organization → Organization`), SKR-038+SKR-039 iki bağımsız
+> tur ile teyit edildi (survives/M2); IR-002/IR-005-part_of artık lisanslı türetim üretir.**
 
 ## Beş-başlık (ENS-4025'in disiplini sürer)
 - **Prior art:** OWL 2 **property chain axioms** (`SubObjectPropertyOf(ObjectPropertyChain(...))`),
@@ -84,27 +87,28 @@ graf'a yazıldı, sonra öncül geçersizleşti, türetim öksüz kaldı" tutars
   Registry arasındaki bu tutarsızlık, ya ENS-4025 örneğinin ya da Relation Registry'nin
   düzeltilmesini gerektiren gerçek bir borç → skeptic'e **D-1** olarak sunulur.
 
-### IR-002 — Transitivity: `part_of` (Registry-bağımlı — henüz lisanslı DEĞİL, B1)
+### IR-002 — Transitivity: `part_of` (Registry-lisanslı — ✅ B1 kapandı, ENS-4010 v0.5.0)
 - **Type:** Transitive (ENS-4010 Registry `part_of` satırı `Trans: ✓`).
 - **Kural biçimi (L-uyumlu):** `A --part_of--> B` ∧ `B --part_of--> C` ⇒ `A part_of C`,
   `conf = min(conf₁, conf₂)` (L7).
-- **Registry lisansı — YOK (B1, açık borç).** ENS-4010 `part_of`'u `Actor → Organization`
-  (**domain ≠ range**) tipler *ve aynı anda* `Trans: ✓` işaretleyip §Relation Composition
-  (line 152) `A part_of B ∧ B part_of C ⇒ A part_of C` zincirini deklare eder. Bu ikisi
-  **kendi içinde tutarsızdır:** `R: X→Y` (X≠Y) bir zincir oluşturamaz, çünkü orta düğüm hem
-  Y (ilk hop'un range'i = Organization) hem X (ikinci hop'un domain'i = Actor) olmak zorundadır.
-  `Team/Division/Company` hepsi Organization'dır → zincir gizlice `Organization --part_of-->
-  Organization` iddia eder; bu kenar Registry domain'inde (`Actor`) **yoktur**. "Organization da
-  Agent-profili node'u" savunması **geçersizdir** — aynı Semantic Profile (Agent) ≠ aynı
-  domain/range uygunluğu; `Organization specializes Actor` hiçbir yerde deklare değildir. Bu, D-1
-  ile **yapısal olarak özdeş** bir Registry kusurudur. Dolayısıyla IR-002 mevcut Registry altında
-  **hiçbir lisanslı örnek üretmez** (fire etmez) ve bu belge illicit çok-hop zincirini
-  *iddia etmez* — tıpkı IR-001'in D-1 örneğini yeniden üretmeyi reddetmesi gibi.
-- **Çözüm (ENS-4010 owner = ens-architect'e devredildi, bkz. §Failure conditions B1):** ya
-  (a) ENS-4010'da `Organization specializes Actor` (veya ortak bir `CollectiveAgent` üsttürü)
-  deklare edilir → Organization `part_of` domain'ine girer; ya da (b) `part_of` domain'i
-  `Actor/Organization → Organization` olarak genişletilir. Bunlardan biri deklare edilene dek
-  IR-002 **yalnızca kural-biçimi** olarak durur, lisanslı türetim üretmez.
+- **Registry lisansı — ✅ VAR (B1 kapandı, ENS-4010 v0.5.0).** ENS-4010 v0.5.0 `part_of`'u
+  `Actor/Organization → Organization` tipler (satır 162: `Trans: ✓`, `contains` tersi, N:1).
+  Böylece **`range {Organization} ⊆ domain {Actor, Organization}`** — 2-hop zincir well-formed'dir:
+  `Team --part_of--> Division --part_of--> Company` (üçü de Organization) orta düğümü hem range
+  (ilk hop) hem domain (ikinci hop) olarak taşıyabilir, çünkü Organization artık domain'dedir.
+  Bu, ENS-4010'un v0.4.0'da eklediği **transitivity well-formedness invariant'ının** (`Trans: ✓`
+  ⇒ `range ⊆ domain`; ENS-4010 satır 177-182) gereğidir ve `Team⊂Division⊂Company` 2-hop zinciri
+  bizzat iz sürülerek doğrulandı. Dolayısıyla IR-002 mevcut Registry altında **lisanslı türetim
+  üretir** (fire eder): örgütsel hiyerarşinin transitive kapanışı artık kural kaynaklıdır.
+- **Tarihsel not (B1 borcu, ✅ kapandı):** v0.2.0'da bu kural "lisanslı DEĞİL" bayrağı taşıyordu —
+  eski ENS-4010 tiplemesi `part_of`'u `Actor → Organization` (**domain ≠ range**) yapıp aynı anda
+  `Trans: ✓` işaretlediği için zincir kendi içinde tutarsızdı (orta düğüm hem Organization hem Actor
+  olamaz; `Organization specializes Actor` hiçbir yerde deklare değildi). Bu, D-1 ile yapısal olarak
+  özdeş bir Registry kusuruydu ve SKR-031'de saptandı → ens-architect'e devredildi. **Çözüm:** ENS-4010
+  v0.5.0 `part_of` domain'ini `Actor/Organization → Organization` olarak genişletti (subsumption değil
+  enumerasyon — mevcut `pursues: Actor/Organization → Goal` desenine tutarlı). Düzeltme **SKR-038 +
+  SKR-039 iki bağımsız skeptic turu** ile teyit edildi (survives, ENS-4010 `maturity: M2`). Borç
+  kapandı; bu belge bayrağı v0.3.0'da kaldırdı.
 
 ### IR-003 — Transitivity: `specializes` (taxonomy closure)
 - **Type:** Transitive (ENS-4010 Registry `specializes` satırı `Trans: ✓`).
@@ -151,11 +155,15 @@ graf'a yazıldı, sonra öncül geçersizleşti, türetim öksüz kaldı" tutars
      ⇒ [IR-004 → IR-005 weakest-link]
      ⊢ Actor-A indirectly_serves Purpose-P   (conf = min(0.9, 0.95) = 0.9)
   ```
-  Not: örnek bilinçli olarak IR-004'ün (`pursues: Actor→Goal` ∧ `refines: Goal→Purpose`, ikisi de
-  Registry-domain/range-uyumlu) yolunu kullanır — IR-002'nin (`part_of`) çok-hop zinciri Registry
-  altında henüz lisanslı olmadığından (B1), weakest-link illüstrasyonu için **lisanslı** bir yol
-  seçilmiştir. Kural biçimi (min, herhangi uzunlukta yol) tüm Composition/Transitive kurallar için
-  geneldir; yalnızca öncül kenarların Registry-lisanslı olması gerekir.
+  Not: örnek IR-004'ün (`pursues: Actor→Goal` ∧ `refines: Goal→Purpose`, ikisi de
+  Registry-domain/range-uyumlu) yolunu kullanır. Tarihsel olarak (v0.2.0) bu seçim, IR-002'nin
+  (`part_of`) çok-hop zinciri o zaman Registry-lisanslı olmadığı (B1) için yapılmıştı; **B1 artık
+  kapandığından** (ENS-4010 v0.5.0, `part_of` domain-widening — SKR-038+SKR-039 ile teyit) `part_of`
+  zinciri de eşit derecede lisanslı bir weakest-link illüstrasyonu olurdu (ör.
+  `Team --part_of--> Division --part_of--> Company`, `conf = min(...)`). IR-004 örneği yeterli
+  olduğundan olduğu gibi bırakıldı. Kural biçimi (min, herhangi uzunlukta yol) tüm
+  Composition/Transitive kurallar için geneldir; yalnızca öncül kenarların Registry-lisanslı olması
+  gerekir — IR-002 dâhil artık bunu sağlar.
 
 ### IR-006 — Negation (explicit): `invalidates` ⇒ Claim `Unknown` + downstream bloke
 - **Type:** Negation (explicit-only, L4 — negation-as-failure YOK).
@@ -237,16 +245,20 @@ doğrudan ilgili değil ama ihlal de etmez.
 | IR-007 | ✓ | ✓ | ✓ | ✓ (**contradicts**) | ✓ | ✓ (Bridge şartı) | ✓ min | ✓ |
 | IR-008 | ✓ | ✓ | ✓ | — | ✓ | ✓ | ✓ (proof-içi; arası açık) | ✓ (çoklu) |
 
-**† IR-002 (B1):** L1-L8 uyumu (kural *biçimi*) temizdir, ancak öncül kenar (`part_of` çok-hop
-zinciri) mevcut ENS-4010 tiplemesi altında **Registry-lisanslı değildir** → kural şu an lisanslı
-türetim üretmez. L-uyumu ≠ Registry-lisansı; bu ayrım B1'in özüdür. Bkz. IR-002 gövdesi ve
-§Failure conditions B1.
+**† IR-002 (✅ B1 kapandı, ENS-4010 v0.5.0):** L1-L8 uyumu (kural *biçimi*) her zaman temizdi;
+v0.2.0'da eksik olan tek şey öncül kenarın (`part_of` çok-hop zinciri) Registry-lisansıydı. ENS-4010
+v0.5.0 `part_of` domain'ini `Actor/Organization → Organization` genişleterek (`range ⊆ domain`) bu
+lisansı verdi → IR-002 artık **hem L-uyumlu hem Registry-lisanslı**, lisanslı türetim üretir. L-uyumu
+≠ Registry-lisansı ayrımı hâlâ geçerlidir (kavramsal), ama IR-002 için ikisi de artık sağlanır. Bkz.
+IR-002 gövdesi ve §Failure conditions B1. (Teyit: SKR-038+SKR-039, ENS-4010 M2.)
 
 **Doğrulama sözü:** Bu tabloyu ihlal eden bir kural (ör. proof-trace üretmeyen), ya da öncülü
 ne ENS-4010 Registry'de ne ENS-4001 Meta Model'de gerçek/tipli olmayan bir kural bu belgeye
-**giremez** — ENS-4025 §"Aksi kural geçersizdir". Öncülü gerçek ama Registry-tiplemesi henüz
-zincire lisans vermeyen bir kural (IR-002) belgede **kalır ama "lisanslı değil" bayrağı taşır**
-ve üretim yapmaz — tıpkı IR-001'in D-1 notu gibi.
+**giremez** — ENS-4025 §"Aksi kural geçersizdir". Öncülü gerçek ama Registry-tiplemesi zincire
+lisans **vermeyen** bir kural belgede **kalır ama "lisanslı değil" bayrağı taşır** ve üretim yapmaz.
+Bu disiplin geneldir; IR-002 v0.2.0'da bu durumun örneğiydi (B1) — ama ENS-4010 v0.5.0'daki `part_of`
+domain-widening ile lisans kazandı, dolayısıyla artık bayraksızdır ve üretim yapar. Bayrak-mekanizması
+gelecekteki başka lisanssız-zincir vakaları için yürürlükte kalır.
 
 ## Implications (bu kurallar neyi mümkün kılar)
 - **Explainable derived reasoning:** "Decision-D bu Capability tarafından mı destekleniyor?" gibi
@@ -273,7 +285,7 @@ tek tek karşılandı:
 
 | # | SKR-031 talebi | Yanıt (v0.2.0) | Durum |
 |---|----------------|----------------|-------|
-| 1 | **B1** — `part_of` transitive kusurunu D-1 ile aynı statüye çıkar: `failure_condition` + ENS-4010 owner'a devir; IR-002/IR-005 "lisanslı değil" notu taşısın. | IR-002 "Registry-bağımlı — henüz lisanslı DEĞİL" başlığıyla yeniden yazıldı; geçersiz "Agent-profili" savunması çıkarıldı, tutarsızlık açıkça anlatıldı, illicit çok-hop iddiası kaldırıldı. IR-005 concrete instance Registry-lisanslı IR-004 yoluna (`pursues ∘ refines`) çevrildi. §Failure conditions'a **B1** eklendi (ens-architect'e devir). L1-L8 matrisine † bayrağı + açıklama. | **Kapatıldı** (üst-borç ens-architect'te) |
+| 1 | **B1** — `part_of` transitive kusurunu D-1 ile aynı statüye çıkar: `failure_condition` + ENS-4010 owner'a devir; IR-002/IR-005 "lisanslı değil" notu taşısın. | IR-002 "Registry-bağımlı — henüz lisanslı DEĞİL" başlığıyla yeniden yazıldı; geçersiz "Agent-profili" savunması çıkarıldı, tutarsızlık açıkça anlatıldı, illicit çok-hop iddiası kaldırıldı. IR-005 concrete instance Registry-lisanslı IR-004 yoluna (`pursues ∘ refines`) çevrildi. §Failure conditions'a **B1** eklendi (ens-architect'e devir). L1-L8 matrisine † bayrağı + açıklama. **✅ v0.3.0: üst-borç ens-architect tarafından ENS-4010 v0.5.0'da kapatıldı** (`part_of` domain `Actor/Organization → Organization`; SKR-038+SKR-039 iki bağımsız tur, survives/M2) → IR-002/IR-005-part_of artık lisanslı; bayrak kaldırıldı. | **✅ Tam kapandı** (upstream ENS-4010 v0.5.0) |
 | 2 | **B2** — "her kural ENS-4010 Registry'ye dayanır" tekil-kaynak iddiasını yumuşat (IR-007 `contradicts` ENS-4001'de). | Header blockquote + Relationships §ENS-4010: "ENS-4010 Registry **veya** ENS-4001 Meta Model'deki gerçek/tipli relation" olarak düzeltildi. §Failure conditions'a **B2** notu. | **Kapatıldı** |
 | 3 | **D-1'i doğru adrese yönlendir** — D-1 ENS-4025'in borcudur; ENS-4025 örneğini Registry'ye hizala; ROADMAP/G-14'te sahiplik netleşsin. | ENS-4025 v0.1.1'de proof-trace örneği co-target join'e hizalandı (Strategy → Capability/Purpose), SKR-031 D-1 kaynak notu eklendi. Bu belgenin D-1 failure-condition'ı "ENS-4025 tarafında kapatıldı" olarak güncellendi. ROADMAP G-14 güncellendi. | **Kapatıldı** |
 | 4 | **(İsteğe bağlı)** `indirectly_serves` isim karışması + IR-005/IR-008 meta-kural doğası. | Kabul edildi ama küçük/stilistik; `indirectly_serves`'in `serves` (Decision→Purpose) semantiğini Actor→Purpose'a taşıdığı IR-004 gövdesinde zaten açık. ENS-4000 sözlüğüne türetilmiş-relation kaydı ayrı iş (ROADMAP). Bu turda dokunulmadı — dürüstçe açık. | Ertelendi (küçük) |
@@ -290,17 +302,23 @@ bağımsız 2. turuna aittir (governance G2: yazar kendi işini kanıtlayamaz). 
   ratified turunda kaçmış). Registry-önceliği (Madde XII) gereği düzeltme yönü = ENS-4025 örneğini
   Registry'ye hizalamak; ENS-4025 v0.1.1'de bunu yaptı (co-target join: `serves` + `supports` aynı
   Purpose'a). Bu belgenin IR-001'i zaten Registry-sadık join biçiminde tanımlıydı — değişmedi.
-- **B1 — `part_of` transitive tiplemesi Registry'ce lisanslı değil (ENS-4010 owner'a DEVREDİLDİ).**
-  IR-002/IR-005'in `part_of` çok-hop zinciri, ENS-4010'un `Actor → Organization` (domain≠range)
-  tiplemesi altında lisanslı değildir: 2-hop zincir gizlice `Organization --part_of-->
-  Organization` iddia eder, bu kenar Registry'de yoktur; `Trans: ✓` + §Composition line 152
-  deklarasyonu bu relation için **kendi içinde tutarsızdır**. Bu D-1 ile **aynı sınıf** kusurdur.
+- **B1 — `part_of` transitive tiplemesi Registry'ce lisanslı değildi (✅ KAPANDI, ENS-4010 v0.5.0).**
+  *Tarihsel tanı:* IR-002/IR-005'in `part_of` çok-hop zinciri, ENS-4010'un eski `Actor → Organization`
+  (domain≠range) tiplemesi altında lisanslı değildi: 2-hop zincir gizlice `Organization --part_of-->
+  Organization` iddia ediyordu, bu kenar Registry'de yoktu; `Trans: ✓` + §Composition deklarasyonu
+  bu relation için **kendi içinde tutarsızdı**. Bu D-1 ile aynı sınıf kusurdu (SKR-031'de saptandı).
   En güçlü hâliyle: örgütsel hiyerarşi (Team⊂Division⊂Company) *gerçekten* var olan bir olgudur, o
-  yüzden çözüm muhtemelen Registry'yi genişletmektir — ama bu **ens-architect'in yetkisidir**
-  (ens-philosopher başka owner'ın Registry'sini tek taraflı değiştiremez). Devir: ENS-4010'da ya
-  `Organization specializes Actor`/`CollectiveAgent` üsttürü deklare edilmeli, ya da `part_of`
-  domain'i `Actor/Organization → Organization` olarak genişletilmeli. O ana dek IR-002/IR-005-part_of
-  "lisanslı değil" bayrağıyla durur, lisanslı türetim üretmez. **Bu belge tek başına kapatamaz.**
+  yüzden çözüm Registry'yi genişletmekti — ama bu **ens-architect'in yetkisiydi** (ens-philosopher
+  başka owner'ın Registry'sini tek taraflı değiştiremez), bu yüzden devredildi.
+  *Çözüm (2026-07): ENS-4010 v0.5.0* `part_of` domain'ini `Actor/Organization → Organization` olarak
+  genişletti (subsumption değil enumerasyon — `pursues` desenine tutarlı, daha az ontolojik ağırlık).
+  Artık `range {Organization} ⊆ domain {Actor, Organization}` → zincir well-formed; bu ENS-4010'un
+  transitivity well-formedness invariant'ının (`Trans: ✓` ⇒ `range ⊆ domain`) gereğidir ve
+  `Team⊂Division⊂Company` iz sürülerek doğrulandı. Düzeltme **SKR-038 + SKR-039 iki bağımsız skeptic
+  turu** ile teyit edildi (survives, ENS-4010 `maturity: M2`). Sonuç: IR-002/IR-005-part_of **artık
+  Registry-lisanslıdır ve lisanslı türetim üretir**; v0.3.0'da bayrak kaldırıldı. Bu bir *failure
+  condition* olmaktan çıkıp *çözülmüş borç* kaydına dönüştü; tarihsel referans (SKR-031→SKR-038/039)
+  korunur.
 - **B2 — birincil-kaynak ifadesi yumuşatıldı.** "Her kural ENS-4010 Registry'ye dayanır" tekil-
   kaynak sözü fazla genişti: IR-007'nin öncülü `contradicts` ENS-4001 Meta Model'de yaşar
   (ENS-4010 Registry'de değil). İfade "ENS-4010 Registry **veya** ENS-4001 Meta Model'deki gerçek,
@@ -322,15 +340,23 @@ bağımsız 2. turuna aittir (governance G2: yazar kendi işini kanıtlayamaz). 
 - **Formal dil Faz 4.** Kurallar yarı-formal (Türkçe + notasyon). Makine-çalıştırılabilir hâl
   (SHACL property-path / SPARQL / Datalog + t-norm motoru) Faz 4'te bağlanır; şimdilik niyet +
   spesifikasyon. Skeptic doğrulaması olmadan hiçbir kod bu kurallara dayanmamalı (`canon: false`).
-- **Skeptic 1. turu geçildi, 2. tur açık (`M0`).** Bu belge ratified değildir. SKR-031 (1. tur)
-  **wounded** verdi; B1/B2 bu sürümde (v0.2.0) düzeltildi. Düzeltmelerin *gerçekten* yeterli
-  olduğu kararı **bağımsız 2. skeptic turuna** aittir (yazar kendi işini kanıtlayamaz, G2). L1-L8
-  uyum iddiası hâlâ kendi beyanımdır.
+- **Skeptic iki turu geçildi; ratified değil (`M0`).** SKR-031 (1. tur) **wounded** verdi; B1/B2
+  v0.2.0'da düzeltildi. SKR-032 (bağımsız 2. tur) **survives** → `status: skeptic-cleared`. B1'in
+  *upstream* borcu (ENS-4010 `part_of` tiplemesi) SKR-032 turunda "açık ama bloke etmez" olarak
+  kaydedilmişti; v0.3.0'da o borç da kapandı (ENS-4010 v0.5.0, SKR-038+SKR-039). Bu belge yine de
+  **ratified değildir** — `ratified`/`canon: true` ayrı governance edimidir (skeptic vermez). L1-L8
+  uyum iddiası hâlâ yazar beyanıdır. **Dürüst not (self-review yasağı, G2):** v0.3.0 IR-002/IR-005'in
+  artık lisanslı *üretim* yaptığı yeni-olumlu bir davranış getirir; kural *biçimi* SKR-031/032'de
+  zaten temizlenmişti ve Registry-lisansı ENS-4010 tarafında SKR-038+SKR-039 ile bağımsız doğrulandı,
+  bu yüzden bu bir riskli yeni-iddia değil kapanmış-borç propagasyonudur — ama IR-002'nin canlı üretim
+  davranışının ENS-4031 bağlamında ayrıca teyidi gelecek bir skeptic turunun işidir; bu belge kendi
+  işini `survives` ilan etmez. `maturity` M0 korunur (bu düzeltme yeni ampirik kanıt eklemez).
 
 ---
 
 *Inference Rules, Semantic Logic'in soyut sözleşmesini yürüyen kurallara çevirir: her çıkarım bir
 kimlik, bir confidence ve bir proof-trace taşır; her öncül ya Relation Registry'de (ENS-4010) ya da
-Meta Model'de (ENS-4001) gerçek, tipli bir kenardır — Registry-tiplemesi henüz zincire lisans
-vermeyen kural (IR-002/part_of) ise "lisanslı değil" bayrağıyla açıkça durur. Örtük mantık değil —
+Meta Model'de (ENS-4001) gerçek, tipli bir kenardır. Registry-tiplemesi bir zincire lisans
+vermeyen herhangi bir kural "lisanslı değil" bayrağıyla açıkça dururdu; IR-002/part_of v0.2.0'da bu
+durumdaydı (B1) ama ENS-4010 v0.5.0 ile lisans kazandı ve bayraksızdır. Örtük mantık değil —
 adlandırılmış, izlenebilir, muhafazakâr türetim.*

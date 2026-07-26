@@ -3,6 +3,7 @@ id: ENS-4025
 title: Semantic Logic
 type: ontology
 canon: false
+constitutive: false
 origin: ENS-4010, ENS-4030
 depends_on: [ENS-0000, ENS-4010, ENS-4030]
 referenced_by: []

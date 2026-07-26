@@ -3,6 +3,7 @@ id: ENS-4020
 title: Enterprise Ontology (operax — Operations domain)
 type: ontology
 canon: false
+constitutive: false
 origin: ENS-4010 §İki katman, ENS-4001 §Semantic Connectors
 depends_on: [ENS-0000, ENS-4001, ENS-4010]
 referenced_by: [ADR-0002]

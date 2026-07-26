@@ -3,6 +3,7 @@ id: ENS-4030
 title: Semantic Axioms
 type: ontology
 canon: false
+constitutive: true
 origin: ENS-4001, ENS-4010
 depends_on: [ENS-0000, ENS-4001, ENS-4010]
 referenced_by: []

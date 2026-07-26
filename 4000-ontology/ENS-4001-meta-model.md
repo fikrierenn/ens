@@ -3,6 +3,7 @@ id: ENS-4001
 title: ENS Meta Model
 type: ontology
 canon: false
+constitutive: false
 origin: ENS-0000 §IV, §VIII, §XI
 depends_on: [ENS-0000, ENS-4000]
 referenced_by: []
