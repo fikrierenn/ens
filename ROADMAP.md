@@ -239,8 +239,20 @@ ADR-0001 **Accepted** (CEO-0001, K4 kapandı). Kod yazıldı ve **gerçekten der
   (`dotnet run`), teori tek akışta doğrulandı (Gate NotifyHuman→Commit sonrası InfoNeed düşüşü
   dahil, gerçek terminal çıktısıyla).
 - `DecisionAggregate` — ENS-2001 §Individuation (event-sourced, commitment-sealed) — **8/8 test geçti**
-- `DecisionEntropy` — ENS-3021 formülü (`H(A|C)=I(A;Owner|C)+H(A|C,Owner)`), zincir-kuralı
-  matematiksel olarak doğrulandı — **5/5 test geçti**
+- `DecisionEntropy` — ENS-3021 formülü (`H(A|C)=I(A;Owner|C)+H(A|C,Owner)`) — **5/5 test geçti**
+  - ⚠️ **DÜZELTME (2026-07-26, AUDIT bulgusu W7c):** buradaki eski ifade —"zincir-kuralı
+    matematiksel olarak doğrulandı"— **yanlıştı ve kaldırıldı**. `LevelNoise`,
+    `Math.Max(0, hac − hacOwner)` olarak, yani bir **artık (residual)** olarak hesaplanıyor
+    (`DecisionEntropy.cs:48`). Zincir kuralı özdeşliği bu durumda **inşa gereği** doğrudur;
+    onu test etmek hiçbir şeyi yanlışlamaz. Tautoloji kanıt değildir (Madde X).
+  - ✅ Buna karşılık **değerin kendisi bağımsız olarak doğrulandı**: `AUDIT_HOLDS_W7a`,
+    500 veri kümesi üzerinde koşullu karşılıklı bilgiyi (CMI) bağımsız hesaplayıp
+    `LevelNoise` ile karşılaştırdı — eşleşti. Yani sayı doğru; yanlış olan, o sayıyı içeren
+    özdeşliği "doğrulama" saymaktı.
+  - Açık kalan: `W7b` (clamp ölü kod), `W7d` (tek gözlemde örneklem güvencesi yok),
+    `W7e` (tümü `null` gözlem "kusursuz tutarlılık" raporluyor), `W7f` (sahip kimliğinde
+    harf farkı attribution'ı ters çeviriyor), `W7g` (normalize edilmemiş entropi).
+    Ayrıntı: `7000-reference-implementation/DEFECT-REGISTER.md`
 - `DecisionGravity` — ENS-3022 formülü (`InfoNeed=Stake×(1−Confidence)`) — **8/8 test geçti**;
   künye `eng: E0→E1` güncellendi ✅
 - `DecisionCapital` — ENS-3023 formülü (Value/ΔCapital=yatırım−amortisman/ReuseROI) —
