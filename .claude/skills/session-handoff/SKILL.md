@@ -16,8 +16,17 @@ Oturum sonunda gün içinde olanları kalıcı journal'a yazar; **ROADMAP.md'yi 
 (README/Anayasa'ya session log yazılmaz — bu, LAW-ORG-MEMORY'nin projeye uygulanışıdır).
 
 ## Kaynak dosya
-`journal/YYYY-MM-DD.md` — yoksa oluştur, varsa append (`pre-compact.sh` zaten kısmi snapshot
-bırakmış olabilir, üstüne yaz).
+`journal/YYYY-MM-DD.md`
+
+- **Yoksa:** `Write` ile oluştur.
+- **Varsa:** **`Edit` ile ekle. `Write` KULLANMA.** `pre-compact.sh` gün içinde kısmi
+  snapshot bırakmış olur; `Write` onu sessizce yok eder ve dosya untracked ise git'te
+  yedeği de yoktur — kayıp kalıcıdır.
+
+> **Bu kural bir kayıptan doğdu (2026-07-26).** Skill'in eski hâli aynı cümlede
+> "varsa append" ve "üstüne yaz" diyordu; ikinci talimat izlendi ve 15:20 snapshot'ı
+> ezildi. İçerik yalnızca okunmuş olduğu için context'ten geri konabildi — şansla.
+> Journal bir **audit kaydıdır** (LAW-ORG-MEMORY); üstüne yazılmaz, eklenir.
 
 ## Çıktı şablonu
 ```markdown
