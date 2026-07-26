@@ -126,7 +126,7 @@ konumlama (SKR-001 dersi: dar delta önden):
 |--------|----------|--------------------------|
 | **GEPA** (Genetic-Pareto prompt evolution; "GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning", arXiv:2507.19457) | execution-trace'i okuyup **"neden başarısız oldu"** (yalnızca "başarısız" değil) reflektif olarak analiz eden ve hedefli aday-varyant üreten optimizer | Reflektif "neden" analizinin kaynağı — ENS'te double-loop tetikleyicisi olarak §4a; ama ENS **prompt değil Assumptions/relevance-model/attribution-seviyesi** günceller ve çıktı bir **öneridir** |
 | **DSPy** (Stanford; declarative self-improving pipelines; arXiv:2310.03714 / dspy.ai) | prompt/pipeline'ı eval dataset'e karşı programatik optimize eden framework | Optimize-et-değerlendir döngüsü deseninin kaynağı — ENS'te L1+ attribution sinyaliyle beslenir |
-| **Hermes Agent self-evolution** (Nous Research; github.com/NousResearch/hermes-agent-self-evolution) | GEPA+DSPy ile skill/prompt/kod evrimi + **constraint-gate** (pytest %100, boyut sınırı, semantic-preservation) + **her değişiklik insan-PR-review; otonom commit YOK** | "constraint-gate + insan-onay, otonom commit yok" deseninin kaynağı — ENS'in **P7 (Bounded Autonomy, Madde III)** öğrenme-döngüsü karşılığının doğrudan eşi |
+| **Hermes Agent self-evolution** (Nous Research; github.com/NousResearch/hermes-agent-self-evolution) | GEPA+DSPy ile skill/prompt/kod evrimi + **constraint-gate** (pytest %100, boyut sınırı, semantic-preservation) + **her değişiklik insan-PR-review; otonom commit YOK** | "constraint-gate + insan-onay, otonom commit yok" deseninin kaynağı — ENS'in **P7 (Madde III — "sorumluluk insandadır"; mimari adı ADR-0001 §5.6'da "Bounded Autonomy")** öğrenme-döngüsü karşılığının doğrudan eşi |
 
 **Dürüst delta (dar).** Trace-tabanlı reflektif öz-iyileştirme yeni bir mekanizma **değildir**;
 ENS'in bu turdaki katkısı bir mekanizma icadı değil, **üç bağlamadır**: (a) reflektif "neden" analizi
@@ -218,7 +218,9 @@ GEPA/DSPy/Hermes mühendisliğinin, ENS'in zaten söz verdiği ilkelere (§4 dou
    L1'e sıkışıyor, L2 doğal-deney eşlemesi kurulabilir"). Öneri, ürettiği proof-trace ile birlikte
    sunulur (P6/Explainability).
 
-**P7 kapısı (Bounded Autonomy, Anayasa Madde III) — mekanizmanın çekirdeği.** Öneri **hiçbir zaman
+**P7 kapısı (Anayasa Madde III: "Sorumluluk insandadır. ENS önerir; emretmez") — mekanizmanın
+çekirdeği.** ("Bounded Autonomy", P7'nin ADR-0001 §5.6'da tanıtılan mimari adıdır; Anayasa'da ve
+ENS-4000'de bu adla geçmez.) Öneri **hiçbir zaman
 otomatik uygulanmaz.** Assumptions/relevance-model/attribution-hedefi güncellemesi, bir insanın
 onayından geçer. Bu, GEPA/Hermes'in "constraint-gate + insan-PR-review, otonom commit yok"
 ilkesinin ENS-tarafı karşılığıdır ve ENS'in "öneri sunar, emretmez" duruşunun öğrenme-döngüsündeki

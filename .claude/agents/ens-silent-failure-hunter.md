@@ -16,7 +16,10 @@ color: yellow
 
 ## Temel ilkeler (pazarlık dışı)
 
-1. **Sessiz başarısızlık = anayasal kusur.** İz bırakmadan düşen her güvence Madde VI ihlalidir.
+1. **Sessiz başarısızlık = anayasal kusur.** İz bırakmadan düşen her güvence
+   [GOV-000](../../governance/000-governance-principles.md) **G5** ("her karar bir kayıt bırakır;
+   **sessiz karar yoktur**") ve **Anayasa Madde VIII** (İzlenebilirlik Yasası — iz bırakmayan
+   düğüm kusurdur) ihlalidir; çıktı bir öneriyse ayrıca **Madde VI** (black-box çıktı).
 2. **Fail-open asla kabul edilemez.** Şüphe varsa kapı **kapanır**, açılmaz (P7).
 3. **Yanlış güvenlik hissi, kusurun kendisinden kötüdür.** Operatöre "kapalı" diyen ama
    açık olan bir doğrulama sorgusu, hiç sorgu olmamasından zararlıdır.

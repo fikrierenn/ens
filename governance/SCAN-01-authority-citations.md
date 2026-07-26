@@ -12,9 +12,11 @@ scope: [1000-philosophy, 2000-theory, 3000-laws, 4000-ontology, 5000-architectur
 
 # SCAN-01 — Külliyat Geneli Uydurma Yetki Atfı Taraması
 
-> **Durum:** TAMAMLANDI (2026-07-27). Verdict: **kısmen güvenilir** (§7).
+> **Durum:** TAMAMLANDI (2026-07-27) · **DÜZELTMELER UYGULANDI** (2026-07-27, §8).
+> Verdict (tarama anı): **kısmen güvenilir** (§7).
 > Denetlenen atıf: ≈599 · Kusurlu: ≈70 (%11,7) · Ağır kusurlu: 39 (%6,5).
-> Kök neden tek satırda: `governance/roles.md:38` (Ç-1).
+> Kök neden tek satırda: `governance/roles.md:38` (Ç-1) — **kaynakta düzeltildi** (`7938ca5` turu).
+> Uygulama sonrası kalan: yalnızca Ç-7 (~25 hafif örnek) — bkz. §8.2.
 
 ## 0. Amaç ve tetikleyici vaka
 
@@ -513,7 +515,8 @@ Anayasa/GOV-000 tam metniyle karşılaştırıldı. Bir satırda birden çok at�
 ### 6.3 "G<rakam>" atıfları
 
 Ham eşleşme 242. Bunlardan düşülenler: tanım kaynaklarının kendisi (GOV-000/GOV-030/roles/
-capability-matrix ≈ 20), meta-inceleme belgesi (`REVIEW-tier3-discipline.md` 41), bu dosya,
+capability-matrix ≈ 20), meta-inceleme belgesi (`.claude/rules/SKR-046-tier3-discipline-rules.md`
+— tarama sırasındaki adı `REVIEW-tier3-discipline.md`; 41), bu dosya,
 kapsam dışı (`journal/`, `plans/` ≈ 10), `SCAN-03` (5).
 Kalan ≈ **152 aday**; bunların **≈27'si yanlış-pozitif** (denetim/test bulgu kimlikleri —
 bkz. Ç-8), dolayısıyla **≈125 gerçek G-atfı** denetlendi.
@@ -568,7 +571,7 @@ katmanında yapılan düzeltme, **kusuru gidermedi; yalnızca en görünür örn
 `refuted` değil, çünkü kusurların hiçbiri bir teorik iddiayı geçersiz kılmıyor; hepsi
 *atıf hijyeni* düzeyinde ve hepsi mekanik olarak düzeltilebilir.
 `güvenilir` de değil, çünkü **bilinen ve yazıya dökülmüş bir kusur açık bırakılmış** —
-`REVIEW-tier3-discipline.md` 2026-07-26'da `ENS-2003`'teki "Anayasa G2/G3"ü ve
+`SKR-046` (o tarihte `REVIEW-tier3-discipline.md`) 2026-07-26'da `ENS-2003`'teki "Anayasa G2/G3"ü ve
 `advisor-skills.md`'deki "Madde XIV — rol ayrımı"nı **isim vererek** kaydetmiş, ikisi de
 düzeltilmemiş. Madde VII'ye göre kayıtlı bir kusur, düzeltilene dek bağımlı işi durdurur;
 durmadı.
@@ -619,3 +622,44 @@ tek tek SKR konusu yapılmamalı.
    (`ProofTrace.cs`, `CapabilityRegistry.cs` vb.) bu taramanın **dışındadır** ve ayrı bir tur ister.
 5. **Çakışma kısıtı.** `ENS-2003`/`ENS-2004` eşzamanlı düzenlendiğinden yalnızca okundu;
    verilen satır numaraları kaymış olabilir, metin kalıpları kaymaz.
+   *(2026-07-27: kısıt kalktı, düzeltmeler uygulandı — §8.)*
+
+---
+
+## 8. Düzeltme turu (2026-07-27)
+
+Kök neden (Ç-1) `governance/roles.md`'de owner tarafından düzeltildikten sonra türevler
+uygulandı. **İlke: yalnız dayanak düzeltildi, hiçbir cümlenin iddiası değiştirilmedi.**
+
+### 8.1 Uygulananlar
+
+| Bulgu | Yapılan | Dosyalar |
+|-------|---------|----------|
+| **Y-1** | `Anayasa G2/G3` → içeriğe göre `GOV-000 G4` (bağımsız doğrulama) ya da `GOV-000 G2+G4` (statü/canon ilerlemesi de söz konusuysa); hepsine GOV-000 linki | `ENS-2003` ×3, `ENS-2004` ×4, `SKR-043`, `SKR-044`, `SKR-037` ×2 |
+| **Ç-2** | *"Madde X … yasaklar"* → *"Madde VI reddeder; Madde X eksik sayar"*; iki yerde *"Madde X ihlali"* → *"Madde X ödevi karşılanmamış"* | `AUDIT-WAVE2-SECURITY.md` ×2, `DEFECT-REGISTER.md`, `DEFECT-REGISTER-VERIFICATION.md` ×3 |
+| **Ç-3** | `Madde VI (İzlenebilirlik)` → `Madde VIII (İzlenebilirlik Yasası)`; Madde VI doğru başlığıyla ("Anti-Pattern'ler — black-box çıktı") ayrıca korundu; bir yere GOV-000 G5 eklendi | `AUDIT-WAVE2-SECURITY.md` ×2, `DEFECT-REGISTER.md` |
+| **U-1** | *"yazan validate etmez (G2/G3)"* → G2 (kanonlaştıramaz) + G4 (≥2 bağımsız validator); kaynak belge linklendi; düzeltme notu eklendi | `.claude/standards/context-management.md` ×2 |
+| **U-2** | `Madde VI` → `GOV-000 G5` + `Madde VIII`; black-box durumu için Madde VI korundu | `.claude/agents/ens-silent-failure-hunter.md` |
+| **Y-2 / Ç-9** | *"alias yasağı, Madde IV"* → `Madde VI ("terminoloji sürüklenmesi") + ENS-4000 §Kapsam` | `ENS-2003` ×2, `ENS-2004`, `SKR-045` ×2, `documentation-style.md` |
+| **Ç-4** | **Metin değiştirilmedi** (Accepted ADR, EC-001) — dipnot düzeltme kutusu eklendi: Madde V'in kapalı listesinde "güvenli" yok; iddia geçerli, dayanak P7 + §8 failure condition; Madde V'e ekleme yolu RFC | `ADR-0001-agent-runtime.md` |
+| **Ç-5** | §5.6'ya adlandırma notu: "Bounded Autonomy" bu ADR'de tanıtılan **mimari ad**; Madde III'te P7 bu adla geçmez, ENS-4000'de kayıtlı değil; kanonikleşme yolu Madde IX. Teoride iki atıf P7'nin anayasal metnine çevrildi | `ADR-0001` §5.6, `ENS-2004` ×2 |
+| **Ç-8** | `G<n>` ad-uzayı kuralı ROADMAP'e yazıldı: öneksiz `G1..G7` = yalnız GOV-000; `AUD-G<n>` = denetim bulgusu; `G-<n>` = gap. Düzyazıdaki çıplak kullanımlar öneklendi. **Test metot adları değiştirilmedi** (kodda zaten `AUDIT_*_G<n>` öneki var) | `ROADMAP.md` ×2, `7000/README.md` ×2 |
+
+### 8.2 Düzeltilmeyenler ve nedenleri
+
+| # | Ne | Neden |
+|---|----|-------|
+| 1 | **Ç-7** — bağımsız-validator gerekçesi için çıplak `(G2/G3)` (~25 örnek: `ROADMAP`, `ENS-4010`, `ENS-2001`, `ADR-0002`, `RFC-6001`, `SKR-040/041/042/045`, `.claude/*`, `7000/README.md:250`) | **Bu turda görevlendirilmedi.** Doğrusu `G2+G4`. İçerik doğru, yalnızca ilke numarası eksik/kaydırılmış; toplu normalizasyon turu ister. Ç-8 kuralı yürürlüğe girdiği için bu atıfların *hangi* ad-uzayına ait olduğu artık en azından belirsiz değil. |
+| 2 | `REGISTRY.md`, `.claude/standards/metadata-header.md`, `governance/SCAN-02-*`, `governance/SCAN-03-*`, `governance/roles.md` | Başka ajanlarda — dokunulmadı (talimat). `REGISTRY.md:55-57`'de "SKR-024/025 (inline, G2/G3 riski)" ifadeleri Ç-7 sınıfındadır ve o dosyanın sahibine kalmıştır. |
+| 3 | ADR-0001 başlığı ve `type: adr` künyesindeki *"Bounded Autonomy"* | Accepted ADR'nin **başlığı**; değiştirmek REGISTRY/ROADMAP/3 SKR başlığında zincirleme ad değişikliği doğururdu. Adın statüsü §5.6 notuyla açıkça işaretlendi; kanonikleşmesi ayrı bir Madde IX edimidir (T-8 açık kalır). |
+| 4 | `.claude/rules/advisor-skills.md:4,73` — "rol ayrımı (Madde XIV)" (**Ç-10**) | Bu turda görevlendirilmedi; `.claude/rules/SKR-046-tier3-discipline-rules.md` T-Q talebi olarak zaten açık. Doğrusu `Madde XII + GOV-010`. |
+| 5 | `README.md:77,85` (**Y-3**, **Ç-6**) | Bu turda görevlendirilmedi. |
+| 6 | `.cs` dosyalarındaki `// TRACE:` atıfları | Tarama `*.md` ile sınırlıydı; ayrı tur ister. |
+
+### 8.3 Semantik risk taşıyan tek nokta
+
+Ç-4'te dayanak düzeltilince cümle **savunulamaz hâle gelmedi** — sanitizasyonun birinci savunma
+hattı olduğu iddiası P7 ve ADR §8 ile ayakta kalıyor. Ancak **Madde V'te güvenlik niteliğinin
+bulunmaması gerçek bir Külliyat boşluğudur**: ENS, güvenlik gereksinimini anayasal bir tasarım
+niteliğine bağlayamıyor. Bu, atıf hijyeni değil **içerik** meselesidir ve bir RFC konusudur —
+`ens-philosopher`/`ens-ceo`'ya bırakıldı, bu tarama tarafından karara bağlanmadı.

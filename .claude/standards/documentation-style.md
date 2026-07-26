@@ -40,7 +40,8 @@ Her zaman Anayasa'ya ve hizmet edilen yukarı akış kimliklerine atıf yap.
 - Çapraz atıflar: atıf yapılan yapıta göreli link.
 - Kaynaklar: bulunabilir gerçek kaynaklar; literatürü `ens-researcher` sağlar. **Asla
   kaynak uydurma** — doğrulanamayan atıf bir kusurdur.
-- Kavram başına tek kanonik terim; sessiz takma ad yok (Anayasa Madde IV).
+- Kavram başına tek kanonik terim; sessiz takma ad yok (Anayasa Madde VI — "terminoloji
+  sürüklenmesi" anti-pattern'i; tanım kaynağı [ENS-4000](../../4000-ontology/ENS-4000-glossary.md) §Kapsam).
 - **Dil:** dokümanlar Türkçe, teknik terimler orijinal ([language-policy](language-policy.md)).
 
 ## Yasak

@@ -18,6 +18,42 @@ skeptic_review: pending
 
 # Enterprise Laws
 
+> ### ⚠️ Düzeltme — 2026-07-27 (SCAN-03 / A-02a) — `canon: true` → `canon: false`
+> Bu belge v0.1.0'a kadar künyesinde `canon: true` taşıyordu; aynı künyede `status: draft` ve
+> `skeptic_review: pending` vardı. **Bu, kazanılmamış bir canon ilanıydı** ve geri alındı.
+>
+> **Gerekçe (üç bağımsız dayanak):**
+> 1. **RFC-6001 §7.2** — `canon: true`, `constitutive: true` bir yapıtta *ratifikasyonla ve
+>    `ens-skeptic`in tutarlılık incelemesinden sağ çıkmakla* kazanılır. Bu belgede sıfır
+>    doğrulama turu vardır (`skeptic_review: pending`). Koşul hiç işletilmemiştir.
+> 2. **GOV-000 (G4/G5)** — Canonical yapıt bağımsız validator taşır ve *"sessiz karar yoktur"*.
+>    Sıfır validator'lı bir canon, her iki ilkeyi birden ihlal eder.
+> 3. **`maturity-model.md:34-37`** — Faz 1-2 boyunca azami olgunluk M3'tür ve *"Canon şu an
+>    boştur"*. Bu belgenin `canon: true`'su, Külliyat'ın kendi beyan ettiği durumu olgusal
+>    olarak yalanlıyordu.
+>
+> **Neden hızlı bir skeptic turu ile "kurtarılmadı":** iki yol vardı — (a) `canon: false`,
+> (b) yapıtı acilen doğrulama turuna sokup canon'u kazandırmak. (b) reddedildi, çünkü bir
+> statüyü *korumak için* açılan doğrulama turu, doğrulamanın amacını tersine çevirir: skeptic
+> turunun sonucu önceden istenmiş olur. Canon kazanılır, kurtarılmaz. Bu belge canon'u ileride
+> **kendi hakkıyla** — RFC-6001 §7.2 yolunu (ratifikasyon + tutarlılık incelemesi) izleyerek —
+> kazanabilir; bu ihtimal kapalı değildir, yalnızca henüz gerçekleşmemiştir.
+>
+> **Yetki:** `governance/canonical-process.md:51-54` demotion'ı açıkça yetkilendirir ve onu
+> canonization'dan ayırır (G2 kısıtı canonization içindir). G2, yazarın **kendi lehine** kapı
+> açmasını yasaklar; kendi aleyhine kapı kapatmasını değil. Bu edim ikincisidir. GOV-030'un
+> `:55` demotion listesi ENS-3000'i **kapsamıyordu** — bu düzeltme o listedeki boşluğu kapatır
+> ve kayıtsız olan borcu kayda geçirir (ROADMAP `G-24`).
+>
+> **`constitutive: true` neden korundu:** bu dosya bir *kayıt defteridir* — "bir yasa neye
+> benzer, hangi alanları taşır, nasıl `provisional`dan yükselir" kuralını koyar. Bu kural
+> kanıtla çürütülemez; tanımla yürürlüktedir (RFC-6001 §5 turnusolu). Defterdeki tekil
+> LAW-* ifadelerinin **ampirik** yükü ise bu dosyada değil, `constitutive: false` olan
+> ENS-3021/3022/3023'te taşınır ve orada yanlışlanabilir. Karma doğa bilinçlidir; ayrım
+> dosya sınırındadır.
+>
+> Tarihsel kayıt korunur (EC-001): künyedeki değer değişti, bu kutu değişimin kendisidir.
+
 **Yetki:** [ENS Anayasası, Madde III & VII](../0000-constitution/ENS-0000-constitution.md)
 **Doğası:** Örgütsel ölçekte karar davranışı hakkında **yanlışlanabilir** önermeler. Her
 yasa, Anayasa Madde X uyarınca, yanlış olacağı koşulları taşımalıdır. Yasalar `provisional`

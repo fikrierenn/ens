@@ -7,6 +7,17 @@ buradan devam edilir; hiçbir açık iş yalnızca sohbet geçmişinde yaşamaz.
 **Güncelleme kuralı:** bir iş kapanınca ✅ işaretlenir + kapatan artifact/SKR referansı eklenir;
 asla satır silinmez (audit, EC-001 ile tutarlı).
 
+> **⚠️ `G<n>` ad-uzayı kuralı (2026-07-27, SCAN-01/Ç-8).** Bu depoda `G<n>` iki farklı şeye
+> işaret edebiliyordu ve bu, atıfların otomatik denetimini imkânsız kılıyordu. Bundan böyle:
+> - **`G1`…`G7` (öneksiz)** = **yalnızca** governance ilkeleri
+>   ([GOV-000](governance/000-governance-principles.md)). Başka hiçbir şey için kullanılmaz.
+> - **`AUD-G<n>`** = denetim/test bulgu kimlikleri (kodda `AUDIT_DEFECT_G2`,
+>   `AUDIT_FINDING_G8` … biçiminde yaşarlar; düzyazıda **çıplak `G2` yazılmaz**).
+> - **`G-<n>`** (tireli, ör. `G-11`, `G-16`) = bu dosyadaki gap/borç kimlikleri — mevcut biçim korunur.
+>
+> Test metot adları **değiştirilmedi** (kodda zaten `AUDIT_*_G<n>` öneki var); düzeltilen şey
+> yalnızca düzyazıdaki kısaltmadır.
+
 ---
 
 ## 🔴 AÇIK — ENS-2003 v0.4.0 (D-5 çift-sayım düzeltmesi): İKİ doğrulama borcu (2026-07-26)
@@ -33,7 +44,7 @@ plana itiliyor hem hızlı sönüyordu; ENS-2004 §3'e göre bu **tipik** vaka, 
 - Faz-4: `CompanyMemory.cs` yeniden yazıldı (+`RetrieveTop`, `CounterSurvivorshipFloor`,
   `FindWeaklyAttributed`, `MemoryRecord.CapitalValue`; `DecayFunction` → `RateFromHalfLife`/
   `HalfLifeDays`/`DaysUntilStale`). `CompanyMemoryTests.cs` yeniden yazıldı; `AdversarialWave_MemoryTests.cs`
-  ve `AdversarialAuditTests.cs` (G2/G7/G8/G9, A1-A5, D1-D4, E1-E6) uyarlandı; Demo + README + Guard +
+  ve `AdversarialAuditTests.cs` (`AUD-G2`/`AUD-G7`/`AUD-G8`/`AUD-G9`, A1-A5, D1-D4, E1-E6) uyarlandı; Demo + README + Guard +
   DecisionCapital yorumları hizalandı.
 
 **BORÇ 1 — bağımsız skeptic turu (BLOCKING, öz-onay yok / G2/G3).** v0.4.0 `survives` DEĞİLDİR;
@@ -224,6 +235,12 @@ ADR-0001 Accepted için zorunlu, Madde XIV)** — kernel hattının tek kalan kr
 | G-16 | Governance tek-operatör (rol ayrımı G2/G3 fiilen zayıf) | P3 |
 | ~~G-11~~ | ~~Sözlük terfi/constitutive-M ayrımı~~ | ✅ 2026-07-23, ENS-4000 v0.2 |
 | ~~G-13~~ | ~~Enterprise Ontology yok~~ | ✅ kısmen — ENS-4020 (yalnızca operax); reporthub/brain domain'leri hâlâ açık |
+| G-24 | **ENS-3000 kazanılmamış canon (SCAN-03 / A-02a)** — künye `canon:true` + `status:draft` + `skeptic_review:pending` taşıyordu; sıfır doğrulama turlu canon ilanı. **✅ 2026-07-27 kısmen kapatıldı (ens-philosopher, owner edimi): `canon:true → false`, v0.1.0→v0.1.1, belgeye gerekçeli düzeltme kutusu eklendi** (EC-001: tarihsel kayıt korunur). Yetki: `canonical-process.md:51-54` demotion'ı canonization'dan ayırır; G2 yazarın kendi **lehine** kapı açmasını yasaklar, kendi **aleyhine** kapatmasını değil. GOV-030 `:55` demotion listesi ENS-3000'i kapsamıyordu — bu boşluk artık kayıtlı. **Açık kalan:** ENS-3000 hâlâ hiç doğrulanmamıştır (`skeptic_review: pending`); canon'u ancak RFC-6001 §7.2 yolundan (ratifikasyon + `ens-skeptic` tutarlılık incelemesi) kazanabilir. Bir statüyü kurtarmak için tur açmak yasak (sonuç önceden istenmiş olur) — tur, yapıt hazır olduğunda ve statüden bağımsız açılır. | P1 |
+| G-25 | **ENS-4000 (Sözlük) kazanılmamış canon (SCAN-03 / A-02b)** — `canon:true` + `status:review` + `skeptic_review` alanı **yok**. RFC-6001 `:572`'de tespit, §8.3'te açık borç olarak bırakılmıştı ama **ROADMAP'te satırı yoktu** → bu satır o kaydı görünür kılar. ENS-3000'den farkı: kayıtlıydı, kapatılmadı. Owner `ens-style-guardian`; iki seçenek RFC-6001 §8.3'te zaten yazılı (kurucu-tutarlılık incelemesiyle kazan **veya** `canon:false`'a in). Tüm terminolojinin kaynağı olduğu için P0 sayılmalı. | P0 |
+| G-26 | **Beş normatif çatışma (SCAN-03 §7.3 / Ç-01..Ç-05) → RFC-6002 önerisi.** `ens-philosopher` yorumsal görüşünü verdi (aşağıdaki not), ama **hiçbirini yürürlüğe koymadı**: çatışmanın tarafları GOV-000/GOV-010/GOV-030 ve `.claude/standards/*` — hepsi `constitutive: true` ya da başka owner'ın alanı; normatif metin değişikliği Madde XIV/XV gereği **RFC ister** (RFC-6001 emsali). Görüş: **Ç-01** çatışma değil *terim karışıklığıdır* — G4 öznesi "Canonical (M5)", `ratified` ise M2-M5'in ortak `status` etiketi; ≥1 SKR `ratified`'ı, ≥2 boyut `canon:true`'yu yönetir. **Ç-02** GOV-000 kazanır (roles.md ondan *türer*, GOV-000:22; SCAN-01 emsali aynı yönde) → G2/G4 M5-kapsamlı; ama `review→ratified` geçişini yöneten **hiçbir** kural kalmaz — bu boşluk RFC ile doldurulmalı. **Ç-03** iki liste alternatif değil *birleşimdir* (Sci ∪ Ontology ∪ Eng ∪ Biz ∪ Ethical); `maturity-model.md:31`'in "dört-skeptic"i, `validation-framework.md`'nin 5 boyutundan önce yazılmış bir sayı-sürüklenmesidir; sabit sayı yerine "tüm aktif boyutlar" yazılmalı. **Ç-04** `validation-framework.md` kazanır — `roles.md:55` boyut otoritesi olarak **onu gösterir**, kaynağını geçersizleştiremez. **Ç-05** muafiyet **yoktur**: RFC-6001 `:175` *"`constitutive` bir belgeyi doğrulamadan muaf tutmaz"* der; sessizlik ilga etmez; ayrıca RFC-6001'in kendi zinciri (3 SKR + CEO + STYLE-SIGNOFF) korpusun **en ağır** yoludur. Gerçek boşluk boyut sözlüğüdür (D-02a: `constitutional` tanımsız). | P1 |
+| G-27 | **Ethical Validation hiç uygulanmadı (Ç-04 / D-02b).** Ç-04 çözümü "tüm fazlar" yönünde olduğu için 0 ethical SKR **meşru erteleme değil, gerçek borçtur**; ENS Faz 3-4'te agent runtime ADR'leri üretirken P7 (insan kontrolü) hiç bağımsız sınanmadı. Uygulanamamasının kök nedeni yordamsal değil **kadrosaldır**: ROSTER'da ethical validator rolü yok (SCAN-03 C-01/E-04). Rol ataması `ens-philosopher` yetkisinde değil → RFC (GOV-010) gerekir; SCAN-03 Ö-03/Ö-07 ile aynı pakette çözülmeli. | P2 |
+| G-28 | **ENS-1000 G4-boyut borcu (Ç-05 sonucu).** Ç-05'i "muafiyet yok" diye çözmenin doğrudan sonucu: `canon:true` olan ENS-1000'in zinciri (SKR-001→002) **tek boyutludur** (scientific) → G4'ün boyut şartını karşılamaz. Bu satır bilerek **açık bırakıldı, edime dönüştürülmedi**: (a) kusur ENS-1000'e özgü değil korpus geneli (0/15 yapıt çok-boyutlu), (b) çözümü `constitutional`/`ontology` boyutlarının kim tarafından yürütüleceğine bağlı (G-26/G-27 ile aynı RFC), (c) tek yapıtı cezalandırmak sistemik kusuru gizler. ENS-1000'e dokunulmadı. | P2 |
+| G-29 | **Üst-politika metinleri `ens-style-guardian`'a devredildi (SCAN-02 / A-7, A-9, B-4).** `ens-philosopher` üç politika için gerekçeli **metin** üretti ama dosyalara yazmadı (eşzamanlı sahiplik): (A-7) hangi `type` değerleri `constitutive` taşır/muaftır ve **neden**; (A-9) künye kapsamının gerçekçi tanımı (36 künyesiz dosya ↔ "depodaki her .md" iddiası); (B-4) REGISTRY'nin SKR satır kuralı (sistematik mi, "yapıt içinde izlenir" mi). Metinler `ens-philosopher`'ın SCAN çözüm raporundadır; `metadata-header.md` + `REGISTRY.md`'ye işlenmesi bekliyor. | P2 |
 
 ## ✅ Faz 4 BAŞLADI — ilk çalışan kod (7000-reference-implementation)
 ADR-0001 **Accepted** (CEO-0001, K4 kapandı). Kod yazıldı ve **gerçekten derlenip test edildi**

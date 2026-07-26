@@ -222,10 +222,10 @@ kusuru buldu; ikisi de kapatıldı ve kapanış `AUDIT_FIXED_*` testleriyle bek�
   adlandırmaktır (`SelectTierFor`), bu bir public-API kırılmasıdır ve ayrı bir artımın işidir.
 
 ### Demo'nun sunum kusurları (kod doğru, gösteri zayıf — `AUDIT_FINDING_*`)
-- Curator demosu **sıfır kayıt** bayraklıyor (`G7`): veri seçimi kıl payı eşiğin üstünde kalmış.
+- Curator demosu **sıfır kayıt** bayraklıyor (`AUD-G7`): veri seçimi kıl payı eşiğin üstünde kalmış.
 - Scheduler demosu `ConformanceDeficit`'in sıralamaya katkısını **hiç göstermiyor** (`B5`):
   çarpanı sıfırlasanız sıralama değişmiyor.
-- Memory demosu **confounded** (`G8`): kazanan kayıt hem daha büyük |Learning|'e hem daha taze
+- Memory demosu **confounded** (`AUD-G8`): kazanan kayıt hem daha büyük |Learning|'e hem daha taze
   olmaya sahip; iki neden ayrıştırılmamış.
 - Proof-trace invariant'ı **kardinalite** kontrolüdür, kanıt kontrolü değil (`D5`): tamamen
   uydurma bir öncül `confidence = 1.00` üretebilir.

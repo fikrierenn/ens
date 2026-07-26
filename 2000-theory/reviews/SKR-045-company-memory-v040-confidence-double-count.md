@@ -583,7 +583,8 @@ Külliyat'ta en az üç ayrı nicelik "confidence" adıyla dolaşıyor:
 
 v0.4.0'ın çekirdek argümanı — *"`c` bir ÖLÇÜM özelliğidir"* — yalnızca **(2)** için doğrudur.
 (1) bir *öngörü* özelliğidir ve tam tersine zamanla kalibre edilmesi **gereken** bir niceliktir.
-Aynı kelime altında bunları taşımak, Madde IV'ün alias yasağının ruhuna aykırıdır ve SKR-040'ın
+Aynı kelime altında bunları taşımak, Madde VI'nın "terminoloji sürüklenmesi" yasağının ve
+ENS-4000 §Kapsam'ın alias yasağının ruhuna aykırıdır ve SKR-040'ın
 "assertion" homonimi (N3, hâlâ açık) ile aynı sınıftandır — bu ikincisi daha büyüktür çünkü
 **yürüyen bir argümanın kalbindedir**. Talep: ENS-4000'de üç terim ayrı girdilerle ayrılsın
 (`Decision Confidence` / `Attribution Confidence` / `Memory Confidence`) ve §3a `c`'yi ilk
@@ -610,7 +611,8 @@ derleyici tarafından görünür kılınır. En ucuz ve en dürüst yaptırım b
 
 ### Temiz bulunanlar (saldırı isabet etmedi)
 
-- **Alias yasağı (Madde IV) doğru uygulanmış.** `value(m)`'ye yeni ad **verilmemiş**, ENS-3023
+- **Alias yasağı (Madde VI + ENS-4000 §Kapsam) doğru uygulanmış.** `value(m)`'ye yeni ad
+  **verilmemiş**, ENS-3023
   §Model 1 `value(d)` ile özdeşleştirilmiş; kod da hesabı kopyalamak yerine
   `DecisionCapital.Value`'ya **delege ediyor** (`MemoryRecord.CapitalValue`). Bu, alias yasağının
   hem harfine hem ruhuna uyar.

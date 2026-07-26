@@ -28,7 +28,7 @@ retrofit'i — ROADMAP.md G-19):
 | ENS-0000 | ENS Anayasası | ratified (supreme, immutable-core: Madde III) |
 | ENS-1000 | ENS Manifestosu | ratified |
 | ENS-4000 | Sözlük (Glossary) | review (canon-borcu açık — RFC-6001 §8.3, ayrı edim) |
-| ENS-3000 | Enterprise Laws (kayıt) | draft |
+| ENS-3000 | Enterprise Laws (kayıt) | draft (2026-07-27: kazanılmamış `canon:true` geri alındı — sıfır doğrulama turu; SCAN-03 A-02a, ROADMAP G-24) |
 | ENS-4030 | Semantic Axioms | ratified (M2 — olumsal/uygulama-izleme etiketi, canon-gate etmez) |
 | ENS-4031 | Inference Rules | skeptic-cleared (M0 — olumsal/uygulama-izleme etiketi, canon-gate etmez) |
 | GOV-000..030 | Governance Core | review (M1 — olumsal/uygulama-izleme etiketi, canon-gate etmez) |

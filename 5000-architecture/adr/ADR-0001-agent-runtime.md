@@ -335,6 +335,14 @@ gözlemdir; ENS'te proof-trace *action'ın var-olma koşuludur*.
 
 ### 5.6 Bounded Autonomy (P7) — kernel'in erişim denetimi
 
+> **Adlandırma notu (2026-07-27, SCAN-01/Ç-5):** *"Bounded Autonomy"* **bu ADR'de tanıtılan
+> mimari bir addır**. Anayasa Madde III'te P7 bu adla **geçmez** — P7'nin anayasal metni
+> *"Sorumluluk insandadır. ENS önerir; emretmez."*tir; ad `ENS-4000` Sözlük'te de kayıtlı
+> değildir. Bu ad, P7'nin *yerine* değil, P7'nin bu ADR'deki mekanizma-adı olarak okunmalıdır.
+> Kanonik terim olması isteniyorsa yolu Madde IX'dur: `ens-philosopher` önerir → ENS-4000'e
+> girer → `ens-skeptic` sınar. Aksi hâlde alt akış belgeleri bu adı P7'nin anayasal adıymış
+> gibi kullanmamalıdır.
+
 P7 ("sorumluluk insandadır; ENS önerir, emretmez") *tam otonomiyi* de *sıfır otonomiyi* de
 reddeder. Çözüm **bounded autonomy**:
 
@@ -412,7 +420,18 @@ icadı değil — gösterir. ENS'in yaptığı bu deseni *bilişsel bir kernel'e
 - **Sandbox** — her Capability action'ı izole bir workspace'te koşar; guarded (otomatik yıkıcı
   edim yok, patch yalnızca onayla uygulanır — CrewOps Guarded Mode). Prompt-injection'a karşı
   skill-içeriği sanitizasyonu birinci savunma hattıdır (Anayasa Madde V "güvenli" + failure
-  condition §8).
+  condition §8).[^atif-md5]
+
+[^atif-md5]: **⚠️ Atıf düzeltmesi (2026-07-27, SCAN-01/Ç-4) — metin tarihsel kayıt olarak
+    korunmuştur (Accepted ADR, EC-001).** Yukarıdaki *"Anayasa Madde V \"güvenli\""* atfı
+    **yanlıştır**: Madde V'in nitelik listesi kapalıdır ve *Modular · Observable · Testable ·
+    Replaceable · Versioned · Explainable · Deterministic (mümkün olduğunda) · Event-driven ·
+    DDD uyumlu · CQRS uyumlu · Cloud-native* içerir — **"güvenli"/"secure" bu listede yoktur**.
+    Cümlenin **iddiası geçerlidir** (sanitizasyon birinci savunma hattıdır), yalnızca dayanağı
+    yanlış gösterilmiştir. Doğru dayanaklar: **P7** (sorumluluk insandadır; ENS önerir, emretmez
+    — Madde III), **bu ADR'nin §8 failure condition'ı** ve §5.6 Bounded Autonomy erişim denetimi.
+    Madde V'e bir güvenlik niteliği eklenmesi isteniyorsa yolu **Madde XV/XIV uyarınca RFC**'dir;
+    bir ADR bunu tek taraflı yapamaz (Madde IX/XII).
 
 ```mermaid
 flowchart TB
