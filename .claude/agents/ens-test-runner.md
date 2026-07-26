@@ -20,10 +20,23 @@ color: blue
 
 ## Görev
 
-1. `dotnet test` çalıştır:
+1. `dotnet test` çalıştır — **proje yolunu açıkça ver**:
    ```bash
-   cd D:/Dev/ENS/7000-reference-implementation && dotnet test
+   cd D:/Dev/ENS/7000-reference-implementation
+   dotnet test Ens.Kernel.Tests/Ens.Kernel.Tests.csproj
    ```
+   > **Dikkat:** çıplak `dotnet test` bu dizinde **çalışmaz** —
+   > `MSBUILD : error MSB1003` verir, çünkü repoda `.sln` yoktur, üç ayrı `.csproj` vardır
+   > (`Ens.Kernel`, `Ens.Kernel.Demo`, `Ens.Kernel.Tests`). Bu satır, ajanın ilk
+   > çalıştırılmasında bizzat bu hatayla karşılaşıldığı için buraya yazıldı.
+
+   Ontology linter ayrı bir araçtır, ayrı çalışır:
+   ```bash
+   cd D:/Dev/ENS/tools/ens-ontology-linter
+   dotnet run --project src/Ens.OntologyLinter/Ens.OntologyLinter.csproj -- \
+     ../../4000-ontology/ENS-4010-foundational-ontology.md
+   ```
+   Beklenen: `RESULT: 0 violations`.
 2. Geçen / başarısız / atlanan sayısını **sayıyla** raporla.
 3. Başarısız testleri `dosya:satır` + metot adıyla listele.
 4. **AUDIT envanterini makineyle üret** (aşağıdaki kanonik komut) ve
