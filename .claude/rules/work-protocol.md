@@ -59,6 +59,40 @@ Emin değilse **DOĞRULANMADI** yaz — uydurma.
 > yok, `dotnet test` koşulamıyor) bunu **dürüstçe bildirir ve sonuç UYDURMAZ**. SKR-041
 > emsali. Çalıştırılamayan test, geçmiş test değildir.
 
+## 3.5 DEVRALDIĞINI DOĞRULA (bir başkasının bulgusuna göre iş yapmadan ÖNCE)
+
+Bir ajanın, raporun ya da incelemenin bulgusuna **dayanarak** iş yapacaksan — düzeltme,
+RFC, ADR, kod değişikliği — **önce o bulguyu kendin doğrula.**
+
+> **Kural:** Doğrulanmamış bir bulgunun üstüne yapı kurma. Bir raporu *okumak* onu
+> *doğrulamak* değildir.
+
+Üç zorunlu kontrol:
+
+1. **Dosya gerçekten o yolda mı?** Atıf yapılan yol var mı?
+2. **Satır gerçekten onu mu söylüyor?** `sed -n 'Np'` ile bak. **Satır numaraları bayatlar** —
+   başka bir ajan künyeye alan eklerse aşağıdaki her satır kayar. Numaraya değil **içeriğe**
+   güven: `grep` ile metni ara, numarayla teyit et.
+3. **Bulgu, iddia ettiği şeyi mi kanıtlıyor?** Alıntılanan metin, çıkarılan sonucu gerçekten
+   taşıyor mu — yoksa iki farklı kavram birbirine mi karışmış?
+
+**Bu adım bir kez atlanmadı diye eklenmedi; atlanmadığı için eklendi.** 2026-07-27'de bir
+RFC yazmadan önce yapılan doğrulama, tek turda üç ayrı sorun buldu:
+
+| # | Ne bulundu |
+|---|---|
+| 1 | Rapor `governance/maturity-model.md` ve `governance/validation-framework.md`'ye atıf yapıyordu — **o yolda böyle dosyalar yok**; gerçek yer `.claude/standards/`. |
+| 2 | Alıntılanan satır numaraları **kaymıştı** — paralel çalışan başka bir ajan künyelere `failure_conditions` eklemişti; `canonical-process.md:44` artık bambaşka bir cümleydi. |
+| 3 | **En önemlisi:** "Ç-01 normatif çatışması" doğrulandığında **çatışma çıkmadı.** Rapor `ratified` ile `Canonical`'ı aynı saymıştı. `maturity-model.md` *"`canon: true` yalnızca M5'tir"* diyor, G4 ise *"her **Canonical** yapıt"* diyor — yani G4 `ratified`'ı değil `canon: true`'yu bağlıyor. İki belge çelişmiyordu; rapor iki kavramı birleştirmişti. |
+
+3 numaralı bulgu, üzerine yazılacak RFC'nin **kapsamını değiştirdi**: sorun "9 ratified
+yapıtın 6'sı" değil, `canon: true` taşıyan **4** yapıttan üçünün durumu. Doğrulanmamış bir
+bulgu üzerine yazılan RFC, yanlış problemi çözerdi.
+
+> **Not:** bu, raporları yazan ajanların kusuru değildir — biri satır kaymasına, biri kavram
+> inceliğine takıldı, ikisi de bulgularını `dosya:satır` ile dürüstçe verdi. Doğrulanabilir
+> olmaları sayesinde doğrulanabildiler. Kural, **bulguya değil, doğrulanmamışlığa** karşıdır.
+
 ## 4. KANITLA
 
 "Derlendi" / "yazıldı" YETMEZ — **gerçekten öyle mi** kanıtla:
