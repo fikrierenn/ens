@@ -19,6 +19,14 @@ geldiğinde gerçek dosya olur; erken üretim boş dosya kalabalığıdır.
 | `ens-backend-architect` | 4-5 | .NET, CQRS, DDD, Event Sourcing, MediatR, Clean Architecture | 7000/ |
 | `ens-test-engineer` | 4-5 | Unit/contract/integration/BDD, test stratejisi | 7000/*.Tests |
 | `ens-memory-engine` | 4-5 (erken materyalize, 2026-07-24 — K5 aktif iş) | Company Memory/Context Score Faz-4 kodu, confidence/decay, K5 dış-repo değer-değerlendirmesi | 7000/Domain, K5 araştırma |
+| `ens-test-runner` | 4+ (2026-07-26) | `dotnet test`'i **gerçekten** çalıştırır; AUDIT envanterini makineyle üretip DEFECT-REGISTER ile karşılaştırır. `Edit`/`Write` **yok** — ölçen düzeltemez | 7000/*.Tests |
+| `ens-silent-failure-hunter` | 4+ (2026-07-26) | Sessiz başarısızlık avı: fail-open sayısal kapı, eşik=0 kapatma anahtarı, yutulan event, izsiz geçiş, çıktı kapısı yok, kalibre edilmemiş öz-beyan. `Edit`/`Write` **yok** | 7000/Ens.Kernel |
+
+> **2026-07-26 notu — neden bu iki ajan var:** `ens-test-runner`, denetim ajanlarının
+> kronik *"`dotnet test` çalıştıramadım"* boşluğunu kapatır (SKR-041, SKR-045,
+> AUDIT-WAVE2-SECURITY, DEFECT-REGISTER-VERIFICATION — dördü de bunu yazmak zorunda kaldı).
+> `ens-silent-failure-hunter`, 75 kusurun büyük kısmının tek bir aileden geldiği
+> bulgusundan doğdu: sistem yanlış davranıyor ve kimseye söylemiyor.
 
 ## Ertelenmiş (fazı gelince üretilecek)
 | Agent | Faz | Görev |

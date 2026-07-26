@@ -26,6 +26,8 @@ kaynakları verir. Kararı sen verirsin — ama **gerekçeyle**.
 | Test yazımı, invariant testi, proof-trace testi | **`ens-test-engineer`** | Her test hangi iddiayı doğruluyor izler |
 | Künye, numaralandırma, terminoloji tutarlılığı, dosya adlandırma | **`ens-style-guardian`** | Anlam değiştirmez |
 | Geniş arama: "bu kavram repoda nerede geçiyor" | **`Explore`** | Salt-okuma, sonuç döner |
+| Yüksek InfoNeed karar: mimari yön, hangi seçenek, borç kapatılsın mı taşınsın mı | **`karar-konseyi`** (skill) | Bağımsız panel + karşılıklı eleştiri; `ens-skeptic` her konseyde zorunlu |
+| Yeni skill/agent/hook/rule üretimi | **`yetenek-uret`** (skill) | Footprint-ladder'ı zorunlu kılar |
 | Uygulama stratejisi / adım planı tasarımı | **`Plan`** | Tier 3 planın §6 fazları için |
 
 > **`ens-ceo` ROSTER'da planlıdır ama ajan dosyası YOKTUR.** CEO-\* hizalama incelemeleri
@@ -38,6 +40,11 @@ kaynakları verir. Kararı sen verirsin — ama **gerekçeyle**.
 |---|---|
 | Teori/felsefe yapıtına saldırı, SKR kaydı | **`ens-skeptic`** |
 | Koda adversarial saldırı | `.claude/skills/adversarial-test/` |
+| Sessiz başarısızlık avı (fail-open, eşik=0, yutulan event, izsiz geçiş, çıktı kapısı yok) | **`ens-silent-failure-hunter`** |
+| Testlerin **gerçekten** çalıştırılması + AUDIT envanteri | **`ens-test-runner`** |
+
+> `ens-test-runner` ve `ens-silent-failure-hunter`'ın **`Edit`/`Write` aracı yoktur** —
+> bilerek. Ölçen, ölçtüğünü düzeltemez (G2/G3).
 
 Bu ikisi **danışman değildir** — `work-protocol.md` adım 3'e aittir. Danışman ile denetleyen
 **aynı context olamaz** (Madde G2/G3: yazan doğrulayamaz).

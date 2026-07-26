@@ -6,7 +6,28 @@
 | **Derleyen** | oturum sahibi (owner), test adlarından mekanik türetme |
 | **Kapsam** | `Ens.Kernel.Tests/` içindeki **tüm** `AUDIT_DEFECT_*` ve `AUDIT_FINDING_*` testleri |
 | **Yetki** | Anayasa Madde X (Yanlışlanabilirlik Ödevi) — bulunan kusur gizlenemez |
-| **Durum** | 68 açık kusur (`DEFECT`), 8 açık gözlem (`FINDING`) |
+| **Durum** | **75** açık kusur (`DEFECT`), **9** açık gözlem (`FINDING`) |
+| **Doğrulama** | `DEFECT-REGISTER-VERIFICATION.md` — bağımsız denetim, yargı: **kısmen güvenilir** |
+
+> ### ⚠️ v1'in sayım hatası — düzeltildi (2026-07-26)
+> İlk sürüm **68 DEFECT / 8 FINDING** dedi. **Yanlıştı.** Gerçek sayı **75 / 9**.
+> Üç ayrı kesme hatası üst üste bindi ve hepsi aynı dosyayı vurdu
+> (`AdversarialWave_SecurityTests.cs`):
+> 1. Dosya **UTF-16**; `rg`/`grep` onu *binary* sayıp sıfır sonuç döndürüyor.
+> 2. `grep -a` ile aşıldı ama çıktı `head -40` ile kesildi — dosyada **48** metot var,
+>    son 8'i (`W7h` + tüm `W8` grubu) düştü.
+> 3. Sayım `public void` ile yapıldı; `W5d`/`W5e`/`W5f` **`public async Task`**.
+>
+> Eksik kalanlar: `W5d`, `W5e`, `W5f`, `W7h`, `W8a`, `W8b`, `W8d` (DEFECT) + `W8c` (FINDING).
+>
+> **Ders (T1):** envanter elle değil **komutla** üretilir. Kanonik komut:
+> ```bash
+> for f in Ens.Kernel.Tests/*.cs; do
+>   grep -aoE "public (void|async Task) AUDIT_[A-Za-z0-9_]+" "$f" | tr -d '\000'
+> done | sed -E 's/public (void|async Task) //' | sort -u
+> ```
+> 2026-07-26 çıktısı: **DEFECT 75 · FINDING 9 · FIXED 51 · HOLDS 66** (toplam 201 benzersiz
+> metot). Bu sayı iki bağımsız yolla teyit edildi (bu komut + bağımsız denetim ajanı).
 
 ---
 
