@@ -1,5 +1,5 @@
 ---
-id: SKR-045
+id: SKR-046
 type: skeptic-review
 origin: .claude/rules/ (Tier-3 discipline rule layer)
 depends_on:

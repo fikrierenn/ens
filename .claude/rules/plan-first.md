@@ -2,7 +2,7 @@
 
 Her ENS oturumuna uygulanır. `paths:` filtresi yok — compact ve clear sonrası da geçerli.
 
-> ### ⚠️ İDDİA GERİ ÇEKİLDİ (bağımsız SKR, 2026-07-26 — `REVIEW-tier3-discipline.md`)
+> ### ⚠️ İDDİA GERİ ÇEKİLDİ (bağımsız SKR, 2026-07-26 — `SKR-046-tier3-discipline-rules.md`)
 > Bu kural ilk sürümde **"kopyalanmadı, türetildi"** diyordu. Bağımsız inceleme bu iddiayı
 > **`refuted`** buldu ve haklıydı. operax ile yapısal izomorfizm: aynı **3** Tier, aynı **6**
 > sinyal, aynı **14** gün, aynı `BYPASS-<tarih>` ve `[plan-skipped:]` token'ları, aynı

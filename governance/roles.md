@@ -35,8 +35,21 @@ evidence: {sci: E1, eng: E0, ops: E0, econ: E0}
 - **Author ≠ Owner ≠ Custodian.** Author bir teoriyi yazar, yıllar sonra ayrılır; Owner içeriği
   güncel tutar; **Custodian** teorinin bütünlüğünü (terminoloji, traceability, Meta Model
   uyumu) *kalıcı olarak* korur. ISO/uzun-ömürlü standart ayrımı.
-- **Validator ≠ Author** (G2): kendi işini doğrulayan olamaz.
-- **Validator ≠ Governance** (G3): doğrulayan onaylamaz.
+- **Author ≠ Canonizer** (G2): bir yapıtı **yazan**, onu **Canonical yapamaz**.
+- **Validator ≠ Governance** (G3): doğrulayan onaylamaz; onaylayan doğrulamaz.
+- **≥2 bağımsız validator** (G4): her Canonical yapıt farklı boyutlardan en az iki
+  bağımsız doğrulama taşır (`canonical-process.md`).
+
+> ### ⚠️ Düzeltme — 2026-07-27 (SCAN-01)
+> Bu satır önceki hâlinde **"Validator ≠ Author (G2): kendi işini doğrulayan olamaz"**
+> diyordu. **Yanlıştı.** GOV-000:33'ün gerçek metni *"No author **canonizes** their own
+> work"* — yani **kanonlaştırma** yasağıdır, **doğrulama** yasağı değil. Bir yazarın kendi
+> işini doğrulaması G2 tarafından yasaklanmaz; yasaklanan, onu tek başına Canonical
+> ilan etmesidir. Bağımsız doğrulama zorunluluğunun gerçek kaynağı **G4**'tür.
+>
+> Bu tek satır, korpus genelinde ≈10 dosyaya yayılan *"G2: yazan doğrulayamaz"* ailesinin
+> **kök nedeniydi** (SCAN-01, `governance/SCAN-01-authority-citations.md`). Hata burada
+> kesildi; türevlerinin taranması sürüyor.
 
 ## Validator boyutları (validation-framework.md)
 Scientific (ens-skeptic) · Ontology · Engineering · Business · Ethical. G4: bir Canonical yapıt
