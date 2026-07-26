@@ -17,8 +17,25 @@ amended_by:    RFC-6001
 
 **Yetki:** [ENS Anayasası, Madde XI & VIII](../../0000-constitution/ENS-0000-constitution.md)
 
-Depodaki **her** `.md` ve her kaynak modül (README'si üzerinden) bir YAML front-matter
-başlığıyla başlar. Bu başlık bağımlılık grafiğini makine-okunur biçimde açığa çıkarır.
+## Kapsam
+Bir `.md` dosyasının künye taşıması gerekip gerekmediğini ayırt eden soru: **"Bu dosyaya
+`depends_on` ile atıf verilir mi ve statüsü (`draft → review → ratified`) değişir mi?"** Hayır
+ise künye ona yalan bir durum-makinesi giydirir — `ROADMAP.md` hiç `ratified` olmaz, `journal/*`
+hiç revize edilmez, bir agent tanımı norm değil **yapılandırmadır**. Bu soruya evet yanıtı veren
+her dosya bir YAML front-matter başlığıyla başlar; bu başlık bağımlılık grafiğini makine-okunur
+biçimde açığa çıkarır.
+
+| | Kapsam | Örnekler |
+|---|---|---|
+| **Zorunlu** | `ENS-*` (Külliyat); `GOV-*`/`STD-*`; `ADR-*`/`RFC-*`; `SKR-*`/`CEO-*`/`STYLE-SIGNOFF-*`; `SCAN-*`/`AUDIT-*`/`DEFECT-REGISTER-*`/`PLAN-*`; kaynak modül `README.md`'leri | `2000-theory/ENS-2001-*.md`, `governance/roles.md`, `5000-architecture/adr/ADR-0001-*.md`, `2000-theory/reviews/SKR-004-*.md`, `governance/SCAN-02-*.md`, `plans/01-*.md`, `7000-reference-implementation/README.md` |
+| **Muaf** | `.claude/agents/*`, `.claude/skills/*/SKILL.md`, `.claude/rules/*`, `ROSTER.md`, `REGISTRY.md`, `KULLIYAT.md`, `ROADMAP.md`, `journal/*`, kök `README.md` | — |
+
+**Muaf ≠ denetimsiz.** Muaf dizinler kendi kurallarına tabidir (`journal/` tarihe göre
+sıralanır, `.claude/*` Anayasa Madde XII'ye tabidir). Muaf bir dosyaya künye **eklenirse**
+şemaya **tam** uymalı ve `id` gerçekten `REGISTRY.md`'de tahsis edilmiş olmalı — yarım/gölge bir
+künye eklemek numaralandırma kaosuna yol açar. (`SKR-045` çift-tahsisi [SCAN-02 A-6] tam bu
+karışıklığın ürünüydü: Külliyat kapsamı dışındaki bir kural dosyasına kıt bir `SKR-*` kimliği,
+REGISTRY'ye danışılmadan eklenmişti.)
 
 ## Şema
 ```yaml
@@ -69,6 +86,33 @@ immutable_core_sections: [Madde III]   # opsiyonel — yalnızca hard-core taş�
   tektir: küçük harf `accepted` [ADR-0001/0002 ve RFC-6001 arasında tekleştirildi].)
 - `constitutive`: `true | false` — yapıt normatif/kurucu mu (kural/tanım/tip-şeması, tanımla
   yürürlükte) yoksa yanlışlanabilir ampirik bir iddia mı taşıyor (RFC-6001 §4)
+
+### `constitutive` alanının kapsamı
+**Politika ilkesi:** `constitutive`'in tek işlevi **canon-kazanma yolunu seçmektir** (RFC-6001
+§4/§7.2) — yapıt canon'unu ratifikasyonla mı (kurucu) yoksa kanıt zinciriyle mi (ampirik)
+kazanacak sorusuna yanıt verir. Bu sorunun anlamlı olmadığı yerde alan da anlamlı değildir.
+
+1. **Zorunlu — canon adayı yapıtlar.** `type` değeri
+   `constitution | philosophy | theory | law | ontology | book` olan her yapıt (bugün fiilen
+   `ENS-*` aralığı) `constitutive` taşımalı; bunlar `canon:true` olma potansiyeli taşır ve hangi
+   yoldan kazanacakları belirsiz kalmamalı.
+2. **Zorunlu — `maturity` alanı taşıyan her belge.** Bugün bu `GOV-*` ailesidir. Gerekçe:
+   `maturity` tek başına, sanki canon'u kendisi gate ediyormuş gibi okunabilir; `constitutive:
+   true` bu yanlış okumayı kapatır ve `maturity`'nin yalnızca olumsal/uygulama-izleme ekseni
+   olduğunu, canon yolunu belirlemediğini açıklığa kavuşturur (RFC-6001 §7.3).
+3. **Muaf — canon adayı olmayan ve `maturity` taşımayan yapıtlar.** `type` değeri `standard |
+   adr | rfc | skeptic-review | ceo-review | style-signoff | audit-report | scan-report | plan |
+   agent | command | module` olan yapıtlar bu alanı taşımak zorunda değildir.
+4. **`adr`/`rfc` neden muaf.** Bunlar kalıcı norm taşıyıcısı değildir, **karar/öneri edimidir**:
+   kabul edilince normu kendi gövdesine değil **başka bir belgeye** yazarlar (RFC-6001 → ENS-0000
+   Madde IV + STD-METADATA-HEADER; bir ADR → kod/mimari), kendileri ise tarihsel karar kaydına
+   döner. RFC-6001'in kendi künyesinde bu alanın bulunmaması bu yüzden bir tutarsızlık değildi —
+   ama gerekçesi yazılı olmadığı için öyle *görünüyordu*; SCAN-02 A-7'nin asıl bulgusu buydu.
+5. **Muafiyet ≠ `false`.** Alanın yokluğu "bu yapıt ampiriktir" anlamına gelmez — "sınıflama
+   sorusu bu belge için işlevsizdir" anlamına gelir. Muaf bir belgeye alan yine de eklenmek
+   istenirse değeri **turnusol testiyle** (Test A/B/C, RFC-6001 §4.2) belirlenir; komşu bir
+   belgeden varsayılan kopyalanmaz.
+
 - `canon`: `true | false` (bkz. [KULLIYAT.md](../../KULLIYAT.md)) — kazanılır, ilan edilmez.
   `constitutive: false` (ampirik) yapıtta **yalnızca `maturity: M5` ise true**; `constitutive: true`
   (kurucu) yapıtta **ratifiye edilip skeptic tutarlılık incelemesinden sağ çıkınca** true —
@@ -107,7 +151,8 @@ consumed_by: [ENS-4031, Validation Generator]   # bunu tüketen alt-katmanlar
    (Anayasa Madde X — kurucu için tutarlılık/örneklenebilirlik kipinde). Sınıflamayı belirleyen
    turnusol testidir (Test A/B/C, RFC-6001 §4.2), `maturity` alanının varlığı/yokluğu değil —
    `maturity` **taşımayan** bir yapıt kesin `constitutive: true`'dur (contrapositive), ama
-   `maturity` **taşıyan** bir yapıt otomatik `constitutive: false` sayılmaz.
+   `maturity` **taşıyan** bir yapıt otomatik `constitutive: false` sayılmaz. Bu kuralın kapsamı
+   §`constitutive` alanının kapsamı ile sınırlıdır; muaf katmanlarda uygulanmaz.
 
 ## Doğrulama
 `/validate-theory` bu başlıkları gezer; öksüz düğüm, kırık atıf, eksik `failure_conditions`

@@ -22,18 +22,39 @@ ENS bir **standart** gibi yönetilir. Numaralar kalıcı adreslerdir: bir gün b
 | `ENS-9xxx` | 9000–9999 | Kitap | `9000-book/` |
 | `MOD-*` | — | Kod modülleri | `7000-*`, `8000-*` |
 | `LAW-*` | — | Yasa kimlikleri | `3000-laws/` |
-| `SKR-*` | — | Skeptic incelemeleri | ilgili yapıt içinde |
+| `SKR-*` | 001–046 tahsisli — **sıradaki boş numara: 047** | Skeptic/Validation incelemeleri | `<yapıt-dizini>/reviews/` |
 | `STD-*` | — | Standartlar (Madde XII "Standards" katmanı; Külliyat'ın numaralı aralığı dışında, dosya-adı tabanlı kimlik) | `.claude/standards/` |
 | `CEO-NNNN` | — | Madde XIV uzun-vade hiza incelemeleri (`ens-ceo`) | `5000-architecture/reviews/` |
 | `STYLE-SIGNOFF-*` | — | `ens-style-guardian` şema/tutarlılık imzaları (çift-owner kabul kapısı, ör. RFC-6001 §7.5) | ilgili yapıtın `reviews/` dizini |
 | `PLAN-*` | — | Çalışma planları — Külliyat numaralandırmasına tabi değil, dosya-adı tabanlı kimlik | `plans/` |
 | `SCAN-*` | — | Tutarlılık/uyum tarama raporları (ör. SCAN-01/02/03) — Külliyat numaralandırmasına tabi değil, dosya-adı tabanlı kimlik | `governance/` |
 
+## SKR kayıt kuralı (2026-07-27, SCAN-02 B-4)
+**Karar (`ens-philosopher`):** REGISTRY'nin SKR üzerindeki tek işlevi **numara tahsisidir** —
+tekil SKR satırı artık açılmaz. SKR'nin kendi durumu (verdict, bağımlılık, hedef yapıt) ilgili
+yapıtın kendi `skeptic_review:` alanında ve SKR dosyasının kendi künyesinde yaşar
+("ilgili yapıt içinde", Aralık şeması). REGISTRY yalnızca yukarıdaki tek satırla **sıradaki boş
+numarayı** izler.
+
+**Gerekçe:** Tekil satır pratiği (aşağıdaki "legacy" SKR-024..037 satırları) 45 SKR'nin 8'inde
+(SKR-001..023, SKR-031, SKR-032, SKR-039, SKR-040..046) hiç uygulanmadı — ve **tek gerçek
+numara hatası (SKR-045 çift-tahsisi, SCAN-02 A-6) tam da tabloya hiç girmemiş aralıkta oluştu.**
+Kayıt biçimi, atlanması ucuz olduğu için koruma sağlamadı. Tek-satır+sayaç biçimi atlanması zor
+bir mekanizmadır ve `reviews/SKR-*.md` dosya adlarının gerçek maksimumuyla **mekanik
+karşılaştırılabilir** (ens-ontology-linter V2 adayı bir denetim: "REGISTRY sayacı ↔ disk
+maksimumu eşleşiyor mu").
+
+**EC-001 — geriye dönük uygulama yok:** Aşağıdaki `SKR-024`..`SKR-037` satırları **silinmez**,
+"legacy, 2026-07-27 öncesi" olarak işaretlenir. Yeni SKR'ler için satır **eklenmez** (SKR-038
+ve sonrası zaten tekil satır almamıştı, bu tutarlı devam eder).
+
 ## Ayrılmış numaralar (allocated)
 | id | Başlık | Statü |
 |----|--------|-------|
 | ENS-0000 | ENS Anayasası | ratified (v0.3.0, 2026-07-24 — Madde IV RFC-6001 ile amend edildi) |
 | RFC-6001 | Constitutive Artifact Ayrımı ve Madde IV Canon Kuralının Düzeltilmesi | **Accepted** (v0.3.0, 2026-07-24 — 3 bağımsız skeptic turu [SKR-034 wounded→SKR-035 wounded→SKR-036 survives] + çift-owner kabul kapısı [`ens-ceo` CEO-0002 hiza-onayı + `ens-style-guardian` STYLE-SIGNOFF-RFC-6001 şema-imzası, ikisi de itirazsız]. **ENS-0000 Madde IV ve STD-METADATA-HEADER fiilen düzenlendi** (§8.4 kapsamı). Korpus retrofit'i (diğer belgelerin `constitutive` alanı, ENS-4000 canon-incelemesi) ayrı sonraki adım — ROADMAP.md. G-03/05 kapandı.) |
+| RFC-6002 | Doğrulama Kapılarının Kapsamı: `ratified` ≠ `Canonical` | **draft** (v0.1.0, 2026-07-27 — SCAN-03 Ç-01/Ç-02/Ç-03'ü çözer. Çekirdek: G4'ün öznesi `canon: true`'dur, `status: ratified` değil; ≥1 SKR → `ratified` (M2), ≥2 bağımsız boyut → `canon` (M5). İki bağımsız türetme aynı sonuca vardı. Açığa çıkardığı gerçek boşluk: `review→ratified` geçişini yöneten hiçbir kural yok — bugün SKR verdict'i fiilen onay yerine geçiyor (G3 ihlali). Hafif ratifikasyon kapısı R1-R3 önerir. **skeptic turu bekliyor.**) |
+| RFC-6003 | Boyut Sözlüğü ve Validator Kadrosu | **draft** (v0.1.0, 2026-07-27 — SCAN-03 Ç-04/Ç-05 + Ö-07. Ölçüm: 45/45 SKR tek rolden (`ens-skeptic`), 0 ethical doğrulama, çok-boyutlu zinciri olan `canon` yapıt sayısı 0. Ampirik kanıt: D-5 çift-sayımı iki *scientific* turdan geçti, bir *engineering* denetimi yakaladı. Ç-04 → `validation-framework.md` kazanır (roles.md onu kaynak gösterir). Ç-05 → kurucu yol G4'ten **muaf değil** (RFC-6001 `:175`). Açık: `constitutional` 6. boyut mu, Ontology Validator kim. **skeptic turu bekliyor.**) |
 | ENS-1000 | ENS Manifestosu | ratified (SKR-002 survives) |
 | ENS-2001 | Decision Theory (ENS) | ratified (v0.3 — SKR-004 çekirdeği + **SKR-033 survives** [OL1/OE1 additive alanları `ExpectedValue`/`intent`]; bağımsız skeptic turu tamam, 4 bloke-etmeyen keskinleştirme talebi açık) |
 | ENS-2002 | Context Theory (ENS) | ratified (SKR-006 survives) |
@@ -56,6 +77,7 @@ ENS bir **standart** gibi yönetilir. Numaralar kalıcı adreslerdir: bir gün b
 | ADR-0001 | ENS Agent Runtime & Bounded Autonomy | **Accepted** (v0.3.1, 2026-07-24 — 3. bağımsız tur SKR-029 **survives**: Bulgu A/B gerçekten kapandı; CEO-0001 ile ens-ceo hiza incelemesi ONAYLANDI — Proposed → Accepted, Madde XIV) |
 | ADR-0002 | Operations Capability Pack | **Accepted** (v0.3.1, 2026-07-24 — SKR-025+027 wounded → v0.3 düzeltme → SKR-037 survives [bağımsız operax dosya-denetimi] → K4 ens-ceo hiza CEO-0003 Accepted. operax'ın aktif geliştirmesi durdu [kullanıcı kararı], K1 zemini bugünkü koda dayandığından etkilenmiyor.) |
 | ENS-4020 | Enterprise Ontology (Operations/operax) | review (**M2**, v0.3 — SKR-028+SKR-030 iki bağımsız validator → G4; C.a/C.b düzeltmeleri teyit edildi; ratified ayrı governance edimi) |
+| *(aşağıdaki tekil `SKR-*` satırları — SKR-024'ten SKR-038'e — **legacy, 2026-07-27 öncesi**; §SKR kayıt kuralı (EC-001) gereği silinmez ama yeni SKR'ler için artık satır açılmaz)* | | |
 | SKR-024 | ADR-0001 Validation (inline, G2/G3 riski) | review (wounded — SKR-026 ile bağımsız yeniden yargılandı) |
 | SKR-025 | ADR-0002 Validation (inline, G2/G3 riski) | review (wounded — SKR-027 ile bağımsız yeniden yargılandı) |
 | SKR-026 | ADR-0001 Bağımsız Validation (engineering) | draft (wounded — G2/G3/G4 karşılar) |
