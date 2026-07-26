@@ -10,8 +10,8 @@ realizes:      [ENS-2001, ENS-2004]
 principles:    [P1, P5, P6, P7]
 status:        accepted
 owner:         ens-architect
-version:       0.3.0
-last_reviewed: 2026-07-23
+version:       0.3.1
+last_reviewed: 2026-07-24
 maturity:      M0
 skeptic_review: [SKR-024, SKR-026, SKR-029]
 ceo_review:    CEO-0001
@@ -44,6 +44,15 @@ consumed_by:   []
 > değil, Framing/Reasoning'in kendisi olarak yeniden çerçevelendi (§5.4); ikinci savunma hattı
 > Bounded-Autonomy Gate. Sahip `ens-ai-architect` → `ens-architect`'e geçti (tasarım kararı,
 > mimari tutarlılık gözetimi).
+>
+> **v0.3.1 — dürüstlük/kanıt eklemesi (karar değişmez, `status: accepted` kalır):** §6'ya
+> **ikinci somut dahili kanıt** (Mosaik/reporthub `IMosaikModule` + `ModuleLoader`, 6 üretim
+> modülü, Mosaik ADR-018 opt-in-capability deseni) CrewOps'un yanına eklendi — kernel+plugin
+> deseninin iki bağımsız gerçek sistemde yakınsadığını gösterir. §6.1 **Prior art** alt-bölümü
+> (5-başlık formatı, §3 ile aynı) eklendi: OSGi, MCP, Terraform, VS Code, K8s, WordPress gerçek
+> kaynaklarıyla dürüst konumlanma. Net delta: ENS plugin mimarisini *icat etmez*; katkısı yalnızca
+> (a) eklenti-birimini ENS-4010 ontolojisine tiplemek ve (b) deklaratif izinleri Bounded-Autonomy
+> Gate'e (P7) bağlamak. Mimari karar değişmedi, bu yüzden `accepted` korunur.
 
 ---
 
@@ -367,8 +376,26 @@ ama her istisna sonsuza dek izde kalır.
 
 Enterprise "herşeyi kazan" gereği: operasyonlar, raporlama, bellek sorguları, domain-özel
 ajanlar — hepsi *sonradan takılabilmeli.* Bu yalnızca **kernel + plugin** ile mümkündür (sabit
-pipeline ile değil). CrewOps'un `CapabilityPack` / `RoleProfile` / `CapabilityRegistry`
-modelinin ENS'e soyutlaması:
+pipeline ile değil).
+
+Bu desenin ENS'e özgü olmadığının **iki bağımsız dahili kanıtı** vardır (birbirinden habersiz
+iki gerçek sistem aynı çözüme yakınsadı):
+
+- **CrewOps** (agent-runtime prototipi) — `CapabilityPack` / `RoleProfile` / `CapabilityRegistry`:
+  versiyonlu yeti paketleri, rol-profili eşlemesi, merkezî kayıt otoritesi.
+- **Mosaik / reporthub** (üretimde çalışan modüler-monolit iş uygulaması) — `IMosaikModule`
+  extension-point sözleşmesi (`ConfigureServices` / `ConfigureModelBuilder` / `MapEndpoints` /
+  `MigrationFolder`, DB-driven `ModuleKey`/`IsEnabled`) + `ModuleLoader` (assembly-scan +
+  reflection ile dinamik yükleme: `Assembly.LoadFrom` + `Activator.CreateInstance`, host
+  projesine `ProjectReference` **gerektirmeden**). 6 gerçek modül bunu kullanır (Circular, Forms,
+  Kvkk, ProcessRuntime, SOP, GorevTanimlari). Dahası Mosaik ADR-018 tam da ENS'in "kernel değişmez,
+  Pack takılır" ilkesine yakınsar: yeni capability'ler (inbox / widget / search / catalog provider)
+  **çekirdek `IMosaikModule` interface'ini değiştirmeden** opt-in ayrı interface'ler olarak eklenir
+  (Open/Closed) — eski modüller dokunulmadan çalışmaya devam eder.
+
+İki farklı sistemin (biri agent-runtime, biri klasik iş uygulaması) bağımsız olarak aynı
+kernel+plugin+registry desenine varması, bunun keşfedilmiş bir mimari zorunluluk olduğunu — ENS'in
+icadı değil — gösterir. ENS'in yaptığı bu deseni *bilişsel bir kernel'e* soyutlamaktır:
 
 - **Capability Pack** — versiyonlu, domain-scoped, kendine yeten bir yeti paketi. Bir Pack'in
   kurulması diğerini etkilemez. Her Pack ENS-4010 `Capability` node'unun bir örnek-kümesini
@@ -400,6 +427,41 @@ flowchart TB
 
 Böylece ENS *çekirdeğini değiştirmeden* yeni yetenek kazanır: kernel değişmez, Pack takılır. Bu,
 Anayasa Madde V "Replaceable / Modular" niteliğinin doğrudan uygulanışıdır.
+
+### 6.1 Prior art (5-başlık — dürüst konumlandırma)
+
+Anayasa Madde VI ve Külliyat disiplini gereği: "immutable kernel + versiyonlu, deklaratif kayıtlı,
+keşfedilebilir eklenti" deseni ENS'in icadı **değildir**. Olgun endüstri sistemleri bu desene
+onlarca yıldır bağımsız olarak yakınsadı. §6'nın hangi kısmına (Registry / versiyonlama /
+deklaratif-izin / progressive-loading) karşılık geldiğiyle dürüst konumlanma:
+
+| Öncül | Ne verdi | §6 ile örtüşme (hangi facet) | ENS'in delta'sı |
+|-------|----------|------------------------------|------------------|
+| **OSGi** (Eclipse/OSGi Alliance; Declarative Services, Compendium 112) | Bundle lifecycle (install→start→stop), servis registry, DS ile deklaratif bileşen; bundle çalışırken host'u yeniden derlemeden takılır/çıkarılır; Import/Export-Package versiyonlama | **Registry + versiyonlama + enable/disable** — Capability Registry'nin olgun atası; "kernel değişmez, Pack takılır"ın JVM'deki 20 yıllık kanıtı | OSGi servisi bir *kod kontratı*dır. ENS Capability'si ENS-4010 `Capability` node örneğidir (teori-türetilmiş tip) **ve** bir bounded-autonomy policy zarfı (`allowedTools`/`requiresHumanApprovalFor`) taşır — OSGi'de yetkilendirme yok |
+| **MCP — Model Context Protocol** (Anthropic; spec 2025-06-18; `tools/list`, `tools/call`, `capabilities.tools.listChanged`, MCP Registry) | Server yeteneklerini deklaratif duyurur; client `tools/list` ile keşfeder; dinamik `listChanged` bildirimi; tool = isim + JSON şema | **Tool-calling + Registry keşfi** — §6'nın *en çağdaş, en yakın* analoğu: MCP server ≈ Pack, `tools/list` ≈ registry keşfi, capability declaration ≈ Pack manifest | MCP keşif+çağrıyı standartlaştırır ama **yetkilendirmeye agnostiktir** (tool var/çağrılabilir der, "insan onayı gerekir mi" demez). ENS, MCP-benzeri bir keşif substratının *üstüne* Bounded-Autonomy Gate'i (P7) koyar — per-capability human-approval birinci-sınıf registry alanı. (ENS Capability Registry MCP'yi taşıma/keşif substratı olarak *kullanabilir*.) |
+| **Terraform Providers** (HashiCorp; plugin protocol v5/v6, provider registry, SemVer constraint) | Plugin-per-resource-type; registry-dağıtımlı, SemVer'li; versiyon kısıt çözümü; local mirror ile local-first | **Versiyonlama + Registry + çakışma çözümü** — Pack versiyonlama ve local-first registry'nin doğrudan karşılığı | Terraform config başına tek versiyona *çözer* (çakışma = hard error / constraint solve). §6 registry'si "sessizce çözmez, **uyarır**" — benzer felsefe. Terraform'da per-tool insan-onayı veya bilişsel tipleme yok |
+| **VS Code Extension API** (Microsoft; activation events + contribution points) | `package.json` manifest'te statik contribution points (deklarasyon) + lazy `activationEvents` (aktivasyonda yüklenir); `onStartupFinished` ile başlangıcı yavaşlatmadan geç-yükleme | **Progressive context (3-tier)** — §6'nın 3-katman iddiasının *en güçlü* eşi: contribution point = "metadata her zaman", activation event = "talimat aktivasyonda", lazy resource = "kaynak talep üstüne" | VS Code'da progressive loading *UX/performans* güdümlüdür (başlangıcı yavaşlatma). ENS'te aynı mekanizma **attention/token bütçesi (P5)** — Decision ekonomisinden türetilir. VS Code'da autonomy gate yok |
+| **Kubernetes Operators / CRDs** (CNCF; CRD ile API'yi yeni tiplerle genişletme, controller-reconciliation) | CRD = yeni tiplendirilmiş kaynak (API'yi fork etmeden genişlet); operator sürekli desired-vs-actual reconcile eder | **Deklaratif tiplendirilmiş genişletme** — "çekirdeği fork etmeden yeni tipli kaynak ekle" ilkesi ortak | K8s reconciliation'ın ENS'teki asıl karşılığı §6 değil, **Learning loop**'tur (P4, Actual vs Expected, ENS-2004) — dürüst not: bu daha çok ENS'in gözlem/öğrenme yarısına analog, registry facet'ine değil. Ortak olan yalnızca "deklaratif, tipli, fork'suz genişletme" |
+| **WordPress hooks/plugins** (actions/filters, `do_action`/`apply_filters`, 2000+ core hook) | Event-driven; çekirdeği düzenlemeden feature ekle/kaldır/değiştir; devasa ölçekte yaygınlık | **"Çekirdeği değiştirmeden genişlet"** ham ilkesi, en yaygın kanıt | Governance açısından **karşı-örnek**: versiyon disiplini yok, izin zarfı yok, global mutable hook registry. ENS registry'si bunun disiplinli zıddı (versiyonlu, izin-scope'lu, çakışmada uyaran). WordPress deseni *ölçeklendiğini* kanıtlar, *yönetilebilir* olduğunu değil |
+
+**ENS delta özeti (dürüst):** §6'nın *mekanizması* — immutable kernel + versiyonlu, deklaratif
+kayıtlı, keşfedilebilir eklenti — özgün **değildir**; OSGi (2000'ler), WordPress, VS Code,
+Terraform, K8s ve şimdi MCP bağımsız olarak buna yakınsadı, dahili olarak CrewOps ve Mosaik de.
+Bunu abartmıyoruz: ENS plugin mimarisini icat etmez. ENS'in dar, gerçek katkısı **iki bağ**:
+
+1. **Capability = teori-türetilmiş node.** Her Pack ENS-4010 `Capability` node örnekleri kaydeder;
+   eklenti-birimi keyfi bir kod kontratı değil, temel ontolojiye bağlı tiplendirilmiş bir node'dur.
+   *Prior art'ın hiçbiri eklenti-birimini bir foundational ontology'ye bağlamaz.*
+2. **Registry girdisi doğrudan Bounded-Autonomy Gate'i besler.** `allowedTools` /
+   `requiresHumanApprovalFor` Pack üzerinde deklaratiftir ve doğrudan P7 governance'ına akar.
+   MCP/OSGi/Terraform keşif+çağrıyı standartlaştırır ama yetkilendirmeye agnostiktir; ENS
+   per-capability human-approval'ı birinci-sınıf registry alanı yapan **tek** sistemdir.
+
+Ek olarak progressive-loading (3-tier) mekanizması VS Code'unkiyle *aynıdır* ama ENS'te
+performans değil **attention-ekonomisi (P5)** güdümlüdür — bu bir delta değil, aynı mekanizmanın
+farklı gerekçesidir; dürüstlük adına özgün saymıyoruz. Net cümle: **ENS §6'da plugin mimarisini
+icat etmez; eklenti-birimini ontolojiye tipler ve eklentinin deklaratif izinlerini
+bounded-autonomy primitifine bağlar — katkı budur, mekanizmanın kendisi olgun prior-art'tır.**
 
 ---
 

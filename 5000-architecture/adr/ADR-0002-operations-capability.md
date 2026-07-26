@@ -8,12 +8,12 @@ depends_on:    [ADR-0001, ENS-2001, ENS-2002, ENS-2003, ENS-2004, ENS-3022, ENS-
 referenced_by: []
 realizes:      [ENS-2001, ENS-2002, ENS-2004]
 principles:    [P1, P2, P4, P6, P7]
-status:        skeptic-challenged
+status:        accepted  # SKR-037 survives + K4 (ens-ceo hiza, Madde XIV) CEO-0003 ile kapandı, 2026-07-24
 owner:         ens-architect
-version:       0.2.0
-last_reviewed: 2026-07-23
+version:       0.3.1  # CEO-0003: operax'ın aktif-geliştirme-durdu statüsü notu eklendi; argüman/status değişmedi
+last_reviewed: 2026-07-24
 maturity:      M0
-skeptic_review: [SKR-025, SKR-027]
+skeptic_review: [SKR-025, SKR-027, SKR-037]  # SKR-037 (bağımsız, G2/G3): v0.3 öz-düzeltmesi survives — Bulgu 1/2/3 kapalı, operax kod-denetimiyle doğrulandı. Kalan kapı (K4, ens-ceo hiza) CEO-0003 ile kapandı
 evidence:      {sci: E1, eng: E0, ops: E1, econ: E0}
 requires:      [ADR-0001, ENS-2001, ENS-4010]
 provides:      [Operations Capability Pack, Replenishment-as-Decision eşlemesi, Kernel-vs-Pipeline karar ölçütü (D1)]
@@ -26,6 +26,28 @@ consumed_by:   []
 > Bu belge şu an **Proposed** (`status: draft`, `maturity: M0`). ADR-0001'e (Cognitive Kernel)
 > dayanır; ADR-0001 henüz `Proposed` (SKR-024 *wounded*) olduğundan bu belge de onunla birlikte
 > olgunlaşır. Skeptic saldırısı öncesi hiçbir 7000 yapıtı buna dayanamaz.
+>
+> **v0.3 (2026-07-24):** SKR-025/027'nin kalan üç talebi (Bulgu 1: operax kod-doğrulaması + "≥4→3"
+> tutarlılığı; Bulgu 2: delta ↔ F yumuşatması; Bulgu 3: Confidence-elicitasyon boşluğu) sahibi
+> (ens-architect) tarafından kapatıldı. **Bu bir öz-düzeltmedir → G2/G3 gereği yazar kendi
+> düzeltmesini onaylayamaz; ADR-0002 Accepted'a ilerlemeden önce v0.3 için bağımsız YENİ bir
+> ens-skeptic turu gerekir.** Bulgu C/D (ENS-4020 validation + döngü) zaten kapalı (SKR-028/030,
+> ENS-4020 M2).
+>
+> **CEO-0003 notu (2026-07-24, `ens-ceo` hiza incelemesi, Madde XIV):** Kullanıcı bu oturumda
+> operax'ın **aktif geliştirmesini durdurma** kararı aldı — öncelik ENS'te; operax'ı ENS ile
+> entegre çalışır hale getirme işi tarihi belirsiz, **ilerleyen bir faza ertelendi** (iptal değil,
+> erteleme). Bu, D1'in mevcut kernel sonucunu **etkilemez**: §7.2 Katman B'nin K1 zemini operax'ta
+> *zaten var olan* 3 kod-doğrulanmış lifecycle'a dayanıyor, gelecekte inşa edilecek M04/RFQ'ya
+> değil (§11 OQ7 bu materyalleşmeyi zaten koşullu/spekülatif işaretlemişti). Dahası, operax'ın
+> dondurulması F2'nin asıl uyardığı risk yönünü (3 lifecycle'ın birleşip K1 eşiğinin altına
+> düşmesi) de büyütmüyor — aksine mevcut modüller refactor edilmeyeceği için hafifçe istikrar
+> kazandırıyor. Ama **F3/F4/OQ1/OQ2/OQ6'nın kapanışı** (learning-kapanışı, Confidence-elicitasyonu,
+> §7.3 VOI-önceliklendirmesi) — bunlar zaten "vaat düzeyinde, Faz-4 borcu" diye işaretliydi (§3,
+> §5.3, §13) — artık *belirsiz bir tarihe* bağlı: kapanış ya operax'ın kendi kod tabanında ya da
+> gelecekteki ENS↔operax entegrasyon köprüsünde gerçekleşecek, ve o iş kullanıcı kararıyla
+> öncelik sırasında geriye alındı. Bu yeni bir açık değil, zaten dürüstçe işaretli bir borcun
+> zamanlamasını netleştiriyor. Ayrıntı: `5000-architecture/reviews/CEO-0003-adr-0002-alignment.md`.
 >
 > **Kapsam disiplini:** Bu bir mimari *karardır*, kod değildir (Faz 3). operax kodunu kopyalamaz;
 > operax'ın *çalışan karar-önerisini* ENS capability mimarisine ve Decision teorisine (ENS-2001)
@@ -86,9 +108,11 @@ görür (§5, §10).
    Decision**'dır → **operational boyutu E0'dan E1'e** taşıyan ilk gerçeklik (§6).
 3. **D1 ampirik cevaplanır (SKR-024):** kernel-vs-pipeline için **yanlışlanabilir bir karar
    ölçütü** verilir ve operax'a karşı *dürüstçe* test edilir. Sonuç nüanslı: *tek başına*
-   replenishment bir **pipeline**'dır; kernel'i haklı çıkaran, operax'ın **≥4 heterojen karar
-   yaşam-döngüsünün tek bir kıt attention havuzunu paylaşması ve ortak invariant'lara (proof-trace,
-   bounded-autonomy, memory) tabi olmasıdır** (§7).
+   replenishment bir **pipeline**'dır; kernel'i haklı çıkaran, operax'ın **3 kod-doğrulanmış
+   heterojen karar yaşam-döngüsünün tek bir kıt attention havuzunu paylaşması ve ortak invariant'lara
+   (proof-trace, bounded-autonomy, memory) tabi olmasıdır** (§7). *(v0.3: "≥4" iddiası — M04 Pricing +
+   RFQ'yu sayıyordu — operax kod-denetimiyle düşürüldü; K1 eşiği ≥2 olduğundan 3 doğrulanmış lifecycle
+   sonucu değiştirmez, §7.2.)*
 4. **SKR-024 D2/D3 operax üzerinde çözülür:** commitment sınırı (D2) operax status-machine'inde
    *zaten kodlu*; `Policy` (D3) operax'ın `ApprovalRule` kümesine = `ens-core:Constraint`'e eşlenir
    (§8) — yeni kavram değil.
@@ -113,8 +137,11 @@ Anayasa Madde VI: ikmal/replenishment kararı ENS'in icadı değildir; operax'ı
 
 **Delta özeti:** ENS'in katkısı ikmal mantığı değil, ikmal *önerisini* — (a) commit-mühürlü Decision
 atomu (ENS-2001), (b) Expected/Actual learning kapanışı (ENS-2004), (c) proof-trace invariant'ı
-(P6), (d) VOI-önceliği (ENS-3022) ile *disipline etmektir.* operax'ın SQL'i olduğu gibi kalır;
-üstüne bilişsel disiplin konur.
+(P6), (d) VOI-önceliği (ENS-3022) ile *disipline etmektir.* **Teslim durumu (SKR-025/027 Bulgu 2 —
+delta ↔ F tutarlılığı):** bu ADR'de fiilen *teslim edilen* yalnızca (a)'nın commitment-sınırıdır
+(§5.2, operax status-machine'i); (b) learning kapanışı, (c) tam proof-trace ve (d) VOI-önceliği
+henüz **vaat düzeyindedir** (sırasıyla §5.3/§13 F3-F4, §9/F5, §7.3+OQ6). operax'ın SQL'i olduğu gibi
+kalır; üstüne konacak bilişsel disiplinin bir bacağı çalışan, üçü Faz-4'te kapanacak taahhüttür.
 
 ---
 
@@ -161,7 +188,7 @@ keskin sınır.
 | **Assumptions** | leadtime boyunca talep stabil; tedarikçi leadtime/MOQ'ya uyar; MaxQty hedefi doğru | P6 |
 | **Risks** | overstock (sermaye kilidi), stockout (leadtime > kapsama), tedarikçi gecikmesi | P6 |
 | **Owner** | satınalmacı / depo planlama sorumlusu (insan, P7) | P7 |
-| **Confidence** | Context Score'a bağlı (talep tahmini kalitesi, tedarikçi güvenilirliği) | P6 |
+| **Confidence** | Context Score'a bağlı olması *hedeflenir* (talep tahmini kalitesi, tedarikçi güvenilirliği) — **ama operax bugün deterministik SQL confidence *üretmiyor*; elicitasyon açık (Bulgu 3 / OQ6).** Faz-4 `ContextScore.cs` formülü kodlu ama operax'a bağlanmadı | P6 |
 | **Expected Outcome** | stok Max'a döner; leadtime boyunca stockout olmaz | P4 |
 | **Actual Outcome** | gerçek mal kabul; stockout oldu mu?; leadtime'da gerçek talep | P4 |
 | **Learning** (ENS-2004) | Expected vs Actual: MaxQty doğru muydu? leadtime tuttu mu? → skorkart + min/max rekalibrasyonu | P4 |
@@ -251,12 +278,15 @@ Bu, ADR-0001 F4 riskinin **kısmen gerçekleştiğinin dürüst itirafıdır** �
 ampirik cevabın çekirdeğidir: North Star'ı *doğrulamıyoruz*, ölçüyoruz.
 
 **Katman B — Operations Pack (capability kümesi):**
-Ama operax *tek karar değildir.* **SKR-027 Bulgu 1'e yanıt (v0.2, doğrulama yapıldı):**
-aşağıdaki liste artık yalnızca *fiilen kodlu* modülleri içeriyor — operax repo'sunda `find`
-ile doğrulandı. v0.1'deki "Pricing (M04)" ve "RFQ tedarikçi seçimi" iddiaları **yanlıştı**:
-operax'taki gerçek M04, `docs/MODULE_SPECS/M04_SalesInvoice_Pricing.md` — satış faturası fiyat/
-vergi hesabı, marj/elastikiyet optimizasyon motoru değil; RFQ'nun ise **hiç kodu yok** (0 dosya).
-İkisi de §11 F2'ye taşındı (aşağıda). Geriye **3 doğrulanmış heterojen** commitment-lifecycle kalıyor:
+Ama operax *tek karar değildir.* **SKR-027 Bulgu 1'e yanıt (v0.3'te operax kodu bağımsız yeniden
+denetlendi):** aşağıdaki liste yalnızca *fiilen kodlu* modülleri içeriyor. `D:\Dev\operax` reposu
+dosya düzeyinde tarandı (Glob/Grep, varsayım değil): **RFQ = 0 kod dosyası** (yalnızca `PLAN.md`/
+`TODO.md`/roadmap'te anılıyor, inşa edilmemiş); **M04 = yalnızca `docs/MODULE_SPECS/
+M04_SalesInvoice_Pricing.md`** — satış faturası *fiyat-listesi çözümü* (`sp_ResolveSalesPrice`,
+katmanlı liste), marj/elastikiyet *optimizasyon* motoru değil (kod araması `elasticity|price
+optimization|margin optim` = 0 dosya). Yani v0.1'in "Pricing (M04)" + "RFQ tedarikçi seçimi"
+iddiaları **doğrulanamadı** ve §11 F2'ye taşındı. Geriye **3 doğrulanmış heterojen**
+commitment-lifecycle kalıyor:
 
 | operax kararı | Lifecycle şekli (özet) | Neden farklı | Kod kanıtı |
 |---------------|------------------------|--------------|------------|
@@ -266,9 +296,14 @@ vergi hesabı, marj/elastikiyet optimizasyon motoru değil; RFQ'nun ise **hiç k
 
 Test sonucu (Katman B, düzeltilmiş):
 - **K1 = doğru:** 3 farklı-yapılı lifecycle, kod-doğrulanmış (yukarıda; ≥2 eşiği için yeterli).
-- **K2 = doğru (daraltılmış):** satınalmacının kıt attention'ı replenishment önerileri + fiyat
-  sapması onayları arasında yarışır; sabit sıra suboptimaldir → hesaplanan öncelik (Decision
-  Gravity) gerekli. (v0.1'in "RFQ" örneği çıkarıldı — kodu yok.)
+- **K2 = doğru (daraltılmış, ama gözlem borcu açık):** satınalmacının kıt attention'ı
+  replenishment önerileri + fiyat sapması onayları arasında yarışır; sabit sıra suboptimaldir →
+  hesaplanan öncelik (Decision Gravity) gerekli. (v0.1'in "RFQ" örneği çıkarıldı — kodu yok.)
+  **Dürüstlük (SKR-025/027 Bulgu 1):** K2 ve K4, 3 doğrulanmış lifecycle'dan *mantıksal çıkarımdır*;
+  operax'ta henüz somut attention-çekişme log'u yoktur. Dahası K2'nin *operasyonel* biçimi (VOI
+  önceliklendirmesi, §7.3) operax deterministik SQL Confidence üretmediğinden şu an **hesaplanamaz**
+  (Bulgu 3 / OQ6). Yani K2 kurgusal olarak sağlam ama *ölçülmemiş*; kernel sonucu bu turda K1 (kod-
+  kanıtlı) + K3'e daha ağır yaslanır, K2/K4 ölçümü Faz-4 borcudur.
 - **K3 = doğru:** ENS'in premisi başka Pack'lerin (reporting, finance, HR, domain agent) sonradan
   takılmasıdır; operax'ın kendi modül-genişleme deseni (M02..M16, PLAN.md'de kısmen `PLANNED`)
   bunu içeride zaten gösterir.
@@ -284,7 +319,9 @@ sonucu zayıflamadı, tersine kanıt-temelli hale geldi.**
 > **Kernel, herhangi bir *tek* capability tarafından değil, capability *kümesinin* heterojenliği +
 > paylaşılan kıt attention + tekdüze kesişen invariant'lar tarafından haklı çıkarılır.** operax tek
 > bir karar (bin-to-bin replenishment) olarak ele alınırsa **pipeline yeterlidir** (K1=1); bir
-> Operations *Pack* (≥4 heterojen lifecycle) olarak ele alınırsa **ölçüt 4/4 kernel der.**
+> Operations *Pack* (**3 kod-doğrulanmış heterojen lifecycle**) olarak ele alınırsa **4 boyutun
+> 4'ü de (4/4) kernel der.** (Not: "4/4" = K1-K4 boyutlarının hepsi; "3 lifecycle" = doğrulanmış
+> commitment-lifecycle sayısı — K1 eşiği ≥2 olduğundan sağlanır, §7.2.)
 >
 > Bu, SKR-024'ün döngüsellik itirazını kapatır: North Star'ı varsaymadık; operax'ı *ölçtük*.
 > Eğer operax yalnızca bin-to-bin ikmalden ibaret olsaydı, dürüst sonuç "pipeline yeterli, kernel
@@ -439,7 +476,11 @@ Bu ADR **yanlış olur** eğer:
 - **OQ6 (SKR-025/027 Bulgu 3):** `Confidence` operax'ta *nasıl* üretilir? Deterministik SQL
   confidence üretmiyor; ENS-4020'de de doğrulandı (`DemandForecast` Evidence node'u eksik).
   ENS-3022 InfoNeed = Stake×(1−Confidence) bu girdi olmadan hesaplanamaz — VOI-önceliklendirmesi
-  (§7.3) şu an teorik, operax'ta çalıştırılamaz. Faz-4'te `ens-ent:DemandForecast` eklenmeli.
+  (§7.3, K2'nin operasyonel biçimi) şu an teorik, operax'ta çalıştırılamaz; **Bulgu 1'de K2'nin
+  neden gözlenemediğinin nedeni budur.** Faz-4'te `ens-ent:DemandForecast` eklenmeli. Not: ENS
+  tarafında formül zaten kodlu — `7000-reference-implementation/Ens.Kernel/Domain/ContextScore.cs`
+  (Faz-4, ENS-2002 §3) Confidence-gate'i üretir; ama operax'a **henüz bağlanmadı** (referans, iddia
+  değil). Köprü kurulunca (`ContextScore` → operax Suggestion) VOI-önceliklendirmesi ölçülebilir olur.
 - **OQ7 (SKR-027 Bulgu 1):** M04(Pricing)/RFQ gelecekte inşa edilirse Katman B'ye geri eklenip
   K1-K4'ün yeniden test edilmesi gerekir — ölçüt statik değil, capability envanteri değiştikçe
   yeniden çalıştırılmalı.
