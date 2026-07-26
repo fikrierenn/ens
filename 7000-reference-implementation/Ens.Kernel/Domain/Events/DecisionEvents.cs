@@ -8,10 +8,19 @@ namespace Ens.Kernel.Domain.Events;
 /// <summary>Framing fazı: Purpose belirir. Henüz commitment değil (ENS-2001 §Individuation).</summary>
 public sealed record DecisionFramed(string Purpose) : DomainEvent;
 
-/// <summary>Contextualization/Reasoning fazı: Alternatives + Evidence toplanır.</summary>
+/// <summary>
+/// Contextualization/Reasoning fazı: Alternatives + Evidence toplanır.
+///
+/// TRACE: ENS-4025 §L8 — `Evidence` artık <see cref="Premise"/> listesidir (kaynak + confidence),
+/// düz string listesi DEĞİL. Gerekçe (AUDIT-WAVE2-FIDELITY §D-1): commitment'ın proof-trace'i
+/// öncüllerini buradan alır ve ENS-4025 §L7 (`conf = min(öncüller)`) bir confidence ALANI
+/// olmadan hesaplanamaz. ADR-0001 §5.5'in kendi örneği de öncülleri confidence'lı gösterir
+/// (`conf = min(plan=0.8, context=0.7)`). Şema değişikliği bilinçlidir ve dürüstçe kayıtlıdır:
+/// kalıcı bir event-store OLMADIĞI için upcaster yazılmadı; gerçek bir store'da gerekirdi.
+/// </summary>
 public sealed record AlternativesIdentified(
     IReadOnlyList<string> Alternatives,
-    IReadOnlyList<string> Evidence) : DomainEvent;
+    IReadOnlyList<Premise> Evidence) : DomainEvent;
 
 /// <summary>
 /// ATOM SINIRI. ENS-2001 §Individuation dört koşulu mühürler: tek Owner, tek Purpose,
@@ -19,12 +28,25 @@ public sealed record AlternativesIdentified(
 /// TRACE: ADR-0001 §5.6 Bounded-Autonomy Gate — bu event Policy (ens-core:Constraint bundle,
 ///        TOVE Empowerment) tarafından yetkilendirilmiş olmalı; Gate kontrolü çağıran katmanın
 ///        sorumluluğudur (aggregate yalnızca invariant'ı korur, yetkilendirmeyi yapmaz).
+/// TRACE: ENS-4025 §L8 — <see cref="RuleId"/>: "hangi KURAL bu olguyu türetti" sorusunun cevabı.
+///        Öncüller olayda TEKRARLANMAZ; `AlternativesIdentified.Evidence`'tan gelirler ve
+///        proof-trace akışın fold'u olarak HESAPLANIR (ENS-4001 Axiom 2 — Computational Closure).
+///        Böylece iz, olayın yanına iliştirilmiş denormalize bir kopya değil, akışın kendisinin
+///        bir fonksiyonudur; iki kaynak arasında ayrışma (drift) YAPISAL OLARAK imkânsızdır.
 /// </summary>
 public sealed record DecisionCommitted(
     string SelectedAlternative,
     Identity Owner,
     double Confidence,
-    string ExpectedOutcome) : DomainEvent;
+    string ExpectedOutcome,
+    string RuleId = DecisionCommitted.DefaultRuleId) : DomainEvent
+{
+    /// <summary>
+    /// Varsayılan türetim kuralı: commitment'ı doğuran kural, ENS-2001 §Individuation'ın
+    /// commitment mühürüdür. Bir Planner (ADR-0001 §5.2) kendi kural kimliğini geçebilir.
+    /// </summary>
+    public const string DefaultRuleId = "ENS-2001§Commitment";
+}
 
 /// <summary>
 /// Enactment fazı — ADR-0001 §4 traceability: Actuation Layer, ENS-2001'in Enactment

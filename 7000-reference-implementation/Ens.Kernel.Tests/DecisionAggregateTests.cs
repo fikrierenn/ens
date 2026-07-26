@@ -38,7 +38,7 @@ public sealed class DecisionAggregateTests
     {
         // TRACE: ENS-2001 §Individuation koşul 4 — "tek Commitment olayı"
         var decision = DecisionAggregate.Frame(System, "Fiyat kararı");
-        decision.IdentifyAlternatives(System, ["%5 zam", "%0", "%8 zam"], ["elastikiyet-verisi"]);
+        decision.IdentifyAlternatives(System, ["%5 zam", "%0", "%8 zam"], [new Premise("elastikiyet-verisi", 0.8)]);
         decision.Commit(Owner, "%5 zam", 0.7, "hacim -%3");
 
         Assert.Throws<InvalidOperationException>(() =>
@@ -50,7 +50,7 @@ public sealed class DecisionAggregateTests
     {
         // TRACE: ENS-2001 §Individuation — commitment sonrası deliberation kapanır (atom mühürlendi)
         var decision = DecisionAggregate.Frame(System, "Test");
-        decision.IdentifyAlternatives(System, ["A", "B"], []);
+        decision.IdentifyAlternatives(System, ["A", "B"], [new Premise("kanit", 1.0)]);
         decision.Commit(Owner, "A", 0.6, "beklenen");
 
         Assert.Throws<InvalidOperationException>(() =>
@@ -62,7 +62,7 @@ public sealed class DecisionAggregateTests
     {
         // TRACE: Anayasa P6 — kalibre confidence [0,1] aralığında olmalı
         var decision = DecisionAggregate.Frame(System, "Test");
-        decision.IdentifyAlternatives(System, ["A"], []);
+        decision.IdentifyAlternatives(System, ["A"], [new Premise("kanit", 1.0)]);
 
         Assert.Throws<ArgumentOutOfRangeException>(() =>
             decision.Commit(Owner, "A", 1.5, "beklenen"));
@@ -74,7 +74,7 @@ public sealed class DecisionAggregateTests
         // TRACE: ENS-2001 §Decision Lifecycle — Framing→Reasoning→Commitment→Enactment→
         // Measurement→Learning. Axiom 2 (Computational Closure): Decision = fold(Events).
         var decision = DecisionAggregate.Frame(System, "Tedarikçi seçimi");
-        decision.IdentifyAlternatives(System, ["Tedarikçi-A", "Tedarikçi-B"], ["skorkart"]);
+        decision.IdentifyAlternatives(System, ["Tedarikçi-A", "Tedarikçi-B"], [new Premise("skorkart", 0.9)]);
         decision.Commit(Owner, "Tedarikçi-A", 0.8, "leadtime 5 gün");
         decision.Enact(System, "PO-42 oluşturuldu");
         decision.ObserveOutcome(System, "leadtime 6 gün gerçekleşti");
@@ -93,7 +93,7 @@ public sealed class DecisionAggregateTests
     {
         // TRACE: ENS-4001 §Axiom 2 (Computational Closure) — State tamamen Event'ten türetilebilir.
         var original = DecisionAggregate.Frame(System, "Test rehydrate");
-        original.IdentifyAlternatives(System, ["A", "B"], []);
+        original.IdentifyAlternatives(System, ["A", "B"], [new Premise("kanit", 1.0)]);
         original.Commit(Owner, "A", 0.5, "beklenen");
 
         var rehydrated = DecisionAggregate.Rehydrate(original.Id, original.History);

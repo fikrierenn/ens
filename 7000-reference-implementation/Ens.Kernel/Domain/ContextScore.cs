@@ -18,12 +18,10 @@ public static class ContextScore
     /// </summary>
     public static double Compute(double coverage, double noisePenalty, double staleness)
     {
-        if (coverage < 0)
-            throw new ArgumentOutOfRangeException(nameof(coverage), "Coverage negatif olamaz.");
-        if (noisePenalty < 0)
-            throw new ArgumentOutOfRangeException(nameof(noisePenalty), "Noise penalty negatif olamaz.");
-        if (staleness < 0)
-            throw new ArgumentOutOfRangeException(nameof(staleness), "Staleness negatif olamaz.");
+        // AUDIT §5.1 ile aynı kök neden (`is < 0` NaN'ı geçirir) — burada da kapatıldı.
+        Guard.NonNegativeFinite(coverage, nameof(coverage), "Coverage");
+        Guard.NonNegativeFinite(noisePenalty, nameof(noisePenalty), "Noise penalty");
+        Guard.NonNegativeFinite(staleness, nameof(staleness), "Staleness");
 
         return coverage - noisePenalty - staleness;
     }
@@ -36,8 +34,9 @@ public static class ContextScore
     /// </summary>
     public static double GateConfidence(double rawConfidence, double contextScore, double threshold)
     {
-        if (rawConfidence is < 0 or > 1)
-            throw new ArgumentOutOfRangeException(nameof(rawConfidence), "Confidence [0,1] aralığında olmalı.");
+        Guard.UnitInterval(rawConfidence, nameof(rawConfidence), "Confidence");
+        Guard.Finite(contextScore, nameof(contextScore), "ContextScore");
+        Guard.Finite(threshold, nameof(threshold), "Eşik");
 
         if (contextScore >= threshold) return rawConfidence;
 
