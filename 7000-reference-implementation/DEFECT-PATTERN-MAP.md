@@ -35,18 +35,18 @@ tek satırlık bir işlemdir. Toplamlar §10'da; toplam ≠ 84 ise bu dosya yanl
 
 | ID | Kusur |
 |---|---|
-| `E3` | Gate sonucu tek satırda taklit edilebiliyor |
-| `W4a` | Sahte `ToolAuthorization` registry'yi tamamen atlıyor |
-| `W15` | `ToolAuthorization` public → registry reddi aklanabiliyor |
-| `W16` | `null` `toolAuthorization` ↔ "yetkilendirmeyi unutmak" ayırt edilemiyor → Autonomous |
-| `H1` | Öneri herhangi bir çağıran tarafından uygulanabiliyor |
-| `G5` | Öneriler sıfır provenance'lı sahte kayıtlardan imal edilebiliyor |
-| `C3` | Hayalet-kayıt guard'ı değer-eşit klonla atlatılıyor |
-| `W2_L1` | Eylem yaşam döngüsü hiçbir karar olmadan başlatılabiliyor |
-| `W2_L2` | Tek proof-trace sınırsız alakasız eylemi meşrulaştırıyor |
-| `W2_O1` | Tek-sahip koşulu hiç implemente edilmemiş |
-| `W2_R2` | `Rehydrate` başka kararlara ait event'leri kabul ediyor |
-| `W5d` | `CanHandle` öz-beyan; kayıt sırası modeli belirliyor |
+| `AUD_E3` | Gate sonucu tek satırda taklit edilebiliyor |
+| `SEC_W4a` | Sahte `ToolAuthorization` registry'yi tamamen atlıyor |
+| `SCH_W15` | `ToolAuthorization` public → registry reddi aklanabiliyor |
+| `SCH_W16` | `null` `toolAuthorization` ↔ "yetkilendirmeyi unutmak" ayırt edilemiyor → Autonomous |
+| `AUD_H1` | Öneri herhangi bir çağıran tarafından uygulanabiliyor |
+| `MEM_G5` | Öneriler sıfır provenance'lı sahte kayıtlardan imal edilebiliyor |
+| `MEM_C3` | Hayalet-kayıt guard'ı değer-eşit klonla atlatılıyor |
+| `INV_W2_L1` | Eylem yaşam döngüsü hiçbir karar olmadan başlatılabiliyor |
+| `INV_W2_L2` | Tek proof-trace sınırsız alakasız eylemi meşrulaştırıyor |
+| `INV_W2_O1` | Tek-sahip koşulu hiç implemente edilmemiş |
+| `INV_W2_R2` | `Rehydrate` başka kararlara ait event'leri kabul ediyor |
+| `SEC_W5d` | `CanHandle` öz-beyan; kayıt sırası modeli belirliyor |
 
 **Üye: 12**
 
@@ -59,19 +59,19 @@ davranıyor.
 
 | ID | Kusur |
 |---|---|
-| `F3` | Unicode-eşdeğer purpose type'lar belleği erişilemez parçalara bölüyor |
-| `G3` | Purpose type'a boşluk ekleyerek örüntü tespiti atlatılıyor |
-| `G4` | Büyük/küçük harf varyantları iki ayrı öneri üretiyor |
-| `C2` | Saat kayıt **değerine** göre anahtarlanıyor, kimliğine değil |
-| `W1a` | `Disable` yanlış harfle sessizce "başarılı" oluyor |
-| `W1b` | Doğrulama sorgusu operatörün yanlış inancını onaylıyor |
-| `W1c` | Her near-miss revoke jesti yeteneği canlı bırakıyor |
-| `W2c` | Homoglyph araç adı onay-gerektirmeyen ikiz üretiyor |
-| `W2e` | `NUL` içeren araç adları birinci sınıf yetkili |
-| `W2f` | `Register`, `Authorize`'ın sorgulayamayacağı adları kabul ediyor |
-| `W5g` | Yinelenen `AdapterId` → denetim anahtarı injective değil |
-| `W7f` | Sahip kimliğinde harf farkı tüm attribution'ı ters çeviriyor |
-| `W7h` | Boş ve boşluklu context key'ler ayrı evrenler |
+| `MEM_F3` | Unicode-eşdeğer purpose type'lar belleği erişilemez parçalara bölüyor |
+| `MEM_G3` | Purpose type'a boşluk ekleyerek örüntü tespiti atlatılıyor |
+| `MEM_G4` | Büyük/küçük harf varyantları iki ayrı öneri üretiyor |
+| `MEM_C2` | Saat kayıt **değerine** göre anahtarlanıyor, kimliğine değil |
+| `SEC_W1a` | `Disable` yanlış harfle sessizce "başarılı" oluyor |
+| `SEC_W1b` | Doğrulama sorgusu operatörün yanlış inancını onaylıyor |
+| `SEC_W1c` | Her near-miss revoke jesti yeteneği canlı bırakıyor |
+| `SEC_W2c` | Homoglyph araç adı onay-gerektirmeyen ikiz üretiyor |
+| `SEC_W2e` | `NUL` içeren araç adları birinci sınıf yetkili |
+| `SEC_W2f` | `Register`, `Authorize`'ın sorgulayamayacağı adları kabul ediyor |
+| `SEC_W5g` | Yinelenen `AdapterId` → denetim anahtarı injective değil |
+| `SEC_W7f` | Sahip kimliğinde harf farkı tüm attribution'ı ters çeviriyor |
+| `SEC_W7h` | Boş ve boşluklu context key'ler ayrı evrenler |
 
 **Üye: 13**
 
@@ -81,12 +81,12 @@ davranıyor.
 
 | ID | Kusur |
 |---|---|
-| `A1` | Gelecek tarihli `AssertedAt` sönümü sonsuza dek kapatıyor |
-| `A2` | `DateTime.MaxValue` kabul ediliyor → ölümsüz kayıt |
-| `B4` | Aynı kayıt aynı anda 1000 kez doğrulanabiliyor |
-| `D4` | `Retrieve` `asOf`'ta var olmayan kayıtları sızdırıp ilk sıraya koyuyor |
-| `W2_L3` | Denetim zaman damgaları çağıran kontrolünde |
-| `W2_R6` | Replay zaman damgalarını ve yinelenen event id'leri yok sayıyor |
+| `MEM_A1` | Gelecek tarihli `AssertedAt` sönümü sonsuza dek kapatıyor |
+| `MEM_A2` | `DateTime.MaxValue` kabul ediliyor → ölümsüz kayıt |
+| `MEM_B4` | Aynı kayıt aynı anda 1000 kez doğrulanabiliyor |
+| `MEM_D4` | `Retrieve` `asOf`'ta var olmayan kayıtları sızdırıp ilk sıraya koyuyor |
+| `INV_W2_L3` | Denetim zaman damgaları çağıran kontrolünde |
+| `INV_W2_R6` | Replay zaman damgalarını ve yinelenen event id'leri yok sayıyor |
 
 **Üye: 6**
 
@@ -96,11 +96,11 @@ davranıyor.
 
 | ID | Kusur |
 |---|---|
-| `A5` | `contextDecayRate = 0` → şirket çapında sönüm kapalı |
-| `E4` | `staleThreshold = 0` → curator kapalı |
-| `G2` | Sıfır magnitude eşiği → her purpose type öneri |
-| `H3` | Negatif eşik → gate no-op |
-| `W10` | Bozuk policy eşikleri yalnız bazı girdilerde doğrulanıyor |
+| `MEM_A5` | `contextDecayRate = 0` → şirket çapında sönüm kapalı |
+| `MEM_E4` | `staleThreshold = 0` → curator kapalı |
+| `MEM_G2` | Sıfır magnitude eşiği → her purpose type öneri |
+| `MEM_H3` | Negatif eşik → gate no-op |
+| `SCH_W10` | Bozuk policy eşikleri yalnız bazı girdilerde doğrulanıyor |
 
 **Üye: 5**
 
@@ -110,8 +110,8 @@ davranıyor.
 
 | ID | Kusur |
 |---|---|
-| `E5` | Durum reflection ile ışınlanıyor, iz yok |
-| `W3c` | Reflection donmuş izin kümesini değiştiriyor, registry yeniden doğrulamıyor |
+| `AUD_E5` | Durum reflection ile ışınlanıyor, iz yok |
+| `SEC_W3c` | Reflection donmuş izin kümesini değiştiriyor, registry yeniden doğrulamıyor |
 
 **Üye: 2**
 
@@ -126,11 +126,11 @@ davranıyor.
 
 | ID | Kusur |
 |---|---|
-| `W22` | Scheduler çıktısı canlı `List`, çağıran sırayı değiştirebiliyor |
-| `W2_R4` | Replay edilen alternatifler canlı görünüm |
-| `W2_L4` | `history` senkronize edilmemiş canlı görünüm |
-| `W5a` | Adapter listesi downcast edilebilir |
-| `W5b` | "En az bir adapter" değişmezi inşadan sonra silinebiliyor |
+| `SCH_W22` | Scheduler çıktısı canlı `List`, çağıran sırayı değiştirebiliyor |
+| `INV_W2_R4` | Replay edilen alternatifler canlı görünüm |
+| `INV_W2_L4` | `history` senkronize edilmemiş canlı görünüm |
+| `SEC_W5a` | Adapter listesi downcast edilebilir |
+| `SEC_W5b` | "En az bir adapter" değişmezi inşadan sonra silinebiliyor |
 
 **Üye: 5**
 
@@ -142,12 +142,12 @@ davranıyor.
 
 | ID | Kusur |
 |---|---|
-| `H4` | `Compute` negatif sonsuz yayabiliyor |
-| `W3` | `NormalizedDeficit` clamp'i negatif sıfırı normalize etmiyor |
-| `W17` | Gate korunan sınırın dışına NaN `InfoNeed` yayıyor |
-| `W5e` | `null` `LlmResponse` geçip proof-trace substratını yok ediyor |
-| `W8a` | `ReuseROI` iki ölçülebilir girdiden `+∞` dönüyor |
-| `W8b` | `DeltaCapital` sonlu girdilerden taşıyor |
+| `MEM_H4` | `Compute` negatif sonsuz yayabiliyor |
+| `SCH_W3` | `NormalizedDeficit` clamp'i negatif sıfırı normalize etmiyor |
+| `SCH_W17` | Gate korunan sınırın dışına NaN `InfoNeed` yayıyor |
+| `SEC_W5e` | `null` `LlmResponse` geçip proof-trace substratını yok ediyor |
+| `SEC_W8a` | `ReuseROI` iki ölçülebilir girdiden `+∞` dönüyor |
+| `SEC_W8b` | `DeltaCapital` sonlu girdilerden taşıyor |
 
 **Üye: 6**
 
@@ -157,16 +157,16 @@ davranıyor.
 
 | ID | Kusur |
 |---|---|
-| `W8d` | Tek `confidence = 1.0`, `stake = 1e12`'de bile tüm yığını sıfırlıyor |
-| `W7` | `confidence == 1.0` sınırsız özerklik satın alıyor, 1 ULP altı almıyor |
-| `W7d` | Tek gözlem "sıfır gürültü" raporluyor, örneklem güvencesi yok |
-| `W7e` | Tümü `null` gözlemler "kusursuz tutarlılık" raporluyor |
-| `B1` | Zorunlu kanıt guard'ı kendi varsayılan parametresiyle etkisiz |
-| `B2` | Boşluk olmayan herhangi bir karakter kanıt sayılıyor |
-| `D1_residual` (öncüller) | Öncüller kalibre edilmemiş serbest metin |
-| `W2_P1` | Tamamen görünmez proof-trace temsil edilebilir |
-| `W2_P3` | Render çıktısı öncül metniyle taklit edilebiliyor |
-| `W2_P4` | Kendi kendini gerekçelendiren türetim, tam güvenle |
+| `SEC_W8d` | Tek `confidence = 1.0`, `stake = 1e12`'de bile tüm yığını sıfırlıyor |
+| `SCH_W7` | `confidence == 1.0` sınırsız özerklik satın alıyor, 1 ULP altı almıyor |
+| `SEC_W7d` | Tek gözlem "sıfır gürültü" raporluyor, örneklem güvencesi yok |
+| `SEC_W7e` | Tümü `null` gözlemler "kusursuz tutarlılık" raporluyor |
+| `MEM_B1` | Zorunlu kanıt guard'ı kendi varsayılan parametresiyle etkisiz |
+| `MEM_B2` | Boşluk olmayan herhangi bir karakter kanıt sayılıyor |
+| `CPT_D1_residual` (öncüller) | Öncüller kalibre edilmemiş serbest metin |
+| `INV_W2_P1` | Tamamen görünmez proof-trace temsil edilebilir |
+| `INV_W2_P3` | Render çıktısı öncül metniyle taklit edilebiliyor |
+| `INV_W2_P4` | Kendi kendini gerekçelendiren türetim, tam güvenle |
 
 **Üye: 10**
 
@@ -179,20 +179,20 @@ gizlenmiyor** — v1'in hatası tam da bu artığı hiç saymamaktı.
 
 | ID | Kusur | Neden ayrı |
 |---|---|---|
-| `B6`, `W20` | Beraberlikte sıralama girdi sırasına bağımlı | Belirlenimcilik; üçüncü tie-breaker kararı ister |
-| `C1`, `W6d` | Konumsal çağrı yanlış overload'a bağlanıyor | C# dil semantiği; ad değişikliği (breaking) |
-| `W23` | Geçersiz `PendingDecision` inşa edilebiliyor | Tip değişmezi |
-| `W5c` | `null` adapter "model-agnostik ama modelsiz değil" guard'ını geçiyor | Tip değişmezi |
-| `W5f` | Önceden iptal edilmiş token yine "başarılı" dönüyor | İptal semantiği |
-| `W2_R3` | Replay boş-olmayan alternatif guard'ını uygulamıyor | Replay ≠ canlı yol asimetrisi |
-| `W2_R5` | Bilinmeyen event tipleri sessizce yutuluyor | Replay asimetrisi |
-| `W2d` | Kontrol karakterleri insana gösterilen `reason`'a akıyor | Çıktı sanitizasyonu |
-| `W1d` | Ön-alıcı `Disable` sonraki `Register`'ı ölü doğuruyor | Sıralama semantiği |
-| `W1e` | `disabled` kümesi doğrulanmamış public girdiden sınırsız büyüyor | Kaynak tüketimi |
-| `W8` | Scheduler, gate'in fail-closed `CriticalBlock` dalını devre dışı bırakıyor | Katman sırası |
-| `W9` | Tek zehirli karar tüm partinin dikkatini engelliyor | Patlama yarıçapı |
-| `G1` | 10.000 kayıt 5.000 ayrışmamış öneri üretiyor | Ölçekleme |
-| `D1_residual` (trace) | Yalnız commitment atomu iz yayıyor | İz kapsamı |
+| `AUD_B6`, `SCH_W20` | Beraberlikte sıralama girdi sırasına bağımlı | Belirlenimcilik; üçüncü tie-breaker kararı ister |
+| `AUD_C1`, `SEC_W6d` | Konumsal çağrı yanlış overload'a bağlanıyor | C# dil semantiği; ad değişikliği (breaking) |
+| `SCH_W23` | Geçersiz `PendingDecision` inşa edilebiliyor | Tip değişmezi |
+| `SEC_W5c` | `null` adapter "model-agnostik ama modelsiz değil" guard'ını geçiyor | Tip değişmezi |
+| `SEC_W5f` | Önceden iptal edilmiş token yine "başarılı" dönüyor | İptal semantiği |
+| `INV_W2_R3` | Replay boş-olmayan alternatif guard'ını uygulamıyor | Replay ≠ canlı yol asimetrisi |
+| `INV_W2_R5` | Bilinmeyen event tipleri sessizce yutuluyor | Replay asimetrisi |
+| `SEC_W2d` | Kontrol karakterleri insana gösterilen `reason`'a akıyor | Çıktı sanitizasyonu |
+| `SEC_W1d` | Ön-alıcı `Disable` sonraki `Register`'ı ölü doğuruyor | Sıralama semantiği |
+| `SEC_W1e` | `disabled` kümesi doğrulanmamış public girdiden sınırsız büyüyor | Kaynak tüketimi |
+| `SCH_W8` | Scheduler, gate'in fail-closed `CriticalBlock` dalını devre dışı bırakıyor | Katman sırası |
+| `SCH_W9` | Tek zehirli karar tüm partinin dikkatini engelliyor | Patlama yarıçapı |
+| `MEM_G1` | 10.000 kayıt 5.000 ayrışmamış öneri üretiyor | Ölçekleme |
+| `CPT_D1_residual` (trace) | Yalnız commitment atomu iz yayıyor | İz kapsamı |
 
 **Üye: 15**
 
@@ -215,7 +215,7 @@ gizlenmiyor** — v1'in hatası tam da bu artığı hiç saymamaktı.
 | `AUDIT_FINDING_*` (9) | 9 | Kod kusuru değil, iddia zayıflığı |
 | **Genel toplam** | **83** | |
 
-> **⚠️ 83 ≠ 84 — bir kimlik eksik ve bunu gizlemiyorum.** `D1_residual` iki ayrı teste
+> **⚠️ 83 ≠ 84 — bir kimlik eksik ve bunu gizlemiyorum.** `CPT_D1_residual` iki ayrı teste
 > karşılık geliyor (`premises_are_still_uncalibrated_free_text` → P8;
 > `only_the_commitment_atom_emits_a_trace` → P9) ama tek ID gibi sayılıyor. Sicilin
 > `D1a`/`D1b` adlandırması bu yüzden `T9` talebinde düzeltilmesi istenmişti; henüz
@@ -276,20 +276,20 @@ onları daraltılmış hâliyle kullanıyor).
 
 | ID | Haritada | Gövde ne diyor | Sonuç |
 |---|---|---|---|
-| `A1`/`A2` | P3 (zaman çağırandan) | `AdversarialWave_MemoryTests.cs:62` — `CompanyMemory.Record` **saati VAR ama kullanmıyor** | Monoton saat portu bunları **kapatmaz**; ayrıca **kabul aralığı** gerekir (`assertedAt ≤ now + tolerans`). İki ayrı mekanizma |
-| `C2` | P2 (normalizasyon) | `:294-297` — `record` **değer-eşitliği** sözlük anahtarı; iki string birebir aynı | Kanonik kimlik tipi **çözmez**. Bu bir **entity/value karışımı**dır → P2'den **çıkarıldı** |
-| `W1b` | P2 | `AUDIT-WAVE2 §1.2`: *"`bool`, üç durumlu bir soruyu temsil edemez — bulgunun **tip düzeyindeki kökü budur**"* | Ayrı tasarım hatası. Kanonik ad yalnız *tetikleyiciyi* kapatır |
-| `W2_O1` | P1 (taklit edilebilir) | `:325` — `Owner` diye bir property **yok** | Yetki taklit edilmiyor, **hiç yok**. Ayrı iş |
+| `MEM_A1`/`MEM_A2` | P3 (zaman çağırandan) | `AdversarialWave_MemoryTests.cs:62` — `CompanyMemory.Record` **saati VAR ama kullanmıyor** | Monoton saat portu bunları **kapatmaz**; ayrıca **kabul aralığı** gerekir (`assertedAt ≤ now + tolerans`). İki ayrı mekanizma |
+| `MEM_C2` | P2 (normalizasyon) | `:294-297` — `record` **değer-eşitliği** sözlük anahtarı; iki string birebir aynı | Kanonik kimlik tipi **çözmez**. Bu bir **entity/value karışımı**dır → P2'den **çıkarıldı** |
+| `SEC_W1b` | P2 | `AUDIT-WAVE2 §1.2`: *"`bool`, üç durumlu bir soruyu temsil edemez — bulgunun **tip düzeyindeki kökü budur**"* | Ayrı tasarım hatası. Kanonik ad yalnız *tetikleyiciyi* kapatır |
+| `INV_W2_O1` | P1 (taklit edilebilir) | `:325` — `Owner` diye bir property **yok** | Yetki taklit edilmiyor, **hiç yok**. Ayrı iş |
 
 **Düzeltilmiş kapanma iddiası: 41 → 40.**
 
 ### 12.1 Ve bir iddia daha — o da yanlış çıktı (oturum sahibi doğrulaması)
 
-Aynı denetim *"13 kimliğin hiç testi yok"* dedi (`W1a` `W1b` `W1c` `W2c` `W2e` `W2f` `W5a`
-`W5b` `W5d` `W5e` `W5g` `W7f` `W7h`) ve buna dayanarak ADR'ye bir **K-0** kararı ekledi.
+Aynı denetim *"13 kimliğin hiç testi yok"* dedi (`SEC_W1a` `SEC_W1b` `SEC_W1c` `SEC_W2c` `SEC_W2e` `SEC_W2f` `SEC_W5a`
+`SEC_W5b` `SEC_W5d` `SEC_W5e` `SEC_W5g` `SEC_W7f` `SEC_W7h`) ve buna dayanarak ADR'ye bir **K-0** kararı ekledi.
 
 **Yanlış.** Onüçünün de testi var; hepsi `AdversarialWave_SecurityTests.cs` içinde. Sebep
-kodlama tuzağı: o dosyada `W2e` testinin fixture'ı olarak **4 gerçek NUL baytı** duruyor,
+kodlama tuzağı: o dosyada `SEC_W2e` testinin fixture'ı olarak **4 gerçek NUL baytı** duruyor,
 bu da `grep`/`rg`'ye tüm dosyayı binary saydırıyor.
 
 > **Aynı dört bayt bu oturumda üç kez yanılttı:** sicilin 68/75 sayım hatası → güvenlik
@@ -301,7 +301,7 @@ ADR-0003'te düzeltilmelidir.
 
 ### 12.2 Şema kusuru — ID uzayı global tekil değil
 
-`F3`/`G3`/`G4` hem `AUDIT_DEFECT_*` (MemoryTests) hem `AUDIT_FIXED_*` (AdversarialAuditTests)
+`MEM_F3`/`MEM_G3`/`MEM_G4` hem `AUDIT_DEFECT_*` (MemoryTests) hem `AUDIT_FIXED_*` (AdversarialAuditTests)
 olarak, **farklı anlamlarda** var. Bu vakada atamalar tesadüfen doğru; ama şema bozuk ve
 sonraki bir sayımı sessizce yanıltabilir.
 
@@ -332,12 +332,12 @@ Her biri: **tam 1** canlı `AUDIT_DEFECT_*`, **0** rakip `AUDIT_FIXED_*`.
 
 ### Sınama sırasında bulunan kusur — iddia hâlâ **çıplak ID** kullanıyor
 
-İlk ölçüm çıplak ID'lerle yapıldı ve **4'ü `⚠️`** verdi (`A1` `A2` `B4` `D4`): çünkü
-`AUDIT_DEFECT_MEM_A1` ile `AUDIT_FIXED_AUD_A1` **farklı kusurlar** ama çıplak `A1`
+İlk ölçüm çıplak ID'lerle yapıldı ve **4'ü `⚠️`** verdi (`MEM_A1` `MEM_A2` `MEM_B4` `MEM_D4`): çünkü
+`AUDIT_DEFECT_MEM_A1` ile `AUDIT_FIXED_AUD_A1` **farklı kusurlar** ama çıplak `MEM_A1`
 ikisini de eşliyor.
 
 > **Ad-uzayı kodu düzeltti; belgeler eski adı kullanmaya devam ediyor.** §1-§9 tabloları
-> ve `ADR-0003`'ün kapanma iddiası hâlâ `A1`, `W22`, `H4` diyor — ve bunların 4'ü
+> ve `ADR-0003`'ün kapanma iddiası hâlâ `MEM_A1`, `SCH_W22`, `MEM_H4` diyor — ve bunların 4'ü
 > **belirsizdir**. Yukarıdaki tablo doğru adları verir; §1-§9'un toplu güncellenmesi
 > ayrı bir edimdir.
 

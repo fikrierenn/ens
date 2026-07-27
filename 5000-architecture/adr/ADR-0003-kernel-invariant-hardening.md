@@ -10,7 +10,7 @@ realizes:      []
 principles:    [P1, P5, P6, P7, P8]
 status:        draft
 owner:         ens-ai-architect
-version:       0.7.0
+version:       0.7.1
 last_reviewed: 2026-07-27
 maturity:      M0
 skeptic_review: [SKR-049, ENG-0001, SKR-050, ENG-0002, SKR-051]   # SKR-049: wounded (T-A..T-E) · ENG-0001: koşullu
@@ -666,6 +666,28 @@ kapanış ölçütü yapmaya uygun kılıyor.
 
 Yani **kararlar ayakta, belge değil.** Kalan üçü (K-3, K-5, K-6) koşullu ve koşulları
 yazılı.
+
+---
+
+
+### 0.13 Kapanma iddiasının **ad-uzaylı** kimlikleri (v0.7.1)
+
+`DEFECT-PATTERN-MAP` §13.2 ad-uzayını uyguladı; §14 iddianın **iyi-biçimli** olduğunu
+ölçtü (17/17: her biri tam 1 canlı `AUDIT_DEFECT_*`, 0 rakip `AUDIT_FIXED_*`).
+Bu ADR'nin **17** iddiası artık tek anlamlı kimliklerle yazılıdır:
+
+| Karar | Kalıp | Ad-uzaylı kimlikler |
+|---|---|---|
+| **K-3** | `DP3` — zaman çağırandan | `MEM_A1` `MEM_A2` `MEM_B4` `MEM_D4` `INV_W2_L3` `INV_W2_R6` |
+| **K-5** | `DP6` — canlı koleksiyon | `SCH_W22` `INV_W2_R4` `INV_W2_L4` `SEC_W5a` `SEC_W5b` |
+| **K-6** | `DP7` — çıktı kapısı yok | `MEM_H4` `SCH_W3` `SCH_W17` `SEC_W5e` `SEC_W8a` `SEC_W8b` |
+
+> **Neden gerekliydi:** çıplak `A1` iki farklı kusuru eşliyordu —
+> `AUDIT_DEFECT_MEM_A1` (memory'de zaman) ve `AUDIT_FIXED_AUD_A1` (gate'te NaN stake).
+> Ad-uzayı olmadan bu iddianın 4 üyesi **sınanamazdı**.
+
+**Kapanış ölçütü (değişmedi):** kararlar uygulanınca yukarıdaki 17 kimliğin
+`AUDIT_DEFECT_*` testleri `AUDIT_FIXED_*`'a dönmelidir. Dönmeyen her test iddiayı çürütür.
 
 ---
 
