@@ -10,10 +10,10 @@ realizes:      []
 principles:    [P1, P5, P6, P7, P8]
 status:        draft
 owner:         ens-ai-architect
-version:       0.3.0
+version:       0.4.0
 last_reviewed: 2026-07-27
 maturity:      M0
-skeptic_review: [SKR-049, ENG-0001, SKR-050]   # SKR-049: wounded (T-A..T-E) · ENG-0001: koşullu
+skeptic_review: [SKR-049, ENG-0001, SKR-050, ENG-0002]   # SKR-049: wounded (T-A..T-E) · ENG-0001: koşullu
                           # SKR-050 (v0.3.0, 2. tur): wounded — 5 bloke edici (T-A..T-E).
                           # En ağırı T-A: §0.7'nin 9 kararından 7'si gövdeye UYGULANMADI;
                           # belge kendi kararlarıyla çelişiyor. Manşet 43 savunulamaz
@@ -321,6 +321,99 @@ blanket `class` kararıyla **kapanamaz** — ADR kapalı ilan ediyordu.
 > **v0.4.0 gerekiyor:** D-2 ve D-3 yeniden karara bağlanmalı (PRECIS iki-profil deseni
 > ciddi bir aday), D-6'nın OQ1 kapanışı geri alınmalı, üç yeni yüzey kaydedilmeli.
 > Paralel `ENG-0002` turu ölçüm getiriyor; **v0.4.0 onun sonucunu bekler.**
+
+---
+
+## 0.9 v0.4.0 — `ENG-0002` ölçtü: **2 tuttu · 4 kısmen · 3 tutmadı**
+
+### D-1 ÇÖKTÜ — ve çöküşü bu ADR'nin en önemli bulgusu
+
+`Unsafe.As` mührü kırıyor. **Reflection yok, `BindingFlags` yok, `AllowUnsafeBlocks=false`.**
+Oturum sahibi bağımsız doğruladı (`scratchpad/verify-unsafe`):
+
+```
+Tool=wire_transfer Scope=9999
+ReferenceEquals(mühür) = True
+Aynı nesne mi = True
+```
+
+Registry'nin **kendi verdiği** nesne **yerinde** değişiyor. `ReferenceEquals` bunu göremez —
+çünkü gerçekten aynı nesnedir. `sealed class`'ın kapattığı şey `with` **operatörüdür**,
+saldırı **sınıfı** değil.
+
+> **Sonuç — kabul edilmesi gereken mimari gerçek:** .NET'te **in-process** hiçbir tip-tabanlı
+> şema, o kodu yazabilen bir çağırana karşı yetkiyi koruyamaz. §4.1'in *"güven sınırı
+> **çağrı grafiğidir**"* cümlesi **ölçümle çürüdü**. Güven sınırı **process**tir.
+
+**Bunun iki sonucu var ve ikisi de ADR'yi değiştiriyor:**
+
+1. **K-1 hedefini küçültür.** Tip-tabanlı mühür **kazayla ve gündelik** taklidi durdurur
+   (`new ToolAuthorization(...)`, `with`, düz veri üretimi) — bu gerçek bir değerdir ve
+   `E3`/`W15`'in çoğu vakası budur. Ama **kararlı** bir saldırganı durduramaz. Karar cümlesi
+   *"taklit edilemez"* değil, **"taklit maliyetini `Unsafe`/process sınırına taşır"** olmalı.
+2. **`DP5` (reflection) ile K-1 aynı sorudur.** ADR `DP5`'i *"kapsam kararı"* diye ayırmıştı;
+   ölçüm ikisinin **tek** soru olduğunu gösterdi: *güven sınırı nerede?* Cevap process ise,
+   `DP5` ve K-1 birlikte kapsam dışına çıkar — ve `E5`/`W3c` gibi `E3`/`W15`/`W4a` de
+   **kısmen** açık kalır.
+
+### D-6 tutmadı — ve `ENG-0001`'in talebini **daraltarak** zayıflattı
+
+Derleyici çıktısıyla ölçüldü: `CS8618` yalnız **kurucu-çıkışında** doğuyor.
+`default(class)` → **`CS8600`** (ADR'nin listesinde **yok**, uyarı olarak kalıyor).
+`default(struct)` ve `new T[n]` → **hiçbir tanı yok**.
+
+`ENG-0001` `Nullable` **kategorisini** istemişti — o `CS8600`'ü de hataya çevirir. ADR tek
+koda daralttı ve **tam da `default(T)`'yi yakalayan kodu dışarıda bıraktı.**
+
+> **v0.4.0 kararı:** `<WarningsAsErrors>` yerine `<TreatWarningsAsErrors>` + `Nullable`
+> kategorisi. Ve OQ1 **yeniden açık** — `ImmutableArray<T>` BCL `struct`'ı olduğu için
+> blanket `class` kuralı kapatamaz (`SKR-050`).
+
+### D-7 tutmadı — ölçüldü: **8 `DP` / 78 `P`**
+
+Ad değişikliği ilan edildi, metne **uygulanmadı**. §0.8'in S-1 kalıbının aynısı: changelog
+karar sayılıyor, gövde eski kalıyor. **Beşinci tekrar.**
+
+### D-2 kısmen — maliyeti **yazılmamış bir alt-karara** bağlı
+
+Kernel'in **kopyasında** ölçüldü (asıl ağaç değişmedi):
+
+| Okuma | Sonuç |
+|---|---|
+| **Zayıf** (yalnız biçim reddi) | `W1a`/`W1b`/`W1e` **yeşil kalıyor** — 43'ün içindeki kimlikler kapanmıyor, çünkü *biçim reddi ≠ varlık kontrolü* |
+| **Katı** | **6 `AUDIT_FIXED_*` regresyon bekçisi** kırılıyor |
+
+**20 ↔ 52 test** farkı. ADR hangisini kastettiğini söylemiyor → karar **eksik**.
+
+### D-3 tutmadı (ikinci kez teyit) · D-4, D-5 **tuttu**
+
+`D-4` gövde satırı doğrulandı; `D-5` iki desende de çalıştı, **NaN riski yok**.
+
+### D-8 — sayı türetilebilir ama gövde **dört farklı sayı** taşıyor
+
+`ENG-0002` `DEFECT-PATTERN-MAP` §1-§9'u satır satır **yeniden saydı**: 12+13+6+5+5+6 = **47**
+✅, çıkarılan dördü de tek üye, **çifte çıkarma yok** → **43 türetilebilir**.
+Ama gövdede **41**, **40**, **43** ve `SKR-050`'nin **"40+4"**'ü birlikte duruyor;
+`Failure conditions` hâlâ **40** diyor.
+
+### Yeni yüzey — ADR'de hiç yok
+
+`Register` bir **enumerasyon oracle'ı**, ve daha kötüsü **sorgunun kendisi yetki veriyor**:
+başarısız bir tahmin Pack'i **kalıcı kaydediyor**, aracını yetkilendiriyor, ve `Unregister`
+**yok**. Hata mesajı kayıtlı versiyonu (`v3.7.1`) sızdırıyor.
+
+### Bağımsızlık kaydı — dürüstlük gereği
+
+`ENG-0002`, `ENG-0001` ile **aynı roldür**. G4 anlamında **ikinci boyut değildir**;
+Engineering'in **ikinci ölçümüdür**. ADR-0003 bugün iki gerçek boyuttan geçti
+(`SKR-*` scientific + `ENG-*` engineering); `ENG-0002` üçüncü bir boyut **eklemez**.
+Ajan bunu kendi raporunda kaydetti — talep edilmeden.
+
+---
+
+> **v0.4.0'ın durumu:** bu sürüm ölçümleri **kaydeder**; D-1'in yeni karar cümlesi, D-2'nin
+> alt-kararı ve D-6'nın kategori düzeltmesi **v0.5.0'a** kalır ve yeni bir tur ister.
+> §0.6'nın ayrımı korunuyor: **kaydetmek ≠ karara bağlamak.**
 
 ---
 
