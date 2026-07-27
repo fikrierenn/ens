@@ -6,7 +6,7 @@ status: draft
 owner: ens-philosopher
 version: 0.1.0
 last_reviewed: 2026-07-27
-depends_on: [ENS-0000, GOV-000, RFC-6001]
+depends_on: [ENS-0000, GOV-000, RFC-6001, RFC-6003]  # RFC-6003: G4 boyut kadrosu (ARCH-0001 D-3.5 — künye gövdeyle uyumsuzdu)
 referenced_by: []
 skeptic_review: pending
 failure_conditions: stated

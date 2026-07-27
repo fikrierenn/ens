@@ -15,6 +15,38 @@ principles: [P6, P7]
 
 # RFC-6002 — Doğrulama Kapılarının Kapsamı: `ratified` ≠ `Canonical`
 
+> ## ⛔ v0.1.0 ÇEKİRDEĞİ AŞILMIŞ — bağımsız mimari inceleme, 2026-07-27 (`ARCH-0001`)
+> **Verdict: `yapısal kusurlu`.** Aşağıdaki §2'nin tamamı
+> `.claude/standards/maturity-model.md:34` (*"`canon: true` yalnızca M5'tir"*) üzerine
+> kuruludur. **O satır üstün norm tarafından aşılmıştır.**
+>
+> Anayasa Madde IV — RFC-6001 ile değiştirilmiş hâliyle, `ENS-0000:107-112` — **ikinci bir
+> canon yolu** açar:
+> > *"**`constitutive: true` yapıtlar** … `canon: true` olmak için **ratifikasyon** yolunu
+> > izler … Ampirik kanıt zincirine (M5 / Faz-4) **tabi değildir**, çünkü ampirik iddia
+> > taşımaz."*
+>
+> `RFC-6001:169` örneği açık: `constitutive: true, canon: true` — *"ör. ENS-0000, ENS-4000"*.
+> Madde XII gereği Standards katmanı Anayasa'dan **türer**; bu RFC aşılmış bir alt-norm
+> satırını çekirdek yapmıştır. **Doğrulandı** (oturum sahibi, `dosya:satır`, kural §3.5).
+>
+> **Sonucu:** `canon = M5` özdeşliği yalnızca `constitutive: false` yapıtlar için geçerlidir.
+> İki canon yolu vardır ve §2 bunu görmez. Bu, RFC'nin kendi **FC-2**'sini *"kısmen"* değil
+> **tamamen** tetikler.
+>
+> **v0.2.0'da yapılacak:** §2 iki-yollu canon modeline göre yeniden yazılacak; `ratified` ≠
+> `Canonical` ayrımı korunur (o kısım ayakta) ama gerekçesi `maturity-model.md`'den
+> **Madde IV'e** taşınır. Diğer iki bloke edici bulgu (atomiklik testi D-3.1/3.2, R2'nin
+> uygulanamazlığı D-4.1) için bkz. `reviews/ARCH-0001-*.md`.
+>
+> **Kabul sırası da tersine döndü:** ilan edilen `6002 → 6003`; mimari inceleme
+> **`RFC-6003 → RFC-6002 → RFC-6004`** diyor — çünkü RFC-6002 tek başına kabul edilirse
+> *"tüm aktif boyutlar"* bugün `{Scientific, Ontology}`'ye çözülüyor ve **ikisi de
+> `ens-skeptic`e atanmış**; G4-boyut uyumu hiçbir yeni doğrulama yapılmadan %0'dan ~%40'a
+> **sıçrar**. Yani sistem sıkılaşmaz, **gevşer**.
+>
+> Bu kutu silinmeyecek — v0.2.0 yazıldığında tarihsel kayıt olarak kalır (EC-001).
+
 > **Öneri edimidir, norm değildir.** Kabul edilirse normu GOV-000, `maturity-model.md` ve
 > `canonical-process.md`'ye yazar; kendisi tarihsel kayda döner (RFC-6001 emsali).
 
