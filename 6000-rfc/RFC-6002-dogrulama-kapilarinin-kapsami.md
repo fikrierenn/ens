@@ -214,4 +214,19 @@ Bu RFC **yanlıştır** eğer:
 
 `constitutive: true` bir belgeyi doğrulamadan muaf tutmaz (RFC-6001 §Kritik nokta, `:175`).
 Bu RFC de muaf değildir: en az bir bağımsız `ens-skeptic` turu, ardından Madde XIV yordamı.
-**Yazarı kendi turunu `survives` işaretleyemez** (GOV-000 G2 + G4).
+**Yazarı kendi turunu `survives` işaretleyemez** — dayanak **GOV-000 G4** (≥2 bağımsız
+validator) ve **G3** (`GOV-000:35` — doğrulayan onaylamaz). **G2 DEĞİL.**
+
+> ### ⚠️ Düzeltme — SKR-047 / D-6 (2026-07-27)
+> Bu satır ilk sürümde *"(GOV-000 **G2** + G4)"* diyordu. **Yanlıştı** ve yanlışlığı özellikle
+> utandırıcı: G2 **kanonlaştırma** yasağıdır, **doğrulama** yasağı değil. Kendi turunu
+> `survives` işaretlemek bir doğrulama edimidir; G2 onu yasaklamaz.
+>
+> Utandırıcı olan şu: bu RFC, **§3'te** (`:109`) `governance/roles.md`'deki tam bu G2
+> hatasının düzeltilmesini **kendi yordamsal argümanının emsali olarak gösteriyor** — ve
+> 108 satır sonra ailenin yeni bir üyesini üretiyor. Hata kaynakta bulundu, düzeltildi,
+> emsal gösterildi, sonra tekrarlandı.
+>
+> SKR-047 bunu *"en sert bulgu tipi: RFC, teşhis ettiği hatayı teşhisin hemen yanında
+> tekrarlıyor"* diye adlandırdı. Katılıyorum. Kutu kalıcıdır (EC-001) — çünkü kalıbın
+> ne kadar yapışkan olduğunun kanıtı budur.
