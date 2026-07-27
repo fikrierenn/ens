@@ -55,6 +55,53 @@ değil**; G-ilkeleri anayasa metninde geçmez:
 **Adversarial demek:** "doğru" varsayma; **kırmaya çalış.** Kanıt iste (`dosya:satır`).
 Emin değilse **DOĞRULANMADI** yaz — uydurma.
 
+### 3.1 İKİ BOYUT KURALI — tek tur ne zaman yetmez
+
+> **Kural:** Aşağıdaki yapıtlar **tek** doğrulama turuyla kapanamaz; **farklı boyutlardan
+> en az iki** bağımsız tur gerekir (GOV-000 **G4**).
+>
+> - RFC (özellikle Anayasa'yı değiştiren)
+> - ADR — çünkü kabul edilirse **kod ona dayanır** (Madde VII)
+> - `canon: true` hedefleyen her yapıt
+> - Kernel'de davranış değiştiren karar
+
+**Boyut = farklı lens, farklı tur DEĞİL.** Aynı rolün iki turu **tek** validator sayılır.
+Bugün fiilen ayrışan lensler: `ens-skeptic` (bilimsel geçerlilik) · `ens-architect`
+(yapısal sonuç, uygulanabilirlik, katman etkisi) · `ens-code-reviewer` (TRACE sadakati,
+tip tasarımı) · `ens-test-runner` (sayısal kanıt).
+
+**Bu kural üç kez ölçülerek yazıldı** — ve üçünde de tek tur yetmedi:
+
+| Vaka | Tek tur ne buldu | İkinci boyut ne buldu |
+|---|---|---|
+| ENS-2003 `c` çift-sayımı | SKR-040 ve SKR-041 (**ikisi de bilimsel**) hatayı **görmedi** | Farklı kapsamlı bir okuma yakaladı |
+| RFC-6002 / RFC-6003 | `SKR-047`: çürük ampirik ayak, sayım hatası, yanlışlanamazlık zırhı | `ARCH-0001`: atomiklik testi, R2'nin uygulanamazlığı, **kabul sırasının ters olduğu** |
+| `DEFECT-PATTERN-MAP` | — | `ens-ai-architect` **dört yanlış atama** buldu (test gövdelerini okuyarak) |
+
+İkinci satır özellikle önemli: iki tur **birbirinin kaçırdığını** buldu ve **birbirini
+görmeden aynı** üçüncü bulguya vardı. Yakınsama + ayrışma birlikte — G4'ün öngördüğü desen.
+
+> **NE ZAMAN UYGULANMAZ:** Tier 1-2 işler, biçimsel düzeltmeler, ve bir turun **bloke edici**
+> bulgusuyla yapıt zaten geri dönmüşse (düzeltilmiş sürüm yeni turlara girer, aynı sürüme
+> ikinci tur açmak gereksizdir).
+
+### 3.2 Kodlama tuzağı — araç "bulamadı" dediğinde iki kez bak
+
+Bir arama aracı bir dosyada **sıfır sonuç** ya da "binary file" dediğinde, dosyada gerçekten
+o şey olmayabilir — ya da **araç okuyamıyordur**. İkisi ayırt edilmeden "yok" denmez.
+
+**Gerçek vaka (2026-07-26/27, üç kez):** `AdversarialWave_SecurityTests.cs` içinde
+**4 adet gerçek NUL baytı** var — `W2e` testinin bilerek koyduğu fixture. O dört bayt
+`file`'a *"data"* dedirtiyor ve `grep`/`rg` **tüm dosyayı** binary sayıp atlıyor. Sonuç:
+
+1. Sicil **68** kusur saydı, gerçek **75**'ti.
+2. Güvenlik raporu o dosyayı hiç göremedi.
+3. `ens-ai-architect` *"13 kimliğin hiç testi yok"* dedi — **hepsinin testi var**, hepsi o
+   dosyada.
+
+Çare: `grep -a`, ve sayımı **komutla** üret (`inventory-check.sh`). Bir dosya beklenenden
+az sonuç veriyorsa **kodlamasını kontrol et** (`file`, ilk baytlar, NUL sayımı).
+
 > **Bu adımın ölüm kalım kuralı:** denetleyen ajan bir aracı çalıştıramıyorsa (ör. `Bash`
 > yok, `dotnet test` koşulamıyor) bunu **dürüstçe bildirir ve sonuç UYDURMAZ**. SKR-041
 > emsali. Çalıştırılamayan test, geçmiş test değildir.

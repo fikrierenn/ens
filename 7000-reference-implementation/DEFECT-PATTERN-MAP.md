@@ -255,3 +255,42 @@ iddialı** (41) ve **daha dar** (P5/P9 açıkça dışarıda).
 - `DEFECT-REGISTER-VERIFICATION.md` — borcu tespit eden bağımsız denetim
 - `AUDIT-WAVE2-SECURITY.md` §10.5 — "kusur örnek olarak kapatıldı, sınıf olarak kapatılmadı"
 - `.claude/rules/work-protocol.md` §3.5 — devralınan bulguyu doğrulama kuralı
+
+---
+
+## 12. ⛔ BAĞIMSIZ DOĞRULAMA — dört atama YANLIŞ çıktı (2026-07-27, `ens-ai-architect`)
+
+§11/2'nin ilan ettiği risk **gerçekleşti.** On iki test gövdesi okundu, **dördü** kalıbıyla
+çelişiyor. Bu bölüm o dördünü kaydeder; §1-§9 tabloları **henüz düzeltilmedi** (ADR-0003
+onları daraltılmış hâliyle kullanıyor).
+
+| ID | Haritada | Gövde ne diyor | Sonuç |
+|---|---|---|---|
+| `A1`/`A2` | P3 (zaman çağırandan) | `AdversarialWave_MemoryTests.cs:62` — `CompanyMemory.Record` **saati VAR ama kullanmıyor** | Monoton saat portu bunları **kapatmaz**; ayrıca **kabul aralığı** gerekir (`assertedAt ≤ now + tolerans`). İki ayrı mekanizma |
+| `C2` | P2 (normalizasyon) | `:294-297` — `record` **değer-eşitliği** sözlük anahtarı; iki string birebir aynı | Kanonik kimlik tipi **çözmez**. Bu bir **entity/value karışımı**dır → P2'den **çıkarıldı** |
+| `W1b` | P2 | `AUDIT-WAVE2 §1.2`: *"`bool`, üç durumlu bir soruyu temsil edemez — bulgunun **tip düzeyindeki kökü budur**"* | Ayrı tasarım hatası. Kanonik ad yalnız *tetikleyiciyi* kapatır |
+| `W2_O1` | P1 (taklit edilebilir) | `:325` — `Owner` diye bir property **yok** | Yetki taklit edilmiyor, **hiç yok**. Ayrı iş |
+
+**Düzeltilmiş kapanma iddiası: 41 → 40.**
+
+### 12.1 Ve bir iddia daha — o da yanlış çıktı (oturum sahibi doğrulaması)
+
+Aynı denetim *"13 kimliğin hiç testi yok"* dedi (`W1a` `W1b` `W1c` `W2c` `W2e` `W2f` `W5a`
+`W5b` `W5d` `W5e` `W5g` `W7f` `W7h`) ve buna dayanarak ADR'ye bir **K-0** kararı ekledi.
+
+**Yanlış.** Onüçünün de testi var; hepsi `AdversarialWave_SecurityTests.cs` içinde. Sebep
+kodlama tuzağı: o dosyada `W2e` testinin fixture'ı olarak **4 gerçek NUL baytı** duruyor,
+bu da `grep`/`rg`'ye tüm dosyayı binary saydırıyor.
+
+> **Aynı dört bayt bu oturumda üç kez yanılttı:** sicilin 68/75 sayım hatası → güvenlik
+> raporunun dosyayı hiç görememesi → şimdi bu. Kural `work-protocol.md` **§3.2**'ye yazıldı.
+
+**Sonuç:** §11/3'ün yanlışlanma koşulu (*"kararlar uygulanınca `AUDIT_DEFECT_*` →
+`AUDIT_FIXED_*` dönmeli"*) **40'ın tamamı için uygulanabilir.** K-0'ın dayanağı yoktur;
+ADR-0003'te düzeltilmelidir.
+
+### 12.2 Şema kusuru — ID uzayı global tekil değil
+
+`F3`/`G3`/`G4` hem `AUDIT_DEFECT_*` (MemoryTests) hem `AUDIT_FIXED_*` (AdversarialAuditTests)
+olarak, **farklı anlamlarda** var. Bu vakada atamalar tesadüfen doğru; ama şema bozuk ve
+sonraki bir sayımı sessizce yanıltabilir.
