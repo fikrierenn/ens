@@ -3,230 +3,278 @@ id: RFC-6002
 type: rfc
 canon: false
 status: draft
-owner: ens-philosopher
-version: 0.1.0
+owner: fikri-eren            # G5: fiilî yazar. v0.1.0'da `ens-philosopher` yazıyordu — yanlıştı (SKR-047 D-13)
+version: 0.2.0
 last_reviewed: 2026-07-27
 depends_on: [ENS-0000, GOV-000, GOV-030, RFC-6001]
 referenced_by: []
-skeptic_review: pending
+skeptic_review: [SKR-047, ARCH-0001]
 failure_conditions: stated
 principles: [P6, P7]
 ---
 
-# RFC-6002 — Doğrulama Kapılarının Kapsamı: `ratified` ≠ `Canonical`
+# RFC-6002 — Doğrulama Kapılarının Kapsamı: `ratified` ≠ `canon`
 
-> ## ⛔ v0.1.0 ÇEKİRDEĞİ AŞILMIŞ — bağımsız mimari inceleme, 2026-07-27 (`ARCH-0001`)
-> **Verdict: `yapısal kusurlu`.** Aşağıdaki §2'nin tamamı
-> `.claude/standards/maturity-model.md:34` (*"`canon: true` yalnızca M5'tir"*) üzerine
-> kuruludur. **O satır üstün norm tarafından aşılmıştır.**
->
-> Anayasa Madde IV — RFC-6001 ile değiştirilmiş hâliyle, `ENS-0000:107-112` — **ikinci bir
-> canon yolu** açar:
-> > *"**`constitutive: true` yapıtlar** … `canon: true` olmak için **ratifikasyon** yolunu
-> > izler … Ampirik kanıt zincirine (M5 / Faz-4) **tabi değildir**, çünkü ampirik iddia
-> > taşımaz."*
->
-> `RFC-6001:169` örneği açık: `constitutive: true, canon: true` — *"ör. ENS-0000, ENS-4000"*.
-> Madde XII gereği Standards katmanı Anayasa'dan **türer**; bu RFC aşılmış bir alt-norm
-> satırını çekirdek yapmıştır. **Doğrulandı** (oturum sahibi, `dosya:satır`, kural §3.5).
->
-> **Sonucu:** `canon = M5` özdeşliği yalnızca `constitutive: false` yapıtlar için geçerlidir.
-> İki canon yolu vardır ve §2 bunu görmez. Bu, RFC'nin kendi **FC-2**'sini *"kısmen"* değil
-> **tamamen** tetikler.
->
-> **v0.2.0'da yapılacak:** §2 iki-yollu canon modeline göre yeniden yazılacak; `ratified` ≠
-> `Canonical` ayrımı korunur (o kısım ayakta) ama gerekçesi `maturity-model.md`'den
-> **Madde IV'e** taşınır. Diğer iki bloke edici bulgu (atomiklik testi D-3.1/3.2, R2'nin
-> uygulanamazlığı D-4.1) için bkz. `reviews/ARCH-0001-*.md`.
->
-> **Kabul sırası da tersine döndü:** ilan edilen `6002 → 6003`; mimari inceleme
-> **`RFC-6003 → RFC-6002 → RFC-6004`** diyor — çünkü RFC-6002 tek başına kabul edilirse
-> *"tüm aktif boyutlar"* bugün `{Scientific, Ontology}`'ye çözülüyor ve **ikisi de
-> `ens-skeptic`e atanmış**; G4-boyut uyumu hiçbir yeni doğrulama yapılmadan %0'dan ~%40'a
-> **sıçrar**. Yani sistem sıkılaşmaz, **gevşer**.
->
-> Bu kutu silinmeyecek — v0.2.0 yazıldığında tarihsel kayıt olarak kalır (EC-001).
+> **Öneri edimidir, norm değildir.** Kabul edilirse normu GOV-000 ve `canonical-process.md`'ye
+> yazar; kendisi tarihsel kayda döner (RFC-6001 emsali).
 
-> **Öneri edimidir, norm değildir.** Kabul edilirse normu GOV-000, `maturity-model.md` ve
-> `canonical-process.md`'ye yazar; kendisi tarihsel kayda döner (RFC-6001 emsali).
+---
+
+## 0. v0.1.0 → v0.2.0 — neyin neden değiştiği
+
+v0.1.0 iki bağımsız incelemeden **ikisinden de** `wounded` aldı ve **ikisi de aynı** bloke
+edici bulguya vardı, birbirini görmeden:
+
+| İnceleme | Boyut | Verdict |
+|---|---|---|
+| `SKR-047` | Scientific | `wounded` — 5 bloke edici |
+| `ARCH-0001` | Architectural | `yapısal kusurlu` — 3 bloke edici |
+
+**Bu yakınsama bu RFC'nin konusunun kendisidir:** farklı boyutlar aynı kusuru bulunca teyit
+olur, farklı kusurlar bulunca asıl değer çıkar. İkisi de gerçekleşti.
+
+| # | Bulgu | v0.2.0'da |
+|---|---|---|
+| Temel taşı bayat (`SKR-047` D-1 · `ARCH-0001` D-2.3) | §2 `maturity-model.md:34`'e dayanıyordu; o satırı **RFC-6001 aştı** | §2 tümüyle yeniden yazıldı, temel **Madde IV + RFC-6001 §7.2** |
+| Tek-aktör kaçağı (`SKR-047` D-5) | *"Tüm aktif boyutlar"* G4'ü tek aktörle geçilebilir kılıyordu | §4'e iki koruma cümlesi |
+| Sahte bağımsızlık (`SKR-047` D-10) | *"İki bağımsız türetme"* iddiası savunulamaz | §2.1 **geri çekildi** |
+| Atomiklik başarısız (`ARCH-0001` D-3.1/3.2) | 6002 tek başına kabul edilirse sistem **gevşer** | §5 kabul sırası tersine: **6003 → 6002 → 6004** |
+| R2 uygulanamaz (`ARCH-0001` D-4.1) | Önerdiği aktörün ajan dosyası yok | §3.1 "farklı aktör" → **ayrı edim** |
+| G2 hatası tekrarı (`SKR-047` D-6) | §10, SCAN-01'in öldürdüğü hatayı yeniden üretti | Düzeltildi (§9 kutusu) |
+| Geriye akıl yürütme (`SKR-047` D-11) | §2.2 "9 ihlal üretir, o hâlde yanlış" | **Kaldırıldı** |
+| Owner uyumsuzluğu (`SKR-047` D-13) | Künye `ens-philosopher`, yazan başkası — **G5** sorunu | Künye düzeltildi |
+
+Silinen bölümler **geri getirilmeyecek** ama v0.1.0 git geçmişinde durur (EC-001).
+
+---
 
 ## 1. Problem
 
-Külliyat'ın doğrulama kapıları hakkında **üç ayrı belge üç ayrı şey söylüyor gibi görünüyor**:
+Külliyat'ın doğrulama kapıları hakkında farklı belgeler farklı şeyler söylüyor gibi görünüyor
+ve 2026-07-27 kapı-uyum taraması (`governance/SCAN-03-gate-compliance.md`) bunu bir
+**normatif çatışma** (Ç-01) olarak kaydetti: 9 `ratified` yapıtın yalnız 6'sı G4'ü sayıca,
+**hiçbiri** boyut olarak sağlıyor.
 
-| Belge | Der ki |
+**O ölçüm yanlış bara karşı yapılmıştı.** Bu RFC neden yanlış olduğunu ve doğru barın ne
+olduğunu yazar.
+
+---
+
+## 2. Çözüm: `canon`'a İKİ yol vardır
+
+`ratified` bir `status`'tür; `canon` ayrı bir alandır. Ama v0.1.0'ın sandığı gibi
+*"canon = M5"* **değildir** — Anayasa Madde IV, RFC-6001 ile değiştirilmiş hâliyle
+(`ENS-0000:107-115`) **iki ayrı yol** tanımlar:
+
+| Yapıt türü | `canon: true` yolu | M5'e tabi mi |
+|---|---|---|
+| **`constitutive: true`** (Anayasa, kurucu tezler, yasa-çerçevesi, tip/şema, governance) | **Ratifikasyon** — failure conditions'ını *tutarlılık/örneklenebilirlik* kipinde yazar, `ens-skeptic` tutarlılık incelemesinden sağ çıkar | **HAYIR** — *"Ampirik kanıt zincirine (M5 / Faz-4) tabi değildir, çünkü ampirik iddia taşımaz"* |
+| **`constitutive: false`** (ampirik teori ve yasalar) | Failure conditions + skeptic → `ratified` (M3); **tam Canon (M5)** yalnızca reference platform ile | **EVET** |
+
+`RFC-6001:341-345` (§7.2) bunu künye kuralı olarak yazar:
+> *"`constitutive: false` (ampirik) yapıtta **yalnızca `maturity: M5` ise** true;
+> `constitutive: true` (kurucu) yapıtta **ratifiye edilip skeptic tutarlılık incelemesinden
+> sağ çıkınca** true — maturity/evidence eksenine tabi değil."*
+
+Ve `RFC-6001:169` örneği verir: `constitutive: true, canon: true` — *"ör. ENS-0000, ENS-4000"*.
+
+### 2.1 Bunun G4 için sonucu
+
+G4'ün öznesi *"her **Canonical** yapıt"*tır (`GOV-000:36`). Dolayısıyla:
+
+> **≥1 SKR → `ratified` (M2).**
+> **`canon: true` → yola göre değişir:** ampirik yapıtta M5 + ≥2 bağımsız boyut;
+> kurucu yapıtta ratifikasyon + tutarlılık incelemesi.
+
+`ratified` yapıtları G4 ile ölçmek **kategori hatasıdır** — ve SCAN-03'ün "6/9" ölçümü tam
+olarak bu hatayı yapmıştır. Doğru soru şudur: **`canon: true` taşıyan 4 yapıt kendi yolunu
+tamamlamış mı?**
+
+### 2.2 ⚠️ v0.1.0'ın "iki bağımsız türetme" iddiası — GERİ ÇEKİLDİ
+
+v0.1.0 bu okumayı *"iki bağımsız context aynı sonuca vardı"* diye sundu. **Savunulamaz**
+(`SKR-047` D-10): her ikisi de aynı kaynağı (`SCAN-03:587`) okudu ve **ardışık** çalıştılar
+(`ROADMAP:240`). Dürüst ifade:
+
+> Bir **yorumsal türetme** (`ens-philosopher`, ROADMAP G-26) ve onun girdilerinin bağımsız
+> **alıntı denetimi**. Bu bir **kaynak doğrulamasıdır**, G4 anlamında **ikinci bir validator
+> değildir**.
+
+v0.1.0 ayrıca *"alternatif okuma 9 ihlal üretir, o hâlde yanlıştır"* diye akıl yürütüyordu.
+Bu **sonuçtan geriye akıl yürütmedir** ve RFC'nin kendi failure condition'ı tarafından
+çürütülüyordu (`SKR-047` D-11). **Kaldırıldı.** Okuma, rahatsız edici sonuç üretmediği için
+değil, **Madde IV metni öyle dediği için** doğrudur.
+
+### 2.3 Yeni gerilim: `GOV-000:47` "Canon boş" diyor, ama 4 yapıt `canon: true`
+
+> `GOV-000:47-48` — *"Engineering Validation Faz 4'ü gerektirdiğinden **M5 şu an ulaşılamaz —
+> Canon boş.** Bu, ilkelerin doğrudan ve dürüst sonucudur."*
+
+Bugün `canon: true` taşıyan **4** yapıt var: `ENS-0000`, `ENS-1000`, `ENS-4000`,
+`.claude/standards/traceability.md`.
+
+Çelişki değil, **bayatlık**: GOV-000'ün bu cümlesi RFC-6001'in Madde IV değişikliğinden
+**önce** yazılmıştır ve yalnız ampirik yolu tarif eder. Kurucu yol açıldıktan sonra "Canon
+boş" ifadesi olgusal olarak yanlıştır. **v0.2.0 bunu bir talep olarak kaydeder** (§6).
+
+---
+
+## 3. Asıl boşluk: `review → ratified` geçişini hiçbir kural yönetmiyor
+
+> **Ad uyarısı (`SKR-047` D-4):** ENS'te *"`review → ratified` kapısı"* diye adlandırılmış
+> bir mekanizma **yoktur**. Bu RFC o adı **kurar**; var olan bir şeyi tarif ettiğini iddia
+> etmez.
+
+G2/G4, GOV-000'de **Canonical**'a bağlıdır. `roles.md` onları koşulsuz uygular gibi
+yazılmıştı; ama `roles.md` GOV-000'den **türer** (`GOV-000:22`) ve türev kaynağını
+genişletemez. Aynı yönde emsal: `roles.md`'nin G2 türevi 2026-07-27'de **yanlış** bulunup
+GOV-000 lehine düzeltildi (`governance/SCAN-01-authority-citations.md`).
+
+Sonuç: `review → ratified` geçişi **yazılı hiçbir kurala tabi değil.** Bugün fiilen **SKR
+verdict'i** tetikliyor — yani *doğrulama, onayın yerine geçiyor*, ki bu **G3'ün yasakladığı
+şeydir**.
+
+### 3.1 Önerilen: hafif ratifikasyon kapısı — **aktör değil, EDİM ayrımı**
+
+v0.1.0 *"yazardan farklı bir aktör"* istiyordu. `ARCH-0001` D-4.1 bunu **doğuşta
+uygulanamaz** buldu: önerilen yürütücü `ens-ceo`'nun **ajan dosyası yok** (ROSTER'da
+"Ertelenmiş").
+
+Ama aynı inceleme deponun sorunu **zaten çözdüğünü** gösterdi:
+
+| Faz | Onaylayanı kayıtlı yapıt |
 |---|---|
-| `.claude/standards/maturity-model.md:28` | M2 = Scientific skeptic'ten **survives (≥1 SKR)** → `status: ratified` |
-| `governance/000-governance-principles.md:36` | **G4** — Her **Canonical** yapıtın **≥2 bağımsız** validator'ı vardır (farklı boyutlardan) |
-| `governance/canonical-process.md:45` | **G4:** ≥2 bağımsız boyut validator'ı (Scientific + Ontology, uygunsa + Engineering) |
+| Faz 3 (ADR/RFC) | **3/3** — CEO-0001/0002/0003 + STYLE-SIGNOFF-RFC-6001 |
+| Faz 0-2 (Külliyat) | **0/9** |
 
-2026-07-27'de yapılan kapı-uyum taraması (`governance/SCAN-03-gate-compliance.md`) bunu bir
-**normatif çatışma** (Ç-01) olarak kaydetti ve şu sonucu üretti: 9 `ratified` yapıtın yalnız
-6'sı G4'ü sayıca, **hiçbiri** boyut olarak sağlıyor.
-
-**Bu sonuç yanlıştı — ve yanlışlığı bu RFC'nin çekirdeğidir.**
-
-## 2. Çözüm: çatışma yok, terim karışıklığı var
-
-`ratified` ile `Canonical` **aynı şey değildir.**
-
-- **`ratified` bir `status`'tür** — M2, M3, M4 ve M5'in **ortak** durum etiketi
-  (`maturity-model.md:28-31`). M2'ye ulaşan bir yapıt `ratified` olur.
-- **`Canonical` bir `canon: true` alanıdır** — ve `maturity-model.md:34` bunu açıkça
-  sınırlar: **"`canon: true` yalnızca M5'tir. Skeptic-survives (M2/M3) Canon yapmaz."**
-
-G4'ün öznesi *"her **Canonical** yapıt"*tır. Dolayısıyla:
-
-> **≥1 SKR → `ratified` (M2).  ≥2 bağımsız boyut → `canon: true` (M5).**
-> İki kural farklı kapıları yönetir. Çelişmiyorlar.
-
-### 2.1 Bu okumanın iki bağımsız türetmesi var
-
-Anayasa Madde X ve GOV-000 G4 gereği bu iddianın kendisi de doğrulanmalıdır. İki ayrı
-context, birbirini görmeden aynı sonuca vardı:
-
-1. `ens-philosopher`, SCAN-03'ün Ç-01 maddesini çözerken (2026-07-27).
-2. Oturum sahibi, RFC yazmadan önce alıntıları `dosya:satır` doğrularken — ki bu doğrulama
-   sırasında raporun atıf yaptığı iki dosyanın **o yolda bulunmadığı** ve satır
-   numaralarının **kaymış olduğu** da ortaya çıktı.
-
-### 2.2 Alternatif okumanın maliyeti
-
-Karşıt okuma (G4 `ratified`'ı da bağlar) kabul edilirse, Külliyat'ın **kendi beyanı**
-—*"Canon şu an boştur, azami olgunluk M3'tür, bu doğru durumdur"*— bir anda **dokuz ihlal
-beyanına** dönüşür. Bir yorum, yorumladığı metni toplu ihlale çeviriyorsa önce yorumdan
-şüphelenilir.
-
-## 3. Ama gerçek bir boşluk var: `review → ratified` geçişini hiçbir kural yönetmiyor
-
-Ç-01 çözüldüğünde altından **asıl sorun** çıkıyor.
-
-`roles.md` G2/G3'ü koşulsuz uygular gibi yazılmıştı; GOV-000 ise onları açıkça
-**Canonical** ile sınırlar. GOV-000 kazanır — çünkü `roles.md` ondan **türer**
-(`GOV-000:22`: *"Roller, yetkiler ve süreçler bu ilkelerden türer"*), türev kaynağını
-genişletemez. Aynı yönde bir emsal 2026-07-27'de zaten yaşandı: `roles.md`'nin G2 türevi
-(*"kendi işini doğrulayan olamaz"*) **yanlıştı** ve GOV-000 lehine düzeltildi
-(`governance/SCAN-01-authority-citations.md`).
-
-Sonuç: G2/G4 **M5-kapsamlıdır**. Ve bu, `review → ratified` geçişini yöneten **hiçbir yazılı
-kural bırakmaz.**
-
-Bugün o geçiş fiilen **SKR verdict'i tarafından tetikleniyor** — yani *doğrulama, onayın
-yerine geçiyor*. Bu tam olarak **G3'ün yasakladığı şeydir** (*"Validation ve approval
-ayrıdır"*). Kusur bir kural dosyasında değil, **atanmamış bir onay makamındadır**:
-`governance/roles.md` bugün hâlâ *"Governance body: fazı gelince"* diyor. G3 bir ayrım
-istiyor; ayrımın bir tarafı boş.
-
-### 3.1 Önerilen: hafif ratifikasyon kapısı
-
-`review → ratified` için, `canon`'un ağır kapısından **ayrı** ve ondan hafif bir kapı:
+Çalışan fark **farklı kişi** değil, **ayrı edim**: ayrı dosya, ayrı lens, ayrı kayıt.
+R2 buna göre yeniden yazıldı:
 
 > **R1.** En az bir `survives` verdict'i taşıyan bağımsız inceleme.
-> **R2.** Yazardan **farklı** bir aktörün, **kayda geçen** ratifikasyon edimi.
-> **R3.** Edim künyede görünür: `ratified_by` ve `ratified_at` alanları (bkz. §6, açık iş).
+> **R2.** Ratifikasyon **ayrı bir edim** olarak yapılır: (a) doğrulama turundan **ayrı bir
+> kayıtta**, (b) **ayrı bir context**te üretilmiş, (c) yapıta ve kayda **iki yönlü iz**
+> bırakan. Aktör kimliği GOV-010'a aittir; bu RFC onu **atamaz**.
+> **R3.** Edim künyede görünür: `ratified_by`, `ratified_at` (şema edimi — `ens-style-guardian`).
 
-R2 olmadan G3 hiçbir statüde sağlanamaz. R3 olmadan G5 (*"sessiz karar yoktur"*) ihlal
-edilir — **bugün 9 `ratified` Külliyat yapıtının hiçbirinde onaylayan kayıtlı değildir.**
+R2'nin bu hâli **bugün uygulanabilir**: CEO-\* ve STYLE-SIGNOFF deseni tam olarak budur ve
+Faz-3'te 3/3 çalışmıştır. v0.1.0'ın hâli uygulanamazdı.
 
-## 4. Ç-03: M5'in boyut listesi
+---
 
-İki liste var ve **alternatif değil, birleşimdirler**:
+## 4. M5'in boyut listesi — ve tek-aktör kaçağının kapatılması
 
-- `maturity-model.md:31` — Scientific + Engineering + Business + Ethical (**Ontology yok**)
-- `canonical-process.md` zinciri — Scientific + **Ontology** + Engineering
+`maturity-model.md`'nin dört-boyut listesi ile `canonical-process.md`'nin zinciri **alternatif
+değil, birleşimdir**; ilki `validation-framework.md`'nin beş boyutu yazılmadan önceki bir
+**sayı-sürüklenmesidir**. Ontology'nin dışarıda kalması olgusal olarak da savunulamaz —
+ENS-4010/4025/4030/4031 turları fiilen o boyutta üretilmiştir.
 
-`maturity-model.md`'nin "dört-skeptic"i, `validation-framework.md`'nin **beş** boyutu
-yazılmadan önceki bir **sayı-sürüklenmesidir**. Ontology'nin dışarıda kalması olgusal olarak
-da savunulamaz: Külliyat'ın SKR'lerinin önemli bir bölümü (ENS-4010/4025/4030/4031 turları)
-fiilen bu boyutta üretilmiştir.
+> **Öneri:** sabit sayı yerine **"tüm aktif boyutlar"**.
 
-> **Öneri:** sabit sayı yerine **"tüm aktif boyutlar"** yazılsın. Bir boyut "aktif"tir ancak
-> ve ancak ROSTER'da o boyutun validator rolü **atanmışsa**. Böylece liste, kadro
-> gerçekliğiyle otomatik senkron kalır ve bir boyutun atanmamış olması sessizce
-> muafiyete dönüşmez — **görünür bir borç olur** (bkz. ROADMAP G-27: bugün sıfır ethical SKR).
+### 4.1 ⚠️ İki koruma cümlesi — bunlar olmadan öneri kendi deliğini açar
 
-## 5. Neden bu üçü tek RFC'de
+`SKR-047` D-5 gösterdi ki v0.1.0'ın formülü G4'ü **tek aktörle geçilebilir** kılıyor ve
+kadrosu olmayan boyutu **muaf** gösteriyordu. Yani kapatmayı vaat ettiği deliği açıyordu.
+İki cümle zorunludur:
 
-RFC-6001 emsali: Madde IV + künye şeması **atomik** değiştirildi, çünkü biri diğeri olmadan
-tutarsız bir ara durum bırakıyordu. Burada da öyle:
+> **(1)** *Aynı aktörün ürettiği farklı-boyutlu kayıtlar **tek** validator sayılır.
+> G4 farklı **aktör** ister, farklı **etiket** değil.*
+>
+> **(2)** *Aktif olmayan bir boyut **muaf değildir, ertelenmiştir**; ROADMAP'te açık borç
+> satırı taşır ve o satır kapanmadan ilgili yapıt `canon: true` olamaz.*
 
-- Ç-01 tek başına çözülürse, `review → ratified`'ı yöneten kural **hiç** kalmaz (§3).
-- Ç-02 tek başına çözülürse, hangi kapının hangi statüyü yönettiği belirsiz kalır.
-- Ç-03 tek başına çözülürse, çözülen kapının **ölçütü** eksik kalır.
+(2) olmadan bu RFC, `ROADMAP` **G-27**'nin (sıfır ethical doğrulama borcu) normatif
+dayanağını yok ederdi.
 
-Ama Ç-04 (ethical aktivasyonu) ve Ç-05 (kurucu yolun boyutları) **bu RFC'ye dahil değildir** —
-onlar boyut sözlüğü ve validator kadrosu meselesidir, farklı owner ve farklı yanılma kipi
-taşırlar. RFC-6003'e bırakıldılar. Gerekçe: CEO-0002'nin RFC-6001 üzerine düştüğü
-**kapsam-orantısı** gözlemi, tek dev RFC'ye karşı uyarır.
+---
+
+## 5. Kabul sırası — **ilan edilenin TERSİ**
+
+v0.1.0 `6002 → 6003` diyordu. `ARCH-0001` D-3.1/3.2 bunu somut bir testle çürüttü:
+
+> **RFC-6002 tek başına kabul edilirse sistem sıkılaşmaz, GEVŞER.**
+> *"Tüm aktif boyutlar"* bugün `{Scientific, Ontology}`'ye çözülüyor (`roles.md:61`) ve
+> **ikisi de `ens-skeptic`e atanmış**. G4-boyut uyumu **hiçbir yeni doğrulama yapılmadan**
+> %0'dan ~%40'a sıçrar (ENS-4001/4010/4020/4025/4030/4031).
+
+Yaması yalnızca RFC-6003 §4'tedir (Ontology Validator'ın ayrılması). Yani bağımlılık
+v0.1.0'ın ilan ettiği gibi tek yönlü değil, **çift yönlüdür**.
+
+> **Doğru sıra: `RFC-6003` → `RFC-6002` → `RFC-6004`.**
+> Alternatif: üçü RFC-6001 emsaliyle **tek paket** olarak kabul edilir.
+
+---
 
 ## 6. Değişecek metinler (kabul edilirse)
 
 | Belge | Değişiklik |
 |---|---|
-| `governance/000-governance-principles.md` | G4'e açık kapsam cümlesi: *"G4'ün öznesi `canon: true`'dur; `status: ratified` bunu tetiklemez."* |
-| `.claude/standards/maturity-model.md` | M5 boyut listesi → "tüm aktif boyutlar"; M2→`ratified` yolunun R1-R3 kapısına bağlanması |
-| `governance/canonical-process.md` | `review→ratified` kapısının (R1-R3) eklenmesi; bugün yalnız canonization'ı tarif ediyor |
-| `.claude/standards/metadata-header.md` | `ratified_by`, `ratified_at` alanları (**bu RFC'nin kapsamında değil** — `ens-style-guardian` owner'lığında ayrı edim; burada yalnız *gereksinim* olarak kaydedilir) |
+| `governance/000-governance-principles.md` | G4'e kapsam cümlesi: *"G4'ün öznesi `canon: true`'dur; `status: ratified` bunu tetiklemez."* **Ayrıca `:47`'nin "Canon boş" cümlesi bayattır** — kurucu yol açıldıktan sonra olgusal olarak yanlış (§2.3) |
+| `governance/canonical-process.md` | `review→ratified` kapısı (R1-R3) eklenir; bugün yalnız canonization'ı tarif ediyor |
+| `.claude/standards/maturity-model.md` | M5 boyut listesi → "tüm aktif boyutlar" + §4.1'in iki koruma cümlesi. **`:34` ("canon yalnızca M5") RFC-6001 §10.5 gereği zaten hizalama bekliyor** — bu RFC o satıra dokunduğu için **hizalama borcunu da kapatmalı** (`SKR-047` T-E) |
+| `.claude/standards/metadata-header.md` | `ratified_by`, `ratified_at` — **bu RFC'nin kapsamında değil**, `ens-style-guardian` edimi; burada yalnız gereksinim olarak kaydedilir |
+
+---
 
 ## 7. Reddedilen alternatifler
 
-**A. Hiçbir şey yapma — Ç-01 zaten çatışma değilse sorun yok.**
-Reddedildi: §3'teki boşluk gerçektir ve Ç-01'in çözümüyle **açığa çıkar**, kapanmaz.
-Doğrulamanın onayın yerine geçmesi bugün fiilen oluyor.
+**A. Hiçbir şey yapma.** Reddedildi: §3'teki boşluk gerçektir ve Ç-01'in çözümüyle
+**açığa çıkar**, kapanmaz. Doğrulamanın onayın yerine geçmesi bugün fiilen oluyor.
 
-**B. G4'ü `ratified`'a da genişlet.**
-Reddedildi: §2.2 — Külliyat'ın kendi doğru beyanını dokuz ihlale çevirir ve M2/M5 ayrımını
-anlamsızlaştırır. Ayrıca hiçbir metin bunu söylemiyor; bu bir **genişletme** olurdu, bir
-yorum değil.
+**B. G4'ü `ratified`'a da genişlet.** Reddedildi: Madde IV iki yol tanımlar ve `ratified`
+ikisinin de ara durağıdır. Hiçbir metin G4'ü `ratified`'a bağlamıyor; bu bir **genişletme**
+olurdu, yorum değil.
 
-**C. Beş çatışmayı tek RFC'de çöz.**
-Reddedildi: §5 — farklı owner, farklı yanılma kipi. RFC-6001'in CEO hiza-incelemesi
-kapsam-orantısı konusunda açıkça uyarmıştı.
+**C. Beş çatışmayı tek RFC'de çöz.** Reddedildi: farklı owner, farklı yanılma kipi.
+CEO-0002'nin kapsam-orantısı uyarısı geçerli.
+
+---
 
 ## 8. Failure conditions (Madde X)
 
 Bu RFC **yanlıştır** eğer:
 
-1. **`maturity-model.md:34` bulunamazsa ya da başka bir şey söylüyorsa.** Tüm §2 o tek
-   cümleye (*"`canon: true` yalnızca M5'tir"*) dayanır. O cümle kaldırılırsa RFC çöker.
-2. **Külliyat'ta `canon: true` olup M5 olmayan bir yapıt meşru sayılıyorsa** — bu durumda
-   `ratified`/`Canonical` ayrımı pratikte uygulanmıyordur ve ayrım tanımsal değil,
-   temenni olur. *(Bugün böyle **iki** yapıt var: ENS-4000 ve — 2026-07-27'ye kadar —
-   ENS-3000. İkisi de borç olarak kayıtlı: ROADMAP G-24, G-25. Yani bu koşul kısmen
-   gerçekleşmiş durumdadır ve RFC bunu gizlemiyor.)*
-3. **R2'yi (yazardan farklı onaylayan) uygulayacak aktör hiç atanmazsa.** Kural yazılıp
-   uygulanamıyorsa, kâğıt üzerinde kapatılmış bir boşluk gerçekte açık kalır — ve bu,
-   boşluğu **kayıtlı** hâlinden daha kötüdür.
-4. **"Tüm aktif boyutlar" tanımı, hiçbir boyutun atanmadığı bir durumda M5'i sıfır
-   validator'la geçirilebilir kılarsa.** Bu, kuralın kendi kaçağı olurdu; kabul edilmeden
-   önce kapatılmalıdır.
+1. **Madde IV'ün iki-yollu canon modeli kaldırılırsa ya da başka bir şey söylüyorsa.**
+   §2'nin tamamı `ENS-0000:107-115` + `RFC-6001:341-345`'e dayanır.
+2. **`constitutive: false` olup M5 olmadan `canon: true` taşıyan bir yapıt meşru sayılıyorsa.**
+   *(v0.1.0'ın fc-2'si "canon+non-M5 varsa RFC yanlış" diyordu — bu koşul `ENS-0000`'in
+   kendisi tarafından **tetiklenmişti**, çünkü ENS-0000 kurucudur ve meşru biçimde
+   canon'dur. Koşul `constitutive: false` ile sınırlandırıldı; `SKR-047` D-3.)*
+3. **R2'yi uygulayacak bir edim ayrımı hiç kurulmazsa.** Kâğıtta kapatılmış bir boşluk
+   gerçekte açık kalırsa, **kayıtlı** hâlinden kötüdür.
+4. **§4.1'in iki koruma cümlesi olmadan "tüm aktif boyutlar" kabul edilirse.** O hâlde
+   kural kendi kaçağını taşır ve G-27'nin dayanağını yok eder.
+5. **Kabul sırası §5'in tersine uygulanırsa** — RFC-6002 tek başına yürürlüğe girerse
+   G4-boyut uyumu sahte biçimde yükselir.
+
+---
 
 ## 9. Açık sorular
 
-1. R2'yi kim yürütür? SCAN-03 Ö-03'ün önerisi: RFC-6001'in kanıtlanmış çift-owner deseni
-   (`ens-ceo` hiza-onayı + `ens-style-guardian` şema-imzası) Külliyat ratifikasyonuna
-   genişletilsin. Bu RFC bunu **önerir, karara bağlamaz** — rol ataması GOV-010 alanıdır.
-2. Geçmişe dönük uygulanır mı? Mevcut 9 `ratified` yapıt R2/R3'ü taşımıyor. Toplu geriye
-   dönük ratifikasyon mu, yoksa "bu tarihten sonrası" mı?
-3. `ratified_by` künye alanı bu RFC ile mi gelir, ayrı bir şema sürümüyle mi?
+1. R2'nin aktörü kim? `SKR-047` T-F önerisi: *"GOV-010 aksini söyleyene kadar
+   `ens-style-guardian` (Custodian); hiza gerektiren yapıtlarda ek olarak `ens-ceo`."*
+   Bu RFC **önerir, atamaz**.
+2. Geriye dönük uygulanır mı? Mevcut 9 `ratified` yapıt R2/R3 taşımıyor.
+3. `GOV-000:47`'nin bayat "Canon boş" cümlesi bu RFC ile mi düzeltilir, ayrı bir edimle mi?
+
+---
 
 ## 10. Bu RFC'nin kendi yolu
 
-`constitutive: true` bir belgeyi doğrulamadan muaf tutmaz (RFC-6001 §Kritik nokta, `:175`).
-Bu RFC de muaf değildir: en az bir bağımsız `ens-skeptic` turu, ardından Madde XIV yordamı.
+`constitutive` bir belgeyi doğrulamadan muaf tutmaz (`RFC-6001:175`). v0.2.0 için gereken:
+**yeni** bir `ens-skeptic` turu + **farklı boyuttan** ikinci tur (GOV-000 **G4**).
+
 **Yazarı kendi turunu `survives` işaretleyemez** — dayanak **GOV-000 G4** (≥2 bağımsız
 validator) ve **G3** (`GOV-000:35` — doğrulayan onaylamaz). **G2 DEĞİL.**
 
-> ### ⚠️ Düzeltme — SKR-047 / D-6 (2026-07-27)
-> Bu satır ilk sürümde *"(GOV-000 **G2** + G4)"* diyordu. **Yanlıştı** ve yanlışlığı özellikle
-> utandırıcı: G2 **kanonlaştırma** yasağıdır, **doğrulama** yasağı değil. Kendi turunu
-> `survives` işaretlemek bir doğrulama edimidir; G2 onu yasaklamaz.
+> ### ⚠️ Düzeltme — `SKR-047` D-6 (2026-07-27), kalıcı
+> Bu satır v0.1.0'da *"(GOV-000 **G2** + G4)"* diyordu. **Yanlıştı** ve yanlışlığı özellikle
+> utandırıcı: G2 **kanonlaştırma** yasağıdır, **doğrulama** yasağı değil.
 >
-> Utandırıcı olan şu: bu RFC, **§3'te** (`:109`) `governance/roles.md`'deki tam bu G2
-> hatasının düzeltilmesini **kendi yordamsal argümanının emsali olarak gösteriyor** — ve
-> 108 satır sonra ailenin yeni bir üyesini üretiyor. Hata kaynakta bulundu, düzeltildi,
-> emsal gösterildi, sonra tekrarlandı.
+> Utandırıcı olan şu: v0.1.0 **§3'te** `governance/roles.md`'deki tam bu G2 hatasının
+> düzeltilmesini **kendi argümanının emsali olarak gösteriyordu** — ve 108 satır sonra
+> ailenin yeni bir üyesini üretiyordu. Hata kaynakta bulundu, düzeltildi, emsal gösterildi,
+> sonra tekrarlandı.
 >
-> SKR-047 bunu *"en sert bulgu tipi: RFC, teşhis ettiği hatayı teşhisin hemen yanında
-> tekrarlıyor"* diye adlandırdı. Katılıyorum. Kutu kalıcıdır (EC-001) — çünkü kalıbın
-> ne kadar yapışkan olduğunun kanıtı budur.
+> `SKR-047` bunu *"en sert bulgu tipi: RFC, teşhis ettiği hatayı teşhisin hemen yanında
+> tekrarlıyor"* diye adlandırdı. Katılıyorum. Kutu kalıcıdır (EC-001) — kalıbın ne kadar
+> yapışkan olduğunun kanıtı budur.
