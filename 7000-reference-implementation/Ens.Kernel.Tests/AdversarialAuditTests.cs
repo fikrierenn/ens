@@ -17,13 +17,13 @@ namespace Ens.Kernel.Tests;
 // reflection'la ve fuzz'la ayni iddialari curutmeye calisir.
 //
 // ADLANDIRMA SOZLESMESI — testin ne iddia ettigini adindan okuyun:
-//   AUDIT_HOLDS_*   -> iddia saldiridan SAG CIKTI. Assertion = istenen davranis.
-//   AUDIT_FIXED_*   -> denetimin buldugu kusur KAPANDI. Assertion artik DUZELTILMIS davranisi
+//   AUDIT_HOLDS_AUD_*   -> iddia saldiridan SAG CIKTI. Assertion = istenen davranis.
+//   AUDIT_FIXED_AUD_*   -> denetimin buldugu kusur KAPANDI. Assertion artik DUZELTILMIS davranisi
 //                      sabitler; kusur geri gelirse test KIRILIR (regresyon bekcisi).
 //                      Her birinin basinda: hangi kusurdu / nasil kapandi.
-//   AUDIT_DEFECT_*  -> KUSUR HALA ACIK. Assertion, MEVCUT (kusurlu) davranisi sabitler
+//   AUDIT_DEFECT_AUD_*  -> KUSUR HALA ACIK. Assertion, MEVCUT (kusurlu) davranisi sabitler
 //                      (characterization test). Bilincli acik birakilanlar; gerekcesi yorumda.
-//   AUDIT_FINDING_* -> kod dogru ama DEMO'nun sunumu yaniltici / iddiasini kanitlamiyor.
+//   AUDIT_FINDING_AUD_* -> kod dogru ama DEMO'nun sunumu yaniltici / iddiasini kanitlamiyor.
 //
 // DUZELTME TURU (2026-07-25, AUDIT.md 5 kapanisi): 22 AUDIT_DEFECT testi AUDIT_FIXED'e cevrildi.
 // Hicbiri SILINMEDI — hepsi tersine cevrildi ki kusurun KAPANDIGI kanitlansin ve geri gelmesi
@@ -45,7 +45,7 @@ public sealed class AdversarialAuditTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_FIXED_A1_NaN_stake_is_rejected_instead_of_granting_full_autonomy()
+    public void AUDIT_FIXED_AUD_A1_NaN_stake_is_rejected_instead_of_granting_full_autonomy()
     {
         // KUSURDU: NaN her karsilastirmada false doner. `stake < 0` guard'i NaN'i geciriyordu;
         //   InfoNeed NaN oluyor, `NaN >= blockThreshold` ve `NaN >= autonomyThreshold` de false
@@ -65,7 +65,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_A2_NaN_confidence_is_rejected_instead_of_granting_full_autonomy()
+    public void AUDIT_FIXED_AUD_A2_NaN_confidence_is_rejected_instead_of_granting_full_autonomy()
     {
         // KUSURDU: 250 milyonluk bir karar, confidence NaN ise otonom icraya aciliyordu.
         // KAPANDI: Guard.OptionalUnitInterval — null gecerli (maksimum belirsizlik), NaN degil.
@@ -80,7 +80,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_A3_confidence_above_one_is_now_validated_on_the_security_critical_path()
+    public void AUDIT_FIXED_AUD_A3_confidence_above_one_is_now_validated_on_the_security_critical_path()
     {
         // KUSURDU: DecisionAggregate.Commit ve Premise confidence'i [0,1] doguluyordu; ama
         //   GUVENLIK-KRITIK yol olan DecisionGravity.InfoNeed / BoundedAutonomyGate DOGRULAMIYORDU.
@@ -100,7 +100,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_A4_irreversibility_blocks_even_under_NaN_poisoning()
+    public void AUDIT_HOLDS_AUD_A4_irreversibility_blocks_even_under_NaN_poisoning()
     {
         // Tek gercekten fail-CLOSED kural: geri-donulemezlik InfoNeed'den bagimsiz blokluyor.
         // Duzeltmeden SONRA da aynen gecerli: girdi dogrulamasi bu dali ASLA golgelemez —
@@ -117,7 +117,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_A5_negative_stake_and_inconsistent_policy_throw()
+    public void AUDIT_HOLDS_AUD_A5_negative_stake_and_inconsistent_policy_throw()
     {
         Assert.Throws<ArgumentOutOfRangeException>(
             () => BoundedAutonomyGate.Evaluate(-1, 0.5, 0.5, false, 10, 100));
@@ -126,7 +126,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_A6_null_confidence_is_treated_as_maximum_uncertainty()
+    public void AUDIT_HOLDS_AUD_A6_null_confidence_is_treated_as_maximum_uncertainty()
     {
         // Commit edilmemis karar -> belirsizlik 1.0 -> InfoNeed = Stake. Muhafazakar, dogru.
         Assert.Equal(1000.0, DecisionGravity.InfoNeed(1000, null), precision: 10);
@@ -135,7 +135,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_A7_boundary_values_behave_as_specified()
+    public void AUDIT_HOLDS_AUD_A7_boundary_values_behave_as_specified()
     {
         Assert.Equal(0.0, DecisionGravity.InfoNeed(0, 0.5), precision: 10);       // stake = 0
         Assert.Equal(0.0, DecisionGravity.InfoNeed(1e12, 1.0), precision: 10);    // confidence = 1
@@ -151,7 +151,7 @@ public sealed class AdversarialAuditTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_HOLDS_B1_fuzz_200_decisions_priority_matches_hand_computed_formula()
+    public void AUDIT_HOLDS_AUD_B1_fuzz_200_decisions_priority_matches_hand_computed_formula()
     {
         // Formulu koddan CAGIRMADAN elle hesapliyoruz:
         //   Stake x (1-Confidence) x clamp(Deficit, 0, 1).
@@ -192,7 +192,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_B2_fuzz_tier_boundaries_match_hand_computed_thresholds()
+    public void AUDIT_HOLDS_AUD_B2_fuzz_tier_boundaries_match_hand_computed_thresholds()
     {
         var rng = new Random(1966); // Howard 1966
         for (int i = 0; i < 500; i++)
@@ -210,7 +210,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_B3_NaN_decision_no_longer_slips_into_the_darkest_corner()
+    public void AUDIT_FIXED_AUD_B3_NaN_decision_no_longer_slips_into_the_darkest_corner()
     {
         // KUSURDU: UCLU FAIL-OPEN. Olculemeyen bir karar:
         //   (1) Gate  -> Autonomous  (insan gormez)
@@ -233,7 +233,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_B4_ConformanceDeficit_is_clamped_so_the_attention_queue_is_not_gameable()
+    public void AUDIT_FIXED_AUD_B4_ConformanceDeficit_is_clamped_so_the_attention_queue_is_not_gameable()
     {
         // KUSURDU: ENS-3022 ConformanceDeficit'i NORMALIZE bir acik olarak tanimlar; kod [0,1]
         //   kisiti KOYMUYORDU. Deficit'i sisiren bir cagiran (1e9), onemsiz bir karari en kritik
@@ -254,7 +254,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FINDING_B5_demo_inputs_do_not_demonstrate_ConformanceDeficit_at_all()
+    public void AUDIT_FINDING_AUD_B5_demo_inputs_do_not_demonstrate_ConformanceDeficit_at_all()
     {
         // Demo bolum 2 sunu iddia ediyor:
         //   "Siralama olcutu keyfi DEGIL: AttentionPriority = InfoNeed x ConformanceDeficit"
@@ -289,7 +289,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_B6_ordering_is_input_order_dependent_when_priority_and_infoneed_tie()
+    public void AUDIT_DEFECT_AUD_B6_ordering_is_input_order_dependent_when_priority_and_infoneed_tie()
     {
         // ACIK BIRAKILDI (bilincli). SchedulerTests "girdi sirasi sonucu degistirmez" diyor ama
         // bunu YALNIZCA InfoNeed'in farkli oldugu bir ornekle gosteriyor. Tam esitlikte sonuc
@@ -315,7 +315,7 @@ public sealed class AdversarialAuditTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_DEFECT_C1_positional_call_silently_binds_to_the_wrong_overload()
+    public void AUDIT_DEFECT_AUD_C1_positional_call_silently_binds_to_the_wrong_overload()
     {
         // ACIK BIRAKILDI (bilincli, kapsam disi). IKI overload var:
         //   M1: SelectTier(double infoNeed, double complexThreshold = 10, double criticalThreshold = 40)
@@ -328,7 +328,7 @@ public sealed class AdversarialAuditTests
         // NEDEN KAPATILMADI: dogru duzeltme convenience overload'i YENIDEN ADLANDIRMAKTIR
         // (`SelectTierFor(stake, confidence)`, AUDIT 7/2). Bu bir public API kirilmasidir ve
         // bu turun gorevi AUDIT 5'teki KERNEL kusurlariydi; C1 DEMO-kapsamli bir tuzak
-        // (kernel dogru overload'a bagliyor — AUDIT_HOLDS_C2). Ayri bir artimda ele alinmali.
+        // (kernel dogru overload'a bagliyor — AUDIT_HOLDS_AUD_C2). Ayri bir artimda ele alinmali.
         var byFormula = LlmTierSelector.SelectTier(DecisionGravity.InfoNeed(500.0, 0.95)); // InfoNeed = 25
         var named = LlmTierSelector.SelectTier(stake: 500.0, confidence: 0.95);
         var positional = LlmTierSelector.SelectTier(500.0, 0.95);
@@ -339,7 +339,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_C2_Scheduler_uses_the_correct_overload()
+    public void AUDIT_HOLDS_AUD_C2_Scheduler_uses_the_correct_overload()
     {
         // Scheduler uc `double` argumanla cagiriyor -> M1'e (infoNeed overload'i) dogru sekilde
         // baglaniyor. Yani KERNEL dogru, yalnizca DEMO yanlis.
@@ -357,7 +357,7 @@ public sealed class AdversarialAuditTests
     private static ProofTrace SampleTrace() => new("R", "C", [new Premise("p", 0.8)]);
 
     [Fact]
-    public void AUDIT_HOLDS_D1_fuzz_500_traces_confidence_is_exactly_the_hand_computed_min()
+    public void AUDIT_HOLDS_AUD_D1_fuzz_500_traces_confidence_is_exactly_the_hand_computed_min()
     {
         var rng = new Random(4025); // ENS-4025
         for (int i = 0; i < 500; i++)
@@ -376,7 +376,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_D2_confidence_has_no_setter_and_no_init_accessor()
+    public void AUDIT_HOLDS_AUD_D2_confidence_has_no_setter_and_no_init_accessor()
     {
         var prop = typeof(ProofTrace).GetProperty(nameof(ProofTrace.Confidence))!;
         Assert.False(prop.CanWrite);                       // `with { Confidence = ... }` derlenmez
@@ -387,7 +387,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_D3_premises_can_no_longer_be_emptied_after_construction()
+    public void AUDIT_FIXED_AUD_D3_premises_can_no_longer_be_emptied_after_construction()
     {
         // KUSURDU: "Onculsuz proof-trace KURULAMAZ" dogruydu — ama kurulduktan sonra
         //   BOSALTILABILIYORDU. `Premises` bir `IReadOnlyList<Premise>` olarak donuyordu ama
@@ -405,7 +405,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_D4_NaN_confidence_premise_is_now_rejected()
+    public void AUDIT_FIXED_AUD_D4_NaN_confidence_premise_is_now_rejected()
     {
         // KUSURDU: `confidence is < 0 or > 1` NaN'da HER IKI karsilastirmada false donuyordu ->
         //   guard deliniyordu. ENS-4025 L7 t-norm'unun NaN altindaki davranisi ne teoride ne
@@ -421,7 +421,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FINDING_D5_the_trace_invariant_is_only_about_cardinality_not_evidence()
+    public void AUDIT_FINDING_AUD_D5_the_trace_invariant_is_only_about_cardinality_not_evidence()
     {
         // "Izsiz action imkansiz" iddiasinin GERCEK gucu: en az BIR bos-olmayan string.
         // Asagidaki trace tamamen uydurma ama tum invariant'lari geciyor ve confidence 1.00.
@@ -467,7 +467,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_E1_exhaustive_transition_matrix_has_no_leak()
+    public void AUDIT_HOLDS_AUD_E1_exhaustive_transition_matrix_has_no_leak()
     {
         // Beklenen gecis tablosunu KODDAN OKUMADAN, ADR-0001 5.4'ten bagimsiz olarak burada
         // yeniden tanimliyoruz; her durumdan HER metodu deniyoruz. Izin verilmeyen tek bir
@@ -518,7 +518,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_E2_swallowing_exceptions_in_a_loop_does_not_advance_the_state()
+    public void AUDIT_HOLDS_AUD_E2_swallowing_exceptions_in_a_loop_does_not_advance_the_state()
     {
         // "Hatayi yakala, tekrar dene" saldirisi: 1000 kez gecersiz gecis denemesi state'i
         // ilerletmiyor ve audit gecmisini kirletmiyor.
@@ -536,7 +536,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_E3_the_gate_result_can_be_forged_in_one_line()
+    public void AUDIT_DEFECT_AUD_E3_the_gate_result_can_be_forged_in_one_line()
     {
         // ACIK BIRAKILDI (bilincli). State machine yalnizca "bir GateResult NESNESI verildi mi"yi
         // kontrol eder; o nesnenin BoundedAutonomyGate.Evaluate'ten geldigini DOGRULAMAZ.
@@ -559,7 +559,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_E4_audit_history_can_no_longer_be_erased_via_downcast()
+    public void AUDIT_FIXED_AUD_E4_audit_history_can_no_longer_be_erased_via_downcast()
     {
         // KUSURDU: "Audit gecmisi: N gecis, hicbiri atlanamadi" deniyordu — ama gecmisin kendisi
         //   silinebiliyordu. `History` canli bir `List<ActionTransition>` donduruyordu; reflection
@@ -578,7 +578,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_E5_state_can_be_teleported_by_reflection_leaving_no_audit_trail()
+    public void AUDIT_DEFECT_AUD_E5_state_can_be_teleported_by_reflection_leaving_no_audit_trail()
     {
         // ACIK BIRAKILDI (kapatilamaz). Reflection .NET'te her seyi yener — bu tek basina agir
         // bir suclama degil; kapatmak ancak proses/AppDomain izolasyonu ya da dogrulanmis
@@ -598,7 +598,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_E6_a_trace_can_no_longer_be_emptied_before_being_recorded()
+    public void AUDIT_FIXED_AUD_E6_a_trace_can_no_longer_be_emptied_before_being_recorded()
     {
         // KUSURDU: D3 + E birlesimi — "izsiz action imkansiz" iddiasi, KURULDUKTAN SONRA
         //   bosaltilmis bir trace ile geciliyordu; katman onculsuz bir "kanit"i kabul ediyordu.
@@ -629,7 +629,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_F1_lookalike_and_injected_tool_names_are_all_rejected()
+    public void AUDIT_HOLDS_AUD_F1_lookalike_and_injected_tool_names_are_all_rejected()
     {
         // StringComparer.Ordinal dogru secim: case-insensitive ya da normalize eslesme YOK.
         string[] lookalikes =
@@ -654,7 +654,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_F2_allowed_tools_set_can_no_longer_be_extended_after_registration()
+    public void AUDIT_FIXED_AUD_F2_allowed_tools_set_can_no_longer_be_extended_after_registration()
     {
         // KUSURDU: `AllowedTools` bir `IReadOnlySet<string>` olarak sunuluyordu ama arkasinda
         //   canli bir `HashSet<string>` vardi. Reflection GEREKMIYORDU. Kayitli bir Pack'e
@@ -680,7 +680,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_F3_disabling_a_strict_pack_no_longer_removes_the_human_approval_guard()
+    public void AUDIT_FIXED_AUD_F3_disabling_a_strict_pack_no_longer_removes_the_human_approval_guard()
     {
         // KUSURDU: `Disable` "yeti kaldirma" olarak sunuluyordu; ama bir araci BASKA bir Pack de
         //   veriyorsa, kati Pack'i devre disi birakmak yetkiyi kaldirmiyor — yalnizca INSAN
@@ -708,7 +708,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_F4_authorization_result_is_now_consumed_by_the_gate()
+    public void AUDIT_FIXED_AUD_F4_authorization_result_is_now_consumed_by_the_gate()
     {
         // KUSURDU: ADR-0001 6.1'in iddia ettigi ENS deltasi — "deklaratif izinler DOGRUDAN
         //   Bounded-Autonomy Gate'e beslenir" — KODDA YOKTU. `BoundedAutonomyGate.Evaluate`
@@ -759,7 +759,7 @@ public sealed class AdversarialAuditTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_FIXED_G1_records_can_no_longer_be_deleted_via_downcast()
+    public void AUDIT_FIXED_AUD_G1_records_can_no_longer_be_deleted_via_downcast()
     {
         // KUSURDU: "Kayit eklenir, asla silinmez (3, audit)" deniyordu ama `AllRecords` canli bir
         //   `List<MemoryRecord>` donduruyordu — kurumsal bellek tek satirda silinebiliyordu.
@@ -775,7 +775,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_G2_Verify_can_no_longer_freeze_decay_with_a_future_timestamp()
+    public void AUDIT_FIXED_AUD_G2_Verify_can_no_longer_freeze_decay_with_a_future_timestamp()
     {
         // KUSURDU: Yeniden-dogrulama HICBIR kanit istemiyor ve GELECEK bir tarih kabul ediyordu.
         //   ageDays = max(0, negatif) = 0 -> decayFactor kalici olarak 1.0. Decay yasasi tek bir
@@ -820,7 +820,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_G3_verification_clock_is_now_keyed_by_record_not_by_DecisionId()
+    public void AUDIT_FIXED_AUD_G3_verification_clock_is_now_keyed_by_record_not_by_DecisionId()
     {
         // KUSURDU: `Verify` DecisionId ile anahtarliydi. Iki farkli MemoryRecord ayni DecisionId'yi
         //   tasiyorsa (ayni karardan iki ogrenim), birini dogrulamak DIGERININ de decay saatini
@@ -844,7 +844,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_G4_an_invalid_record_is_rejected_at_construction_not_at_retrieval()
+    public void AUDIT_FIXED_AUD_G4_an_invalid_record_is_rejected_at_construction_not_at_retrieval()
     {
         // KUSURDU: `MemoryRecord` constructor'i DOGRULAMA YAPMIYORDU; dogrulama `RetentionPriority`
         //   erisiminde (DecisionCapital.Value) yapiliyordu. Gecersiz kayit sessizce yaziliyor,
@@ -862,7 +862,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_G5_NaN_attribution_confidence_can_no_longer_create_an_invisible_record()
+    public void AUDIT_FIXED_AUD_G5_NaN_attribution_confidence_can_no_longer_create_an_invisible_record()
     {
         // KUSURDU: NaN, [0,1] guard'ini geciyordu (A3 ile ayni kok neden). Sonuc:
         //   RetentionPriority = NaN -> salience NaN -> siralamada EN SONA duser ve
@@ -881,7 +881,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_G6_zero_value_records_are_now_flagged_stale()
+    public void AUDIT_FIXED_AUD_G6_zero_value_records_are_now_flagged_stale()
     {
         // KUSURDU: FindStale `RetentionPriority > 0` sarti koyuyordu. `|Learning| = 0` ya da
         //   `confidence = 0` olan bir kayit 100 yil beklese de Curator'in gozden gecirme listesine
@@ -903,7 +903,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_G7_demo_curator_sweep_now_flags_the_stale_record_but_for_a_reason_the_finding_did_not_predict()
+    public void AUDIT_FIXED_AUD_G7_demo_curator_sweep_now_flags_the_stale_record_but_for_a_reason_the_finding_did_not_predict()
     {
         // KUSURDU (v0.3.1): Demo bolum 6, curator sweep'i "bayat kayit BAYRAKLANDI (silinmedi)"
         //   diye anlatiyordu ama bayraklanan kayit sayisi SIFIR idi. Sebep kil payiydi: eski
@@ -935,7 +935,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FINDING_G8_demo_memory_ordering_is_confounded_age_not_isolated()
+    public void AUDIT_FINDING_AUD_G8_demo_memory_ordering_is_confounded_age_not_isolated()
     {
         // Demo bolum 6: "|Learning| = 8 one cikiyor — karsi-survivorship". Ama secilen iki
         // kayitta kazanan HEM daha buyuk |Learning|'e HEM de 430 gun daha taze olmaya sahip.
@@ -974,7 +974,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_G9_decay_law_is_mathematically_what_it_claims_to_be()
+    public void AUDIT_HOLDS_AUD_G9_decay_law_is_mathematically_what_it_claims_to_be()
     {
         // v0.4.0 (ENS-2003 §3a): Salience = value(m) x decayFactor
         //                                 = (|L| * c) x exp(-lambda_pi * dt)
@@ -1007,7 +1007,7 @@ public sealed class AdversarialAuditTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_DEFECT_H1_a_proposal_can_be_auto_applied_by_any_caller_in_three_lines()
+    public void AUDIT_DEFECT_AUD_H1_a_proposal_can_be_auto_applied_by_any_caller_in_three_lines()
     {
         // ACIK BIRAKILDI (bilincli). Demo bolum 7: "oneri uygulanamaz, cunku uygulayacak metot
         // yok. Insan onayi MIMARI olarak zorunlu." Bu, YOKLUKTAN ARGUMAN ve yalnizca TEK BIR
@@ -1034,7 +1034,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_H2_minSupportingRecords_now_actually_enforces_its_own_guard_message()
+    public void AUDIT_FIXED_AUD_H2_minSupportingRecords_now_actually_enforces_its_own_guard_message()
     {
         // KUSURDU: Guard mesaji "tek gozlemden 'sistematik' iddia edilemez" diyordu ama tam
         //   olarak 1 KABUL ediliyordu -> tek gozlemden "sistematik tekrar" onerisi uretiliyordu.
@@ -1064,7 +1064,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_H3_no_mutating_method_exists_on_the_type_itself()
+    public void AUDIT_HOLDS_AUD_H3_no_mutating_method_exists_on_the_type_itself()
     {
         // Sinirli ama gercek: TIP duzeyinde iddia dogru. (Sistem duzeyinde degil — bkz. H1.)
         var methods = typeof(ReflectiveDoubleLoop)
@@ -1075,7 +1075,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_H4_proposal_thresholds_behave_at_the_boundary()
+    public void AUDIT_HOLDS_AUD_H4_proposal_thresholds_behave_at_the_boundary()
     {
         var at = Enumerable.Range(0, 3)
             .Select(_ => new MemoryRecord(Identity.New(), "x", 5.0, 0.5, T0)).ToArray();
@@ -1091,7 +1091,7 @@ public sealed class AdversarialAuditTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_FIXED_I1_Rehydrate_now_enforces_every_individuation_invariant()
+    public void AUDIT_FIXED_AUD_I1_Rehydrate_now_enforces_every_individuation_invariant()
     {
         // KUSURDU: `Rehydrate` public static'ti ve olaylari HICBIR dogrulama yapmadan uyguluyordu.
         //   Purpose'suz, Alternative'siz, Framing'siz bir "commit edilmis karar" uretilebiliyordu.
@@ -1128,7 +1128,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_I2_Rehydrate_rejects_two_commitments_on_the_same_decision()
+    public void AUDIT_FIXED_AUD_I2_Rehydrate_rejects_two_commitments_on_the_same_decision()
     {
         // KUSURDU: "Tek Commitment olayi" invariant'i replay'de tamamen kayboluyordu; ikinci
         //   commit sessizce kazaniyor ve confidence'i eziyordu.
@@ -1150,7 +1150,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_I3_NaN_confidence_is_rejected_at_commit_so_the_chain_is_closed()
+    public void AUDIT_FIXED_AUD_I3_NaN_confidence_is_rejected_at_commit_so_the_chain_is_closed()
     {
         // KUSURDU: Commit'in `confidence is < 0 or > 1` guard'i NaN'i geciriyordu. Bu NaN sonra
         //   dogrudan Scheduler/Gate'e akip B3'teki uclu fail-open'a donusuyordu — zincir kapali
@@ -1179,7 +1179,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_I4_alternatives_list_is_snapshotted_so_no_undeliberated_option_can_be_committed()
+    public void AUDIT_FIXED_AUD_I4_alternatives_list_is_snapshotted_so_no_undeliberated_option_can_be_committed()
     {
         // KUSURDU: `IdentifyAlternatives` gelen listeyi KOPYALAMIYORDU; event ve aggregate ayni
         //   canli `List<string>`'i paylasiyordu. Cagiran sonradan alternatif ekleyip HIC
@@ -1203,7 +1203,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_I5_event_history_can_no_longer_be_erased_via_downcast()
+    public void AUDIT_FIXED_AUD_I5_event_history_can_no_longer_be_erased_via_downcast()
     {
         // KUSURDU: `History`/`UncommittedEvents` canli `List<DomainEvent>` donduruyordu;
         //   `((List<DomainEvent>)d.History).Clear()` ile "karar bir olay gecmisidir" iddiasi
@@ -1223,7 +1223,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_I6_live_path_individuation_seal_survives_direct_attack()
+    public void AUDIT_HOLDS_AUD_I6_live_path_individuation_seal_survives_direct_attack()
     {
         // Canli API uzerinden Individuation gercekten muhurlu — bu iddia sag cikiyor.
         var o = Identity.New();
@@ -1249,7 +1249,7 @@ public sealed class AdversarialAuditTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_FIXED_J1_DecisionCapital_Value_rejects_NaN_and_Infinity()
+    public void AUDIT_FIXED_AUD_J1_DecisionCapital_Value_rejects_NaN_and_Infinity()
     {
         // KUSURDU: `Value(NaN, 0.5)` = NaN, `Value(+Inf, 0.5)` = +Inf sessizce donuyordu. Bu deger
         //   dogrudan `MemoryRecord.RetentionPriority`'ye akiyor ve G5'teki "sessiz kurumsal
@@ -1263,7 +1263,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_J2_DecisionCapital_guards_the_finite_domain_correctly()
+    public void AUDIT_HOLDS_AUD_J2_DecisionCapital_guards_the_finite_domain_correctly()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() => DecisionCapital.Value(-1, 0.5));
         Assert.Throws<ArgumentOutOfRangeException>(() => DecisionCapital.Value(5, 1.5));
@@ -1272,7 +1272,7 @@ public sealed class AdversarialAuditTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_J3_extreme_magnitudes_do_not_silently_wrap()
+    public void AUDIT_HOLDS_AUD_J3_extreme_magnitudes_do_not_silently_wrap()
     {
         // Iddia korunuyor: uc buyuklukler SESSIZCE sarmalanmaz/tasmaz.
         // GUNCELLEME (duzeltme sonrasi semantik): eskiden bu test tasmayi

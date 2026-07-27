@@ -15,8 +15,8 @@ namespace Ens.Kernel.Tests;
 // Bu dosya o DUZELTMEYE saldirir. Varsayim: duzeltme eksiktir.
 //
 // ADLANDIRMA (skill sozlesmesi):
-//   AUDIT_DEFECT_W*  -> gecerse KUSUR VAR (yeni acik ya da hala acik).
-//   AUDIT_HOLDS_W*   -> saldiriya ragmen saglam; regresyon bekcisi.
+//   AUDIT_DEFECT_SCH_W*  -> gecerse KUSUR VAR (yeni acik ya da hala acik).
+//   AUDIT_HOLDS_SCH_W*   -> saldiriya ragmen saglam; regresyon bekcisi.
 //
 // Ayrintili gerekce: 7000-reference-implementation/AUDIT-WAVE2-SCHEDULER.md
 // ============================================================================================
@@ -36,7 +36,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_HOLDS_W1_every_public_Guard_method_is_NaN_closed()
+    public void AUDIT_HOLDS_SCH_W1_every_public_Guard_method_is_NaN_closed()
     {
         // Yontem: Guard'in TUM public static metotlarini reflection'la tara. Boylece yarin
         // eklenecek yeni bir Guard metodu bu testi otomatik olarak kapsam altina girer;
@@ -78,7 +78,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_W2_Guard_rejects_infinities_and_out_of_range_but_accepts_denormals()
+    public void AUDIT_HOLDS_SCH_W2_Guard_rejects_infinities_and_out_of_range_but_accepts_denormals()
     {
         Assert.Throws<ArgumentOutOfRangeException>(() => Guard.Finite(double.PositiveInfinity, "x", "x"));
         Assert.Throws<ArgumentOutOfRangeException>(() => Guard.Finite(double.NegativeInfinity, "x", "x"));
@@ -94,7 +94,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W3_NormalizedDeficit_clamp_does_not_normalize_negative_zero()
+    public void AUDIT_DEFECT_SCH_W3_NormalizedDeficit_clamp_does_not_normalize_negative_zero()
     {
         // Math.Clamp(-0.0, 0.0, 1.0): `-0.0 < 0.0` false, `-0.0 > 1.0` false -> -0.0 DONER.
         // Yani "clamp(.,0,1)" cikisinin isaret biti negatif olabiliyor. Sayisal olarak zararsiz
@@ -116,7 +116,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_HOLDS_W4_priority_chain_cannot_overflow_to_infinity()
+    public void AUDIT_HOLDS_SCH_W4_priority_chain_cannot_overflow_to_infinity()
     {
         // Gorev hipotezi: `stake * (1-conf)` tasip Infinity uretebilir mi?
         // YAPISAL CEVAP: HAYIR. Iki carpan da [0,1] araligindadir ((1-conf) ve clamp(deficit)),
@@ -138,7 +138,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_W5_denormals_and_negative_zero_stake_stay_fail_closed_conservative()
+    public void AUDIT_HOLDS_SCH_W5_denormals_and_negative_zero_stake_stay_fail_closed_conservative()
     {
         // double.Epsilon (denormal): underflow onceligi DUSURUR (muhafazakar), exception atmaz.
         double tiny = DecisionGravity.InfoNeed(double.Epsilon, 0.5);
@@ -151,7 +151,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_W6_threshold_equality_resolves_to_the_more_restrictive_branch()
+    public void AUDIT_HOLDS_SCH_W6_threshold_equality_resolves_to_the_more_restrictive_branch()
     {
         // Tam esitlikte fail-CLOSED olmali: `>=` kullanildigi icin esik degeri BLOKLU tarafta.
         // InfoNeed = 100 * 0.5 = 50.0 (tam, ikili gosterimde temsil edilebilir).
@@ -172,7 +172,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W7_confidence_exactly_one_buys_unlimited_autonomy_one_ulp_below_does_not()
+    public void AUDIT_DEFECT_SCH_W7_confidence_exactly_one_buys_unlimited_autonomy_one_ulp_below_does_not()
     {
         // Guard OLCULEBILIRLIGI kapatti, KALIBRASYONU degil (Guard.cs kendi "DURUST SINIR"inda
         // bunu yaziyor). Sonuc: kendi beyan ettigi confidence = 1.0 olan bir aktör, 1e300
@@ -192,7 +192,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_DEFECT_W8_scheduler_preempts_the_gates_own_fail_closed_CriticalBlock_branch()
+    public void AUDIT_DEFECT_SCH_W8_scheduler_preempts_the_gates_own_fail_closed_CriticalBlock_branch()
     {
         // BoundedAutonomyGate.cs "(0) FAIL-CLOSED ONCELIGI" blogu acikca soyle diyor:
         //   "Geri-donulemez bir action, TUM girdileri olculemez (NaN) olsa bile bloklanmak ZORUNDA."
@@ -213,7 +213,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W9_one_poisoned_decision_denies_attention_to_the_whole_batch()
+    public void AUDIT_DEFECT_SCH_W9_one_poisoned_decision_denies_attention_to_the_whole_batch()
     {
         // P5: attention KIT KAYNAKTIR ve tahsisi Scheduler yapar. Tek bir olculemez girdi
         // TUM partiyi dusuruyor — 999 saglikli karar hicbir tahsis alamiyor.
@@ -239,7 +239,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W10_broken_policy_thresholds_are_only_validated_on_some_inputs()
+    public void AUDIT_DEFECT_SCH_W10_broken_policy_thresholds_are_only_validated_on_some_inputs()
     {
         // Politika DOGRULAMASI (blockThreshold >= autonomyThreshold, esiklerin sonlulugu) gate'in
         // ICINDE, kisitlayici erken-donuslerden SONRA yapiliyor. Sonuc: politikanin bozuk olup
@@ -264,7 +264,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_W11_NaN_tier_thresholds_are_rejected_instead_of_routing_to_the_cheapest_model()
+    public void AUDIT_FIXED_SCH_W11_NaN_tier_thresholds_are_rejected_instead_of_routing_to_the_cheapest_model()
     {
         // ESKI KUSUR (AUDIT-WAVE2-SCHEDULER.md §2): AUDIT §5.1 "uclu fail-open"in IKINCI ayagi
         // (model tier) ACIKTI. Guard.cs'in kendi listesi 7 cagri noktasi sayiyordu —
@@ -297,7 +297,7 @@ public sealed class AdversarialWave_SchedulerGateTests
 
         // Politika, VERIDEN bagimsiz dogrulanir: BOS bir parti bile bozuk esikle gecemez.
         // (W10'un "politika dogrulamasi veriye bagli" itirazinin tier ayagindaki kapanisi;
-        //  gate ayagi — autonomy/block esikleri — HALA ACIK, bkz. AUDIT_DEFECT_W10.)
+        //  gate ayagi — autonomy/block esikleri — HALA ACIK, bkz. AUDIT_DEFECT_SCH_W10.)
         Assert.Throws<ArgumentOutOfRangeException>(
             () => Scheduler.Schedule([], Autonomy, Block, complexThreshold: double.NaN, criticalThreshold: 40.0));
 
@@ -328,7 +328,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_W12_unauthorized_tool_is_really_blocked_not_silently_swallowed()
+    public void AUDIT_HOLDS_SCH_W12_unauthorized_tool_is_really_blocked_not_silently_swallowed()
     {
         var reg = BuildRegistry();
         var denied = reg.Authorize("delete_database");
@@ -345,7 +345,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_W13_approval_requirement_survives_disabling_the_strict_pack_end_to_end()
+    public void AUDIT_HOLDS_SCH_W13_approval_requirement_survives_disabling_the_strict_pack_end_to_end()
     {
         // AUDIT 5.5/F3 regresyon bekcisi — ama bu kez REGISTRY duzeyinde degil, GATE cikisinda.
         var reg = BuildRegistry();
@@ -361,7 +361,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_W14_toolAuthorization_can_only_tighten_never_loosen()
+    public void AUDIT_HOLDS_SCH_W14_toolAuthorization_can_only_tighten_never_loosen()
     {
         var reg = BuildRegistry();
         var allowedNoApproval = reg.Authorize("read_file");
@@ -383,7 +383,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W15_ToolAuthorization_is_a_public_record_so_a_registry_denial_can_be_laundered()
+    public void AUDIT_DEFECT_SCH_W15_ToolAuthorization_is_a_public_record_so_a_registry_denial_can_be_laundered()
     {
         // AUDIT 4.1 GateResult icin bu kusuru buldu ve BoundedAutonomyGate "DURUST SINIRLAR (a)"
         // maddesinde ACIK BORC olarak yazdi. Ama 5.5 duzeltmesiyle gelen YENI guven siniri —
@@ -410,7 +410,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W16_null_toolAuthorization_is_indistinguishable_from_forgetting_to_authorize()
+    public void AUDIT_DEFECT_SCH_W16_null_toolAuthorization_is_indistinguishable_from_forgetting_to_authorize()
     {
         // Bag OPT-IN: `PendingDecision.ToolAuthorization` varsayilan olarak null ve null =
         // "arac-bagimsiz karar" (en permisif okuma). Ayni null, "arac kullaniyorum ama
@@ -431,7 +431,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W17_gate_emits_NaN_InfoNeed_out_of_the_guarded_boundary()
+    public void AUDIT_DEFECT_SCH_W17_gate_emits_NaN_InfoNeed_out_of_the_guarded_boundary()
     {
         // Guard'in vaadi "olculemeyen girdi kernel'in karar yollarina GIREMEZ" idi. Gate'in iki
         // erken-donus dali bunu tersinden deliyor: olculemeyen bir DEGER, GateResult icinde
@@ -468,7 +468,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_W18_fuzz_1000_decisions_match_hand_computed_gravity_tier_and_gate()
+    public void AUDIT_HOLDS_SCH_W18_fuzz_1000_decisions_match_hand_computed_gravity_tier_and_gate()
     {
         const double Cx = 10.0, Cr = 40.0;
         var rng = new Random(20260726); // deterministik tohum — bulgu tekrar uretilebilir olmali
@@ -524,7 +524,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_W19_ConformanceDeficit_actually_discriminates_it_is_not_a_decorative_factor()
+    public void AUDIT_HOLDS_SCH_W19_ConformanceDeficit_actually_discriminates_it_is_not_a_decorative_factor()
     {
         // AUDIT 3.1'in itirazi: demo'da deficit carpaninin AYIRT EDICI GUCU sifirdi (InfoNeed
         // siralamasi zaten ayniydi). Burada ikisini KASITLI olarak CATISTIRIYORUM: InfoNeed
@@ -541,7 +541,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W20_full_ties_still_depend_on_input_order()
+    public void AUDIT_DEFECT_SCH_W20_full_ties_still_depend_on_input_order()
     {
         // Scheduler.cs "(e) ACIK KALAN" maddesi bunu itiraf ediyor — kapanmadi, kanitli duruyor.
         var a = P(1000, 0.5, 0.5);
@@ -557,7 +557,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_HOLDS_W21_ScheduleTop_budget_extremes_are_safe_and_prefix_consistent()
+    public void AUDIT_HOLDS_SCH_W21_ScheduleTop_budget_extremes_are_safe_and_prefix_consistent()
     {
         var pending = Enumerable.Range(1, 50)
             .Select(i => P(i * 1000.0, 0.5, 0.5)).ToList();
@@ -581,7 +581,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W22_scheduler_output_is_a_live_List_and_can_be_reordered_by_the_caller()
+    public void AUDIT_DEFECT_SCH_W22_scheduler_output_is_a_live_List_and_can_be_reordered_by_the_caller()
     {
         // AUDIT 5.2 deseni ("IReadOnlyList<T> korumaz") bu dosyada KAPATILMADI: donen nesne
         // canli bir List<>. Hafifletici sebep: her cagrida TAZE liste uretiliyor, yani baska bir
@@ -597,7 +597,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W23_invalid_PendingDecision_is_constructible_and_a_null_element_throws_NRE()
+    public void AUDIT_DEFECT_SCH_W23_invalid_PendingDecision_is_constructible_and_a_null_element_throws_NRE()
     {
         // (a) Dogrulama KULLANIM yerinde, YAPIM yerinde degil: olculemez bir karar nesnesi
         //     serbestce uretilip tasinabiliyor; patlama cok sonra, baska bir katmanda oluyor.
@@ -611,7 +611,7 @@ public sealed class AdversarialWave_SchedulerGateTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_W24_gate_decision_enum_order_is_the_hidden_dependency_of_the_P7_upgrade()
+    public void AUDIT_HOLDS_SCH_W24_gate_decision_enum_order_is_the_hidden_dependency_of_the_P7_upgrade()
     {
         // BoundedAutonomyGate.cs:126 `decision < GateDecision.Blocked` yaziyor — yani "insan onayi
         // sart" yukseltmesi enum'un SAYISAL SIRASINA bagli. Enum uyelerini yeniden siralamak

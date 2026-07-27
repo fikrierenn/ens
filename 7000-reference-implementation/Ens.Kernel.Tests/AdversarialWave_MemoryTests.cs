@@ -13,9 +13,9 @@ namespace Ens.Kernel.Tests;
 // devre disi birakilamaz) BASKA kapilardan kirmaya calismak.
 //
 // ADLANDIRMA (skill: .claude/skills/adversarial-test/SKILL.md):
-//   AUDIT_HOLDS_*   -> iddia saldiridan sag cikti; assertion = istenen davranis.
-//   AUDIT_FIXED_*   -> eski kusur kapandi; assertion regresyon bekcisi.
-//   AUDIT_DEFECT_*  -> kusur ACIK; assertion MEVCUT (kusurlu) davranisi sabitler.
+//   AUDIT_HOLDS_MEM_*   -> iddia saldiridan sag cikti; assertion = istenen davranis.
+//   AUDIT_FIXED_MEM_*   -> eski kusur kapandi; assertion regresyon bekcisi.
+//   AUDIT_DEFECT_MEM_*  -> kusur ACIK; assertion MEVCUT (kusurlu) davranisi sabitler.
 //
 // Turkce karakterler bilincli olarak \u escape ile yaziliyor (kaynak-kodlama riskini kaldirmak
 // icin); yorumlar aksansiz Turkce.
@@ -53,7 +53,7 @@ public sealed class AdversarialWaveMemoryTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_DEFECT_A1_Future_AssertedAt_disables_decay_forever_with_no_evidence_and_no_trail()
+    public void AUDIT_DEFECT_MEM_A1_Future_AssertedAt_disables_decay_forever_with_no_evidence_and_no_trail()
     {
         // EN KRITIK BULGU. AUDIT 5.4/a `Verify(id, gelecek)` kapisini kapatti: ileri tarihli
         // DOGRULAMA damgasi artik reddediliyor, gerekce istiyor, monoton, ize birakiyor.
@@ -76,7 +76,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_A2_MaxValue_AssertedAt_is_accepted_and_is_immortal()
+    public void AUDIT_DEFECT_MEM_A2_MaxValue_AssertedAt_is_accepted_and_is_immortal()
     {
         // Ayni acigin ust sinir hali: yil 9999. Tasma da yok, exception da yok — sadece
         // olumsuz kayit. confidence=0 (en hizli sonum) secildi ki savunma "zaten yavas soner"
@@ -90,7 +90,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_A3_AttributionConfidence_of_one_no_longer_buys_a_permanent_decay_exemption()
+    public void AUDIT_FIXED_MEM_A3_AttributionConfidence_of_one_no_longer_buys_a_permanent_decay_exemption()
     {
         // KUSURDU (v0.3.1): ENS-2003 3a "confidence->1 iken lambda->0 (asla sonmez) — formulun
         //   LIMITI" diyordu. Teoride limit, kodda NOKTA: `Math.Pow(1.0 - 1.0, gamma) == 0` -> rate
@@ -114,7 +114,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_A4_The_gamma_switch_that_could_disable_the_curator_company_wide_no_longer_exists()
+    public void AUDIT_FIXED_MEM_A4_The_gamma_switch_that_could_disable_the_curator_company_wide_no_longer_exists()
     {
         // KUSURDU (v0.3.1): lambda(c) = lambda_base * (1-c)^gamma; `gamma` "SERBEST parametre
         //   (tek kisit gamma>0)" idi ve Guard.PositiveFinite 1e6'yi kabul ediyordu. Ama
@@ -144,7 +144,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_A5_contextDecayRate_zero_is_still_an_undocumented_company_wide_decay_off_switch()
+    public void AUDIT_DEFECT_MEM_A5_contextDecayRate_zero_is_still_an_undocumented_company_wide_decay_off_switch()
     {
         // ACIK BIRAKILDI — v0.4.0 `gamma` anahtarini kaldirdi ama ONU kaldirmadi: `contextDecayRate: 0`
         // Guard.NonNegativeFinite'ten gecer (0 >= 0) ve decayFactor'i TUM bellek icin tam 1.0'a
@@ -165,7 +165,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_A6_Verify_can_never_increase_decay_only_reduce_it()
+    public void AUDIT_HOLDS_MEM_A6_Verify_can_never_increase_decay_only_reduce_it()
     {
         // "Gecmis tarihle dogrulama decay'i ARTIRIR mi?" -> Hayir, iki kisit birlikte kapatiyor:
         // (c) at >= AssertedAt ve (d) at >= onceki damga. Ilk damga zaten AssertedAt'ten geride
@@ -190,7 +190,7 @@ public sealed class AdversarialWaveMemoryTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_DEFECT_B1_The_mandatory_evidence_guard_is_defeated_by_its_own_default_parameter()
+    public void AUDIT_DEFECT_MEM_B1_The_mandatory_evidence_guard_is_defeated_by_its_own_default_parameter()
     {
         // Guard mesaji: "Yeniden-dogrulama gerekcesiz olamaz — izsiz dogrulama, izsiz
         // turetimdir (Madde VI)." Ama `evidence` parametresi OPSIYONELDIR ve derleyicinin
@@ -214,7 +214,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_B2_Any_non_whitespace_character_passes_as_evidence()
+    public void AUDIT_DEFECT_MEM_B2_Any_non_whitespace_character_passes_as_evidence()
     {
         // IsNullOrWhiteSpace yalnizca BOSLUK'u eler. Tek nokta, tek harf, rastgele gurultu
         // "kanit" sayilir. ENS-4025 L8'in tipli proof-trace'i bagli olmadigi icin gerekce
@@ -232,7 +232,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_B3_Empty_and_whitespace_evidence_are_rejected_and_leave_no_trace()
+    public void AUDIT_HOLDS_MEM_B3_Empty_and_whitespace_evidence_are_rejected_and_leave_no_trace()
     {
         var memory = MemoryAt(Now);
         var record = Rec(assertedAt: Now.AddDays(-100));
@@ -247,7 +247,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_B4_The_same_record_can_be_verified_1000_times_at_the_same_instant()
+    public void AUDIT_DEFECT_MEM_B4_The_same_record_can_be_verified_1000_times_at_the_same_instant()
     {
         // Monotonluk kontrolu `at < previous` — yani `at == previous` SERBEST. Ayni ani 1000
         // kez "dogrulamak" mumkun; hicbiri decay'i degistirmez ama denetim izini 1000 sahte
@@ -270,7 +270,7 @@ public sealed class AdversarialWaveMemoryTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_FIXED_C1_Two_learnings_from_the_same_DecisionId_no_longer_share_a_decay_clock()
+    public void AUDIT_FIXED_MEM_C1_Two_learnings_from_the_same_DecisionId_no_longer_share_a_decay_clock()
     {
         // KUSURDU (AUDIT 5.4/b): saat DecisionId bazinda tutuluyordu; ayni karardan iki
         // ogrenim varsa birini dogrulamak digerini de tazeliyordu.
@@ -289,7 +289,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_C2_The_clock_is_keyed_by_VALUE_not_by_record_identity_so_clones_still_cross_contaminate()
+    public void AUDIT_DEFECT_MEM_C2_The_clock_is_keyed_by_VALUE_not_by_record_identity_so_clones_still_cross_contaminate()
     {
         // Duzeltme kusuru DecisionId'den TAM-DEGER esitligine daralti, KALDIRMADI. MemoryRecord
         // bir `record`tur: esitlik/hashcode tum alanlar uzerinden deger-tabanlidir. Iki AYRI
@@ -312,7 +312,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_C3_The_ghost_record_guard_is_bypassed_by_forging_a_value_equal_clone()
+    public void AUDIT_DEFECT_MEM_C3_The_ghost_record_guard_is_bypassed_by_forging_a_value_equal_clone()
     {
         // Kisit (a): "Bu bellege yazilmamis bir kayit yeniden-dogrulanamaz." Kontrol
         // `_index.Contains(record)` -> HashSet deger esitligi kullanir. Yani bellege HIC
@@ -333,7 +333,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_C4_A_genuinely_unknown_record_still_cannot_be_verified()
+    public void AUDIT_HOLDS_MEM_C4_A_genuinely_unknown_record_still_cannot_be_verified()
     {
         var memory = MemoryAt(Now);
         memory.Record(Rec(magnitude: 5));
@@ -348,7 +348,7 @@ public sealed class AdversarialWaveMemoryTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_HOLDS_D1_The_same_instant_in_different_offsets_yields_bit_identical_decay()
+    public void AUDIT_HOLDS_MEM_D1_The_same_instant_in_different_offsets_yields_bit_identical_decay()
     {
         // Saldiri: ayni ani +00:00 ve +03:00 ile ifade edip farkli decay elde etmek.
         // DateTimeOffset aritmetigi AN tabanlidir (UtcTicks farki) — sonuc bit-birebir ayni.
@@ -366,7 +366,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_D2_A_23_hour_DST_day_decays_by_23_hours_not_24()
+    public void AUDIT_HOLDS_MEM_D2_A_23_hour_DST_day_decays_by_23_hours_not_24()
     {
         // Yaz saati gecisi (Orta Avrupa, 2026-03-29: +01:00 -> +02:00). Duvar saatiyle "ertesi
         // gun ayni saat" GERCEKTE 23 saattir. Decay duvar saatine degil ANA baglandigi icin
@@ -384,7 +384,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_D3_MinValue_to_MaxValue_span_neither_overflows_nor_produces_NaN()
+    public void AUDIT_HOLDS_MEM_D3_MinValue_to_MaxValue_span_neither_overflows_nor_produces_NaN()
     {
         var memory = MemoryAt(Now);
         var ancient = Rec(confidence: 0.0, assertedAt: DateTimeOffset.MinValue);
@@ -400,7 +400,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_D4_Retrieve_leaks_records_that_did_not_exist_yet_at_asOf_and_ranks_them_first()
+    public void AUDIT_DEFECT_MEM_D4_Retrieve_leaks_records_that_did_not_exist_yet_at_asOf_and_ranks_them_first()
     {
         // `EffectiveVerifiedAt` nedensellik kisitini DOGRULAMALARA uygular ("asOf'tan sonraki
         // dogrulamadan yararlanilamaz") ama KAYDIN VAR OLUSUNA uygulamaz: `Retrieve`/`FindStale`
@@ -428,7 +428,7 @@ public sealed class AdversarialWaveMemoryTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_HOLDS_E1_Retrieve_ordering_matches_an_independently_computed_salience_over_500_random_records()
+    public void AUDIT_HOLDS_MEM_E1_Retrieve_ordering_matches_an_independently_computed_salience_over_500_random_records()
     {
         // Skill 7: koddan cagirip kendisiyle karsilastirmak tautolojidir. Beklenen salience
         // burada ELLE (mag*conf*exp(-lambda_pi*yas)) hesaplaniyor — ENS-2003 v0.4.0 §3a.
@@ -462,7 +462,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_E1b_Attribution_confidence_has_ZERO_influence_on_the_freshness_axis_over_500_random_pairs()
+    public void AUDIT_HOLDS_MEM_E1b_Attribution_confidence_has_ZERO_influence_on_the_freshness_axis_over_500_random_pairs()
     {
         // v0.4.0'in cekirdek iddiasinin (AUDIT-WAVE2/D-5) FUZZ ile saldiriya ugramis hali:
         // yalnizca `AttributionConfidence`i farkli iki kayit, HER yasta ve HER hizda BIREBIR ayni
@@ -491,7 +491,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_E2_Salience_is_never_NaN_or_negative_under_extreme_parameter_fuzz()
+    public void AUDIT_HOLDS_MEM_E2_Salience_is_never_NaN_or_negative_under_extreme_parameter_fuzz()
     {
         var rng = new Random(7);
         var memory = MemoryAt(Now);
@@ -516,7 +516,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_E3_FindStale_is_a_strict_threshold_and_no_record_is_both_stale_and_fresh()
+    public void AUDIT_HOLDS_MEM_E3_FindStale_is_a_strict_threshold_and_no_record_is_both_stale_and_fresh()
     {
         // Sinir: decayFactor TAM esik degerine esitse -> stale DEGIL (strict `<`). Tam esitlik
         // contextDecayRate=0 ile deterministik olarak uretiliyor (decayFactor tam 1.0, esik 1.0).
@@ -542,7 +542,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_E4_staleThreshold_zero_is_a_silent_global_curator_off_switch()
+    public void AUDIT_DEFECT_MEM_E4_staleThreshold_zero_is_a_silent_global_curator_off_switch()
     {
         // decayFactor daima >= 0 oldugundan `decayFactor < 0.0` HICBIR ZAMAN dogru olamaz.
         // Yani `staleThreshold: 0` gecerli bir girdidir (Guard.UnitInterval kabul eder) ve
@@ -558,7 +558,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_E5_Zero_learning_and_zero_confidence_records_are_no_longer_invisible_to_the_curator()
+    public void AUDIT_FIXED_MEM_E5_Zero_learning_and_zero_confidence_records_are_no_longer_invisible_to_the_curator()
     {
         // KUSURDU (AUDIT 5.4/c): filtre `RetentionPriority > 0 && Salience/RetentionPriority
         // < esik` idi; |Learning|=0 veya confidence=0 olan kayit 100 yil gecse de ASLA
@@ -576,7 +576,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_E6_Numeric_validation_now_happens_at_the_gate_not_per_record()
+    public void AUDIT_FIXED_MEM_E6_Numeric_validation_now_happens_at_the_gate_not_per_record()
     {
         // KUSURDU: Guard yalnizca kayit BASINA calisiyordu (OrderByDescending / Where icinden).
         // Eslesen kayit yoksa NaN oran hicbir sey soylemeden kabul ediliyordu — yani ayni hatali
@@ -608,7 +608,7 @@ public sealed class AdversarialWaveMemoryTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_FIXED_F1_AllRecords_and_Verifications_survive_every_downcast_mutation_attempt()
+    public void AUDIT_FIXED_MEM_F1_AllRecords_and_Verifications_survive_every_downcast_mutation_attempt()
     {
         // KUSURDU (AUDIT 5.2): canli List donuyordu, ((List<T>)AllRecords).Clear() ile kurumsal
         // bellek tek satirda silinebiliyordu. KAPANDI: ReadOnlyCollection sarmalayici.
@@ -627,7 +627,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_F2_Mutating_a_Retrieve_result_cannot_touch_the_underlying_memory()
+    public void AUDIT_HOLDS_MEM_F2_Mutating_a_Retrieve_result_cannot_touch_the_underlying_memory()
     {
         // `Retrieve`/`FindStale` .ToList() dondurur; IReadOnlyList olarak ilan edilse de
         // List'e downcast edilip degistirilebilir. Bu bir KOPYA oldugu icin bellek etkilenmez
@@ -644,7 +644,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_F3_Unicode_equivalent_purpose_types_split_memory_into_unreachable_shards()
+    public void AUDIT_DEFECT_MEM_F3_Unicode_equivalent_purpose_types_split_memory_into_unreachable_shards()
     {
         // PurposeType karsilastirmasi ORDINAL string esitligidir: normalizasyon (NFC/NFD),
         // buyuk-kucuk harf ya da kirpma yok. Gorsel olarak AYNI olan iki tip (U+0130 vs
@@ -689,7 +689,7 @@ public sealed class AdversarialWaveMemoryTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_DEFECT_G1_Ten_thousand_records_produce_five_thousand_undifferentiated_proposals()
+    public void AUDIT_DEFECT_MEM_G1_Ten_thousand_records_produce_five_thousand_undifferentiated_proposals()
     {
         // ENS-2004 Failure "oneri-yorgunlugu" ve ReflectiveDoubleLoop.cs sadelestirme (c) bunu
         // ACIK BORC olarak isaretliyor. Bu test borcun BUYUKLUGUNU olcuyor: siniri yok, sirasi
@@ -717,7 +717,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_G2_A_zero_magnitude_threshold_turns_every_purpose_type_into_a_proposal()
+    public void AUDIT_DEFECT_MEM_G2_A_zero_magnitude_threshold_turns_every_purpose_type_into_a_proposal()
     {
         // `magnitudeThreshold: 0` guard'dan gecer (">= 0 olmali"). Ama |Learning| >= 0 TANIM
         // GEREGI her kayit icin dogrudur — yani esik 0 iken "buyuk-buyuklukte ogrenim sinyali
@@ -736,7 +736,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_G3_Padding_the_purpose_type_evades_systematic_pattern_detection_entirely()
+    public void AUDIT_DEFECT_MEM_G3_Padding_the_purpose_type_evades_systematic_pattern_detection_entirely()
     {
         // F3'un saldiri hali. Gruplama ORDINAL string esitligi uzerinden yapildigi icin, ayni
         // karar sinifini iki yazimla kaydetmek grup sayilarini esigin ALTINA dusurur ve
@@ -754,7 +754,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_G4_Case_variants_of_one_decision_class_yield_two_separate_proposals()
+    public void AUDIT_DEFECT_MEM_G4_Case_variants_of_one_decision_class_yield_two_separate_proposals()
     {
         // Ters yon: ayni sinif, iki yazim -> iki AYRI oneri. Insan gozunde bu tekrardir
         // (G1'deki yorgunlugu carpan etkiyle buyutur), makine gozunde iki farkli sinif.
@@ -769,7 +769,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_G5_Proposals_can_be_manufactured_from_forged_records_with_zero_provenance()
+    public void AUDIT_DEFECT_MEM_G5_Proposals_can_be_manufactured_from_forged_records_with_zero_provenance()
     {
         // `Propose` bir IEnumerable<MemoryRecord> alir; kayitlarin herhangi bir CompanyMemory'ye
         // YAZILMIS olmasi gerekmez ve MemoryRecord kurucusu public'tir. Yani uc nesne uydurup
@@ -788,7 +788,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_G6_The_minSupportingRecords_guard_is_no_longer_cosmetic()
+    public void AUDIT_FIXED_MEM_G6_The_minSupportingRecords_guard_is_no_longer_cosmetic()
     {
         // KUSURDU (AUDIT 5.6): mesaj "tek gozlemden sistematik iddia edilemez" diyordu ama
         // minSupportingRecords: 1 KABUL ediliyordu. KAPANDI: < 2 artik reddediliyor ve tek
@@ -800,7 +800,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_G7_Propose_mutates_nothing_enumerates_once_and_is_idempotent()
+    public void AUDIT_HOLDS_MEM_G7_Propose_mutates_nothing_enumerates_once_and_is_idempotent()
     {
         // P7'nin DAVRANISSAL kaniti (yapisal kanit G8'de): girdi dizisi, icindeki kayitlar ve
         // cagrilar arasi sonuc degismiyor; kaynak tam bir kez dolasiliyor (gizli yeniden-okuma
@@ -825,7 +825,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_G8_ReflectiveDoubleLoop_has_no_mutation_surface_and_no_hidden_state()
+    public void AUDIT_HOLDS_MEM_G8_ReflectiveDoubleLoop_has_no_mutation_surface_and_no_hidden_state()
     {
         // Mevcut ReflectiveDoubleLoopTests yalnizca PUBLIC STATIC metodlara bakiyor. Burada
         // private/instance uyeler ve ALANLAR da taraniyor (derleyici uretimi '<...>' adlar
@@ -849,7 +849,7 @@ public sealed class AdversarialWaveMemoryTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_HOLDS_H1_GateConfidence_never_raises_confidence_over_500_random_inputs()
+    public void AUDIT_HOLDS_MEM_H1_GateConfidence_never_raises_confidence_over_500_random_inputs()
     {
         // P6'nin can damari: kapi yalnizca KISITLAR. Fuzz'da negatif esik, negatif skor,
         // sifir esik ve tam sinir dahil hicbir kombinasyon ham confidence'i yukseltmiyor.
@@ -875,7 +875,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_H2_Threshold_zero_neither_divides_by_zero_nor_opens_the_gate()
+    public void AUDIT_HOLDS_MEM_H2_Threshold_zero_neither_divides_by_zero_nor_opens_the_gate()
     {
         // "threshold=0 ile bolme?" -> hayir: `threshold <= 0` dali bolmeyi hic yapmadan cap=0
         // veriyor. Skor esigin ALTINDA ise sonuc 0 (fail-closed); tam esikte ise raw doner.
@@ -886,7 +886,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_H3_A_negative_threshold_silently_turns_the_gate_into_a_no_op()
+    public void AUDIT_DEFECT_MEM_H3_A_negative_threshold_silently_turns_the_gate_into_a_no_op()
     {
         // `threshold` yalnizca Guard.Finite'ten geciyor — isareti denetlenmiyor. Negatif esik,
         // ENS-2002 3'un anlam dunyasinda tanimsizdir (coverage - noise - staleness < 0 zaten
@@ -903,7 +903,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_H4_Compute_can_emit_negative_infinity_an_unmeasurable_score()
+    public void AUDIT_DEFECT_MEM_H4_Compute_can_emit_negative_infinity_an_unmeasurable_score()
     {
         // Guard.cs politikasi: "olculemeyen deger kernel'in karar yollarina GIREMEZ." Compute
         // girdilerini denetliyor ama CIKTISINI denetlemiyor: iki buyuk sonlu ceza toplanip
@@ -917,7 +917,7 @@ public sealed class AdversarialWaveMemoryTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_H5_Both_entry_points_reject_every_unmeasurable_input()
+    public void AUDIT_HOLDS_MEM_H5_Both_entry_points_reject_every_unmeasurable_input()
     {
         foreach (double bad in new[] { double.NaN, double.PositiveInfinity, double.NegativeInfinity })
         {

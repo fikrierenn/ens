@@ -24,9 +24,9 @@ namespace Ens.Kernel.Tests;
 // Unicode format karakterleri, Render enjeksiyonu, canli koleksiyon gorunumu, es zamanlilik).
 //
 // ADLANDIRMA (skill sozlesmesi; W2 = dalga 2):
-//   AUDIT_DEFECT_W2_*  -> GECERSE KUSUR VAR. Mevcut (kusurlu) davranisi sabitler.
-//   AUDIT_HOLDS_W2_*   -> iddia saldiridan SAG CIKTI.
-//   AUDIT_FINDING_W2_* -> kod calisir ama beyan/yorum gercegi asiyor.
+//   AUDIT_DEFECT_INV_W2_*  -> GECERSE KUSUR VAR. Mevcut (kusurlu) davranisi sabitler.
+//   AUDIT_HOLDS_INV_W2_*   -> iddia saldiridan SAG CIKTI.
+//   AUDIT_FINDING_INV_W2_* -> kod calisir ama beyan/yorum gercegi asiyor.
 //
 // Rapor: 7000-reference-implementation/AUDIT-WAVE2-INVARIANTS.md
 // ============================================================================================
@@ -82,7 +82,7 @@ public sealed class AdversarialWave_InvariantTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_HOLDS_W2_R1_malformed_event_streams_are_all_rejected_on_replay()
+    public void AUDIT_HOLDS_INV_W2_R1_malformed_event_streams_are_all_rejected_on_replay()
     {
         // Gorevin acikca istedigi sahte akislar. Hepsi REDDEDILMELI — ve ediliyor.
         // AUDIT 5.3'un kapanisi bu eksende GERCEK.
@@ -141,7 +141,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W2_R2_rehydrate_accepts_events_belonging_to_other_decisions()
+    public void AUDIT_DEFECT_INV_W2_R2_rehydrate_accepts_events_belonging_to_other_decisions()
     {
         // KUSUR: `Rehydrate(id, history)` hicbir olayin `Target`'ini `id` ile karsilastirmaz,
         // `Emitter`'a da bakmaz. UC FARKLI karara ait olaylar, DORDUNCU bir kimlik altinda tek
@@ -175,7 +175,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W2_R3_replay_does_not_enforce_the_non_blank_alternative_guard()
+    public void AUDIT_DEFECT_INV_W2_R3_replay_does_not_enforce_the_non_blank_alternative_guard()
     {
         // KUSUR: Canli yol (`IdentifyAlternatives`) "Bos Alternative olamaz — adsiz secenek
         // degerlendirilemez." diye REDDEDER. Replay yolu (`EnsureReplayInvariant`) YALNIZCA
@@ -215,7 +215,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W2_R4_replayed_alternatives_are_a_live_view_not_a_copy()
+    public void AUDIT_DEFECT_INV_W2_R4_replayed_alternatives_are_a_live_view_not_a_copy()
     {
         // EN AGIR BULGU. AUDIT 5.3 duzeltme (2) "ALTERNATIVES ARTIK KOPYALANIYOR" diyor ve
         // DecisionAggregate.Apply su yorumu tasiyor:
@@ -254,7 +254,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W2_R5_unknown_event_types_are_silently_swallowed_by_the_fold()
+    public void AUDIT_DEFECT_INV_W2_R5_unknown_event_types_are_silently_swallowed_by_the_fold()
     {
         // KUSUR: `DomainEvent` public abstract record — disaridan turetilebilir. `Apply` ve
         // `EnsureReplayInvariant` switch'lerinin `default` dali YOK: taninmayan bir olay
@@ -278,7 +278,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W2_R6_replay_ignores_timestamps_and_duplicate_event_ids()
+    public void AUDIT_DEFECT_INV_W2_R6_replay_ignores_timestamps_and_duplicate_event_ids()
     {
         // KUSUR (a): Lifecycle sirasi YALNIZCA liste konumuyla zorlaniyor; `Timestamp` hic
         // okunmuyor. Framing'den 10 yil ONCE commit edilmis bir karar replay'den geciyor.
@@ -317,7 +317,7 @@ public sealed class AdversarialWave_InvariantTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_DEFECT_W2_O1_the_single_owner_condition_is_not_implemented_at_all()
+    public void AUDIT_DEFECT_INV_W2_O1_the_single_owner_condition_is_not_implemented_at_all()
     {
         // KUSUR: ENS-2001 Individuation'in DORT kosulundan ucu (tek Purpose, acik Alternatives,
         // tek Commitment) gercekten zorlaniyor. DORDUNCUSU — "tek Owner" — hicbir yerde
@@ -364,7 +364,7 @@ public sealed class AdversarialWave_InvariantTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_DEFECT_W2_P1_a_completely_invisible_proof_trace_is_representable()
+    public void AUDIT_DEFECT_INV_W2_P1_a_completely_invisible_proof_trace_is_representable()
     {
         // EN AGIR PROOF-TRACE BULGUSU. `string.IsNullOrWhiteSpace` YALNIZCA Unicode whitespace'i
         // (Zs/Zl/Zp + birkac kontrol karakteri) yakalar. FORMAT (Cf) ve NUL karakterleri
@@ -406,7 +406,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_W2_P2_real_unicode_whitespace_variants_are_all_rejected()
+    public void AUDIT_HOLDS_INV_W2_P2_real_unicode_whitespace_variants_are_all_rejected()
     {
         // Durustluk geregi: guard'in YAKALADIKLARI. Zs/Zl kategorileri gercekten reddediliyor,
         // yani kusur "guard yok" degil, "guard'in kapsami Unicode kategorisiyle sinirli".
@@ -436,7 +436,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W2_P3_render_output_can_be_forged_through_premise_text()
+    public void AUDIT_DEFECT_INV_W2_P3_render_output_can_be_forged_through_premise_text()
     {
         // KUSUR: `Render()` oncul metnini, RuleId'yi ve Conclusion'i DOGRUDAN interpolasyona
         // sokuyor; hicbir kacis/normalizasyon yok. Oncul metninin icine sablonun TAMAMI
@@ -471,7 +471,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W2_P4_a_self_justifying_derivation_is_representable_with_full_confidence()
+    public void AUDIT_DEFECT_INV_W2_P4_a_self_justifying_derivation_is_representable_with_full_confidence()
     {
         // KUSUR: hicbir dongusellik kontrolu yok. Bir trace'in SONUCU, kendi ONCULU olabiliyor:
         //     X |- X   (conf = 1.00)
@@ -496,7 +496,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_FINDING_W2_P5_min_tnorm_is_idempotent_so_chain_length_never_lowers_confidence()
+    public void AUDIT_FINDING_INV_W2_P5_min_tnorm_is_idempotent_so_chain_length_never_lowers_confidence()
     {
         // KOD DOGRU (L7 = min, sadakatle uygulanmis) ama KAYNAK YORUMU FAZLA SOYLUYOR.
         // ProofTrace.AsPremise yorumu: "Confidence monoton azalir (min t-norm) — turetim zinciri
@@ -520,7 +520,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_W2_P6_premises_cannot_be_replaced_after_construction()
+    public void AUDIT_HOLDS_INV_W2_P6_premises_cannot_be_replaced_after_construction()
     {
         // Saldirdim, kirilmadi: hem downcast hem girdi-aliasing kapali, `Confidence` atanamaz.
         var source = new List<Premise> { new("a", 0.9), new("b", 0.4) };
@@ -542,7 +542,7 @@ public sealed class AdversarialWave_InvariantTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_DEFECT_W2_L1_the_action_lifecycle_can_be_entered_without_any_decision()
+    public void AUDIT_DEFECT_INV_W2_L1_the_action_lifecycle_can_be_entered_without_any_decision()
     {
         // KUSUR: `Planned` durumunun tanimi "Decision commit edildi (ENS-2001), action planlandi".
         // Ama `new ActuationLayer(id)` HICBIR SEY dogrulamaz: verilen Identity'nin bir Decision'a
@@ -576,7 +576,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W2_L2_one_proof_trace_can_legitimize_unlimited_unrelated_actions()
+    public void AUDIT_DEFECT_INV_W2_L2_one_proof_trace_can_legitimize_unlimited_unrelated_actions()
     {
         // KUSUR: `ProofTrace`'in KANITLADIGI SEYE BAGI YOK — ne DecisionId tasiyor ne action
         // kimligi; `RecordTrace` de trace ile `DecisionId` arasinda hicbir iliski aramiyor.
@@ -600,7 +600,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W2_L3_audit_timestamps_are_caller_controlled_and_never_validated()
+    public void AUDIT_DEFECT_INV_W2_L3_audit_timestamps_are_caller_controlled_and_never_validated()
     {
         // KUSUR: `Transition(to, at)` `at`'i hic dogrulamiyor. Tum lifecycle GERIYE akan zaman
         // damgalariyla kosturulabiliyor; audit izi "Remembered @ 1926" ile "Planned @ 2026"
@@ -620,7 +620,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_W2_L4_history_is_a_live_unsynchronized_view_not_a_snapshot()
+    public void AUDIT_DEFECT_INV_W2_L4_history_is_a_live_unsynchronized_view_not_a_snapshot()
     {
         // KUSUR: AUDIT 5.2 duzeltmesi `History`'yi SILINEMEZ yapti ama CANLI birakti.
         // `ReadOnlyCollection<T>` bir kopya degil, alttaki `List<T>` uzerine bir gorunumdur ve
@@ -666,7 +666,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_W2_L5_out_of_range_gate_decision_fails_closed()
+    public void AUDIT_HOLDS_INV_W2_L5_out_of_range_gate_decision_fails_closed()
     {
         // Saldiri: enum'a tanimsiz bir deger enjekte et. Sinif `is Autonomous or NotifyHuman`
         // seklinde POZITIF liste kullaniyor -> bilinmeyen karar Blocked'a dusuyor. Fail-CLOSED.
@@ -682,7 +682,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_W2_L6_ApplyGate_called_twice_is_rejected_and_leaves_no_partial_state()
+    public void AUDIT_HOLDS_INV_W2_L6_ApplyGate_called_twice_is_rejected_and_leaves_no_partial_state()
     {
         // "ApplyGate iki kez cagrilirsa?" — ikinci cagri Contextualized'dan GateChecked'e gecmeye
         // calisir ve reddedilir. Yarim uygulanmis durum kalmiyor: ApplyGate'in iki gecisinden
@@ -711,7 +711,7 @@ public sealed class AdversarialWave_InvariantTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_HOLDS_W2_C1_independent_layers_run_correctly_in_parallel()
+    public void AUDIT_HOLDS_INV_W2_C1_independent_layers_run_correctly_in_parallel()
     {
         // Paylasilan durum YOKKEN paralellik sorun cikarmiyor: her action kendi katmaninda tam
         // lifecycle'i tamamliyor (statik `Allowed` tablosu salt-okunur kullanildigi surece guvenli).
@@ -736,7 +736,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_W2_C2_shared_layer_under_parallel_load_still_rejects_illegal_moves()
+    public void AUDIT_HOLDS_INV_W2_C2_shared_layer_under_parallel_load_still_rejects_illegal_moves()
     {
         // DURUST SINIR: bu test bir YARIS DURUMUNU KANITLAMAZ. Yarislar zamanlamaya baglidir ve
         // deterministik bir test yazilamaz; "kusuru gosteremedigi icin yesil yanan" bir
@@ -774,7 +774,7 @@ public sealed class AdversarialWave_InvariantTests
     }
 
     [Fact]
-    public void AUDIT_HOLDS_W2_C3_parallel_commit_attempts_do_not_produce_a_visibly_broken_atom()
+    public void AUDIT_HOLDS_INV_W2_C3_parallel_commit_attempts_do_not_produce_a_visibly_broken_atom()
     {
         // Ayni durust sinir: `DecisionAggregate` de senkronize degil (`IsCommitted` check-then-act
         // + `_history.Add`). Deterministik kanit yazilamaz; burada yalnizca gozlemlenebilir sonuc

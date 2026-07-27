@@ -480,3 +480,54 @@ metnine **yazılmaz**; adıyla anılır. Bir belgeyi bozan şey, o belgenin konu
 **Bir ders daha — hook'un kendi kusuru:** araç okuyamadığında **sessizce geçmedi**, ama
 *"7000"* gibi anlamsız bir sayı üretip **yanlış alarm** verdi. Doğru davranış
 *"dosya okunamadı"* demekti. `inventory-check.sh` bu ayrımı yapmıyor — açık kusur.
+
+### 13.2 ✅ UYGULANDI — dalga ad-uzayı, 2026-07-27
+
+Öneri uygulandı. 6 dosyada **223 atıf** yeniden adlandırıldı:
+
+| Dosya | Ön ek | Atıf |
+|---|---|---|
+| `AdversarialAuditTests.cs` | `AUD` | 57 |
+| `AdversarialWave_InvariantTests.cs` | `INV` | 25 |
+| `AdversarialWave_MemoryTests.cs` | `MEM` | 44 |
+| `AdversarialWave_SchedulerGateTests.cs` | `SCH` | 27 |
+| `AdversarialWave_SecurityTests.cs` | `SEC` | 55 |
+| `AuditFixed_CommitmentProofTraceTests.cs` | `CPT` | 15 |
+
+Biçim: `AUDIT_<VERDICT>_<DALGA>_<ID>_<açıklama>` — ör. `AUDIT_DEFECT_MEM_A1_Future_AssertedAt…`
+
+**Yöntem:** dosyalar **bayt düzeyinde** işlendi. `SecurityTests.cs`'teki **4 NUL fixture'ı
+korundu** (öncesi/sonrası sayıldı, eşit). Bu, §13.1'in dersinin uygulanmasıdır: NUL'lar
+testin verisidir, silinmemeli.
+
+### Sonuç — ölçüldü
+
+| | Önce | Sonra |
+|---|---|---|
+| `DEFECT`+`FIXED` çakışması | **14** | **1** |
+| Test | 373/373 | **373/373** (307 ms) |
+| Envanter | 75/9/51/66 | **değişmedi** |
+
+### Kalan tek vaka **meşrudur** — ve kayda değer
+
+`CPT_D1`: **9** `AUDIT_FIXED_CPT_D1_*` + **2** `AUDIT_DEFECT_CPT_D1_residual_*`.
+
+Bu bir çakışma **değil**: aynı kusurun büyük kısmı kapandı, iki **artık** parçası açık —
+ve test adları bunu `residual` sözcüğüyle **zaten söylüyor**. Yani ID paylaşımı burada
+**doğru**dur.
+
+> **Ayrım şudur:** 13 vakada aynı ID **farklı kusurları** gösteriyordu (kaza).
+> 1 vakada aynı ID **aynı kusuru** gösteriyor (kasıt). Ad-uzayı kazayı kaldırdı,
+> kastı korudu.
+
+### §11/3'ün kapanış testi artık geçerli
+
+Bu düzeltmeden önce her kapanma iddiası — `ADR-0003`'ün 17'si, `ADR-0004`'ün `DP4`'ü,
+haritanın kendisi — **sınanamaz** durumdaydı. Şimdi sınanabilir.
+
+> **Ama iddialar hâlâ doğrulanmadı.** Ad-uzayı *yordamı* onardı; *sonuçları* üretmedi.
+> Bu ayrımı korumak, bu oturumun altı kez ihlal ettiği kuralın (*ilan etmek ≠ yapmak*)
+> tam karşılığıdır.
+
+**Belgelerdeki eski ID'ler (`A1`, `W8d`…) yeniden yazılmadı.** Tarihsel inceleme kayıtları
+EC-001 gereği değiştirilmez; yukarıdaki tablo eşlemeyi verir.

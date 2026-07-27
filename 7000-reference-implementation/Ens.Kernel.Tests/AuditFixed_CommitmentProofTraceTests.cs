@@ -30,8 +30,8 @@ namespace Ens.Kernel.Tests;
 // uygulamamak olurdu. Ayrıntılı gerekçe: `Domain/DecisionAggregate.cs` dosya başı bloğu.
 //
 // ADLANDIRMA (denetim sözleşmesi):
-//   AUDIT_FIXED_D1_*   → geçerse kusur KAPALI (regresyon bekçisi; kırılırsa kusur geri geldi).
-//   AUDIT_DEFECT_D1_*  → geçerse HÂLÂ AÇIK bir borç var (dürüstlük kaydı, kapanış iddiası yok).
+//   AUDIT_FIXED_CPT_D1_*   → geçerse kusur KAPALI (regresyon bekçisi; kırılırsa kusur geri geldi).
+//   AUDIT_DEFECT_CPT_D1_*  → geçerse HÂLÂ AÇIK bir borç var (dürüstlük kaydı, kapanış iddiası yok).
 // ============================================================================================
 
 public sealed class AuditFixed_CommitmentProofTraceTests
@@ -50,7 +50,7 @@ public sealed class AuditFixed_CommitmentProofTraceTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_FIXED_D1_the_audits_own_zero_premise_commitment_snippet_is_now_rejected()
+    public void AUDIT_FIXED_CPT_D1_the_audits_own_zero_premise_commitment_snippet_is_now_rejected()
     {
         // AUDIT-WAVE2-FIDELITY §D-1'in birebir kod örneği:
         //     var d = DecisionAggregate.Frame(who, "tedarikçi seç");
@@ -78,7 +78,7 @@ public sealed class AuditFixed_CommitmentProofTraceTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_FIXED_D1_commitment_emits_a_proof_trace_bound_to_its_evidence()
+    public void AUDIT_FIXED_CPT_D1_commitment_emits_a_proof_trace_bound_to_its_evidence()
     {
         var evidence = new[]
         {
@@ -119,7 +119,7 @@ public sealed class AuditFixed_CommitmentProofTraceTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_D1_an_uncommitted_decision_has_no_trace_and_a_committed_one_always_has_one()
+    public void AUDIT_FIXED_CPT_D1_an_uncommitted_decision_has_no_trace_and_a_committed_one_always_has_one()
     {
         var d = Deliberated(new Premise("kanit", 0.9));
         Assert.False(d.IsCommitted);
@@ -135,7 +135,7 @@ public sealed class AuditFixed_CommitmentProofTraceTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_FIXED_D1_commitment_confidence_cannot_exceed_the_t_norm_of_its_premises()
+    public void AUDIT_FIXED_CPT_D1_commitment_confidence_cannot_exceed_the_t_norm_of_its_premises()
     {
         var d = Deliberated(new Premise("zayıf-kanıt", 0.30), new Premise("güçlü-kanıt", 0.95));
 
@@ -155,7 +155,7 @@ public sealed class AuditFixed_CommitmentProofTraceTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_D1_being_less_confident_than_the_premises_is_always_allowed()
+    public void AUDIT_FIXED_CPT_D1_being_less_confident_than_the_premises_is_always_allowed()
     {
         // `≤` yönü kasıtlıdır: temkinli olmak serbest, öncülleri aşmak yasak (P6/P7 yönü).
         var d = Deliberated(new Premise("kanit", 1.0));
@@ -178,7 +178,7 @@ public sealed class AuditFixed_CommitmentProofTraceTests
         ];
 
     [Fact]
-    public void AUDIT_FIXED_D1_replay_rejects_a_traceless_commitment_stream()
+    public void AUDIT_FIXED_CPT_D1_replay_rejects_a_traceless_commitment_stream()
     {
         var id = Identity.New();
 
@@ -205,7 +205,7 @@ public sealed class AuditFixed_CommitmentProofTraceTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_D1_trace_is_a_fold_of_the_stream_so_live_and_replayed_traces_cannot_drift()
+    public void AUDIT_FIXED_CPT_D1_trace_is_a_fold_of_the_stream_so_live_and_replayed_traces_cannot_drift()
     {
         // ENS-4001 Axiom 2: iz olayın içine denormalize KOPYALANMAZ, akıştan HESAPLANIR.
         // Bu yüzden "olayda yazan iz" ile "gerçek öncüller" ayrışamaz — yapısal olarak imkânsız.
@@ -232,7 +232,7 @@ public sealed class AuditFixed_CommitmentProofTraceTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_FIXED_D1_evidence_cannot_be_grown_by_the_caller_after_deliberation()
+    public void AUDIT_FIXED_CPT_D1_evidence_cannot_be_grown_by_the_caller_after_deliberation()
     {
         var backing = new List<Premise> { new("kanit-1", 0.9) };
         var d = DecisionAggregate.Frame(Who, "amaç");
@@ -249,9 +249,9 @@ public sealed class AuditFixed_CommitmentProofTraceTests
     }
 
     [Fact]
-    public void AUDIT_FIXED_D1_replayed_evidence_is_a_real_copy_not_a_live_view()
+    public void AUDIT_FIXED_CPT_D1_replayed_evidence_is_a_real_copy_not_a_live_view()
     {
-        // `AUDIT_DEFECT_W2_R4`, Alternatives için `as ReadOnlyCollection<T>` kestirmesinin bir
+        // `AUDIT_DEFECT_CPT_W2_R4`, Alternatives için `as ReadOnlyCollection<T>` kestirmesinin bir
         // KOPYA DEĞİL GÖRÜNÜM verdiğini gösterdi (o bulgu HÂLÂ AÇIK — bu düzeltmenin kapsamı değil).
         // Evidence tarafında aynı deliği açmamak için `Apply` her zaman gerçek kopya alır:
         // aksi hâlde bir commitment'ın öncülleri replay'den SONRA dışarıdan büyütülebilirdi.
@@ -276,7 +276,7 @@ public sealed class AuditFixed_CommitmentProofTraceTests
     // ========================================================================================
 
     [Fact]
-    public void AUDIT_DEFECT_D1_residual_premises_are_still_uncalibrated_free_text()
+    public void AUDIT_DEFECT_CPT_D1_residual_premises_are_still_uncalibrated_free_text()
     {
         // AÇIK BORÇ (ProofTrace.cs "(b)" + Guard.cs "DÜRÜST SINIR"): öncül hâlâ serbest metin +
         // ÖZ-BEYAN confidence'tır. ENS-4010 Context/Evidence/Memory NODE'una tipli referans YOK,
@@ -289,7 +289,7 @@ public sealed class AuditFixed_CommitmentProofTraceTests
         Assert.Equal(1.0, d.CommitmentTrace!.Confidence, precision: 10);
         Assert.Single(d.CommitmentTrace.Premises);
 
-        // Ve `AUDIT_FINDING_W2_P5`'in idempotans bulgusu burada da geçerli: 100 kopya öncül,
+        // Ve `AUDIT_FINDING_CPT_W2_P5`'in idempotans bulgusu burada da geçerli: 100 kopya öncül,
         // korroborasyon üretmez — `min` aynı kalır, ama trace "100 kanıt" varmış gibi görünür.
         var many = Enumerable.Repeat(new Premise("tek-kanit", 0.42), 100).ToList();
         var d2 = DecisionAggregate.Frame(Who, "amaç");
@@ -300,7 +300,7 @@ public sealed class AuditFixed_CommitmentProofTraceTests
     }
 
     [Fact]
-    public void AUDIT_DEFECT_D1_residual_only_the_commitment_atom_emits_a_trace()
+    public void AUDIT_DEFECT_CPT_D1_residual_only_the_commitment_atom_emits_a_trace()
     {
         // ADR-0001 §5.4 proof-trace'i ATOM düzeyinde zorunlu kılar ve bu artım tam olarak orada
         // zorluyor. Ama §5.5'in "her action bir proof-trace zarfı üretir" cümlesinin lifecycle
