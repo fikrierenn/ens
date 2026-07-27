@@ -4,7 +4,7 @@ title:         ADR-0003 — mühendislik uygulanabilirliği incelemesi
 type:          review
 review_of:     ADR-0003
 dimension:     engineering (eng)
-status:        in-progress
+status:        complete
 owner:         ens-backend-architect
 version:       0.1.0
 last_reviewed: 2026-07-27
@@ -23,13 +23,29 @@ method:        derlenen spike + dotnet test ölçümü + kaynak sayımı
 > ve ne kadara mal olur"* sorar. Tartışılan her şey **ölçüldü**; ölçülemeyen her şey
 > `DOĞRULANMADI` etiketiyle işaretlendi (SKR-041 emsali).
 
-**Durum: TASLAK — doldurulma sırasında.** Bölümler tek tek yazılıyor.
+**Verdict: `koşullu uygulanabilir`** (karar başına ayrıntı §0). Üç bloke edici koşul: T-A, T-B, T-C.
+
+**Bu incelemede kod yazılmadı.** ADR `status: draft`; Madde VII gereği `7000-reference-implementation/`
+bu ADR'nin hiçbir kararına dayanamaz. Tüm deneyler scratchpad'deki ayrı spike projelerinde
+yapıldı; `Ens.Kernel/`'e dokunulmadı.
 
 ---
 
 ## 0. Verdict tablosu
 
-*(en sonda doldurulacak)*
+| Karar | Verdict | Tek cümlelik gerekçe (ölçüme dayalı) |
+|---|---|---|
+| **K-1** | **koşullu uygulanabilir** | ADR'nin `record` iskeleti **kırık**: ayrı assembly'den `legit with { Tool = "wire_transfer" }` mührü koruyarak yetki yükseltiyor (`KABUL=True`, §3). `sealed class` + get-only ile uygulanabilir; ayrıca `Rehydrate` yetki çözümü karara yazılmalı (§8) |
+| **K-2** | **koşullu uygulanabilir** | Tip zorlaması sağlam, ama `ToUpperInvariant` Türkçe metni katlamıyor → `G4` Türkçe'de **açık kalıyor** (§5.1); M-3'ün mixed-script yarısı da .NET'te **uygulanamaz** (BCL'de Script API yok, §5.2). Adım-1 listesine `Cs` eksik |
+| **K-3** | **koşullu uygulanabilir** | `BannedApiAnalyzers` gerçekten build kırıyor (ölçüldü, §6). Koşullar: `#pragma` kaçağı için mimari test **de** gerekir, yasak listesinin her satırı için negatif test gerekir, ve `DomainEvent.Timestamp` tasarımı değişmeli |
+| **K-4** | **koşullu uygulanabilir** | Varyant deseni doğru; koşul OQ1'in `class` lehine kapatılması — `required` `default(T)` deliğini **kapatmıyor** (ölçüldü, §4.1) ve `IsValid` bayrağı bir çağrı-yeri sayımıdır |
+| **K-5** | **uygulanabilir** | Tek koşulsuz karar. Mimari tarama yazıldı ve çalıştı: **22 ihlal** (§10.1). En düşük test etkisi, en temiz zorlama |
+| **K-6** | **koşullu uygulanabilir** | Derleme etkisi ADR'nin dediği gibi **düşük** (8/8 assertion biçimi geçti). Ama `Measured` `IComparable` değil → `Scheduler.cs:124` **sessizce çalışma-zamanında patlıyor** (§7.3). Koşul: karşılaştırma + aritmetik operatör sözleşmesi, ve OQ2'nin kırpma lehine kapatılması |
+
+**Bütün olarak: `koşullu uygulanabilir`.** Altı kararın hiçbiri `uygulanamaz` değil — mimari
+yön sağlamdır ve prior-art dürüsttür. Ama **üç bloke edici** koşul var (T-A, T-B, T-C, §12) ve
+bunlar kapanmadan Accepted verilirse Madde VII gereği kod bu ADR'ye dayanır ve **kırık bir
+K-1 üretilir**.
 
 ---
 
@@ -580,16 +596,297 @@ yerinde açıkça verilir — **tüm event üretim çağrıları değişir**) ya
 
 ## 9. Maliyet ölçümü — dosya ve test yüzeyi
 
-*(doldurulacak)*
+ADR §2.8 dürüstçe *"DOĞRULANMADI: bu turda `dotnet test` çalıştırılmadı, tahminler dosya
+sayımına dayanır"* diyor. Bu bölüm o tahminleri **ölçüyor**.
+
+### E-7.1 Taban büyüklüğü — ADR'nin "899 satır" rakamı yanlış
+
+```
+Ens.Kernel/       17 dosya   2421 satır (ham)   1017 satır (boş + yorum hariç)
+Ens.Kernel.Tests/            6851 satır         373 test / 350 [Fact]|[Theory]
+```
+
+ADR §1 ve görev metni **"~899 satır"** diyor. Ölçüm: **ham 2421**, kod 1017. Hangi tanımla
+bakılırsa bakılsın 899 değil. Rakam muhtemelen daha eski bir sürümden taşınmış. Şiddeti
+düşük ama ADR'nin taban ölçümü **doğrulanmamış bir sayıdır** ve maliyet tahminlerinin
+paydası odur.
+
+Ayrıca **test kodu üretim kodunun 2.8 katıdır** (6851 / 2421). Bu, ADR'nin altı kararının
+gerçek maliyetinin **üretim tarafında değil test tarafında** olduğu anlamına gelir — ADR'nin
+maliyet tabloları "etkilenen test **dosyası**" sayıyor, **satır** değil.
+
+### E-7.2 Dokunulan dosyaların birleşimi — ADR hiçbir yerde vermiyor
+
+ADR karar başına dosya sayıyor (K-1: 6, K-2: 7, K-3: 5, K-4: 5, K-5: 5, K-6: 6) ama
+**birleşimi** vermiyor. Birleşim ölçüldü:
+
+| Üretim dosyası | Dokunan kararlar |
+|---|---|
+| `Domain/CompanyMemory.cs` (448 sat.) | K-2, K-3, K-4, K-5 |
+| `Domain/DecisionAggregate.cs` (413) | K-1, K-3, K-5 |
+| `Adapter/LlmAdapter.cs` (203) | K-2, K-4, K-5, K-6 |
+| `ActuationLayer.cs` (176) | K-1, K-3, K-5 |
+| `Capability/CapabilityRegistry.cs` (173) | K-1, K-2 |
+| `Scheduler.cs` (149) | K-1, K-2, K-4, K-5 |
+| `BoundedAutonomyGate.cs` (135) | K-1, K-4, K-6 |
+| `ProofTrace.cs` (133) | K-1 |
+| `Domain/ReflectiveDoubleLoop.cs` (116) | K-2 |
+| `Laws/DecisionEntropy.cs` (83) | K-6 |
+| `Domain/Events/DecisionEvents.cs` (70) | K-3 |
+| `Laws/DecisionCapital.cs` (54) | K-4(?), K-6 |
+| `Laws/DecisionGravity.cs` (47) | K-4, K-6 |
+| `Domain/ContextScore.cs` (47) | K-2, K-3, K-6 |
+| `Domain/DomainEvent.cs` (20) | **K-3 — ADR'de YOK** (E-6.5) |
+| `Domain/Identity.cs` (14) | K-2 |
+| `Guard.cs` (140) | K-6 (§8 "kapatılan N nokta" listesi kaldırılıyor) |
+
+**17 üretim dosyasının 17'si de dokunuluyor — %100.** Altı karar birlikte uygulandığında
+`Ens.Kernel`'in dokunulmayan tek dosyası kalmıyor. Bu, ADR'nin *"ADR-0001'i değiştirmez,
+sertleştirir"* (§9) beyanıyla teknik olarak tutarlıdır ama **operasyonel olarak bir yeniden
+yazımdır**, bir sertleştirme değil.
+
+Sekiz dosya **üç ya da daha fazla** karar tarafından dokunuluyor. Bu, OQ6'nın (uygulama
+sırası) neden bloke edici olduğunun ölçülmüş kanıtıdır (§11).
+
+### E-7.3 Test yüzeyi — dosya başına test sayısı
+
+| Test dosyası | Test sayısı | ADR'nin etkilenen dediği kararlar |
+|---|---|---|
+| `AdversarialAuditTests.cs` | 52 | K-2, K-3 |
+| `AdversarialWave_SecurityTests.cs` | 51 | *(ADR hiçbir kararda saymıyor)* |
+| `AdversarialWave_MemoryTests.cs` | 41 | K-2, K-3, K-4, K-6 |
+| `CompanyMemoryTests.cs` | 32 | K-2, K-3, K-4 |
+| `AdversarialWave_SchedulerGateTests.cs` | 24 | K-1, K-2, K-4, K-5, K-6 |
+| `AdversarialWave_InvariantTests.cs` | 22 | K-1, K-3, K-5 |
+| `ActuationLayerTests.cs` | 15 | K-1, K-3 |
+| `SchedulerTests.cs` | 14 | K-1, K-4 |
+| `ProofTraceTests.cs` / `CapabilityRegistryTests.cs` / `AuditFixed_CommitmentProofTraceTests.cs` | 11 / 11 / 11 | K-1, K-2 |
+| `ReflectiveDoubleLoopTests.cs` / `LlmAdapterTests.cs` / `DecisionCapitalTests.cs` | 10 / 10 / 10 | K-2, K-5, K-6 |
+| `ContextScoreTests.cs` / `DecisionGravityTests.cs` / `DecisionAggregateTests.cs` | 9 / 8 / 8 | K-2, K-4, K-6 |
+| `BoundedAutonomyGateTests.cs` / `DecisionEntropyTests.cs` | 6 / 5 | K-1, K-4, K-6 |
+
+**ADR'nin altı kararının etkilenen-test-dosyası listelerinin birleşimi 18 dosyanın 17'sini
+kapsıyor.** Kapsanmayan tek dosya: `AdversarialWave_SecurityTests.cs` — **51 test**, yani
+tabanın **%13.7'si**. Bu, ADR §2.5'te "13 kimliğin testi bu dosyada" diye tespit edilen
+dosyanın ta kendisidir. Kararlar o kimlikleri kapattığını iddia ediyor ama **hiçbir maliyet
+tablosunda o dosya geçmiyor.**
+
+> **Talep T-7:** ADR'nin altı maliyet tablosuna `AdversarialWave_SecurityTests.cs` eklenmeli.
+> 51 test, ADR'nin sayısal iddiasının (40 kimlik) **doğrulanma yeridir**; maliyet tablosunda
+> yok olması, §2.5'teki NUL-baytı körlüğünün maliyet tarafındaki artığıdır.
+
+### E-7.4 Breaking API yüzeyi — hangi imzalar değişiyor
+
+| Karar | Değişen public imza | Ölçülen etki |
+|---|---|---|
+| K-1 | `BoundedAutonomyGate.Evaluate(...)`, `Scheduler.Schedule(...)`, `ToolAuthorization` ctor, **+ `DecisionAggregate.Rehydrate` (ADR'de yok, E-6.3)** | Elle `ToolAuthorization` kuran her test derlenmez |
+| K-2 | `string` alan **her** public üye | 6 yeni tip; en geniş yüzey |
+| K-3 | `ActuationLayer`'ın zaman parametreli metotları, `MemoryRecord` ctor, **+ `DomainEvent.Timestamp` (ADR'de yok, E-6.5)** | Her event üretim çağrısı |
+| K-4 | Politika parametreli imzalar | Dar |
+| K-5 | Koleksiyon dönüş tipleri | **Düşük** — `ImmutableArray<T>` zaten `IReadOnlyList<T>`; ADR haklı |
+| K-6 | Sayı dönen her public üye | Derlemede **düşük** (ölçüldü, §7 E-5.3), **çalışma zamanında yüksek** (sıralama) |
+
+**Ölçülmüş sonuç: ADR'nin "K-1 en derin, K-2 en geniş" değerlendirmesi doğrudur.** Ama
+"K-5/K-6 en düşük etkili" değerlendirmesi yalnızca **derleme** ekseninde doğrudur; çalışma
+zamanı ekseninde K-6 en riskli karardır (E-5.3).
 
 ## 10. "Örnek kapatıldı, sınıf açık" denetimi
 
-*(doldurulacak)*
+ADR §6 bu denetimi kendisi yapıyor. Bu bölüm o tabloyu **ölçerek** yeniden yazıyor.
+Ölçüt tek: *mekanizma tüm çağrı yerlerinde derleyici/test tarafından mı zorlanıyor, yoksa
+konvansiyon mu?*
+
+### E-8.1 K-5/K-6'nın mimari testi UYGULANABİLİR — ve ihlaller sayıldı
+
+ADR'nin önerdiği assembly taraması gerçekten yazıldı (`scratchpad/spike/Scan/`, ~15 satır
+`System.Reflection`) ve **derlenmiş `Ens.Kernel.dll` üzerinde çalıştırıldı**:
+
+```
+K-5 ihlali (public üye, IEnumerable türevi ama Immutable/Frozen değil) : 22
+K-6 ihlali (public üye, ham double/double? dönen)                       : 36
+toplam exported tip                                                     : 43
+```
+
+**Bu sayılar ADR'de yok ve K-5/K-6'nın gerçek boyutunu değiştiriyor.** K-6 için ADR
+*"Breaking? Düşük"* diyor — ama **36 public üye** imza değiştirecek. Bunlardan 7'si
+`Guard`'ın kendisi (ADR izin listesine koyuyor, doğru), 4'ü `DecayFunction`, kalan 25'i
+kernel'in karar yolları.
+
+K-5'in 22 ihlali:
+```
+ActuationLayer.History        ProofTrace.Premises           Scheduler.Schedule / ScheduleTop
+CompanyMemory.Retrieve / RetrieveTop / FindStale / FindWeaklyAttributed / AllRecords / Verifications
+DecisionAggregate.Alternatives / Evidence / UncommittedEvents / History
+ReflectiveDoubleLoop.Propose  AlternativesIdentified.Alternatives / Evidence
+CapabilityPack.AllowedTools / RequiresHumanApprovalFor
+CapabilityRegistry.Packs / EnabledPacks   LlmAdapterRegistry.Adapters
+```
+
+**Mühendislik sonucu: K-5 ve K-6'nın zorlama mekanizması gerçek, ucuz ve bugün yazılabilir.**
+Taramanın maliyeti ~15 satırdır ve `Ens.Kernel.Tests`'e tek bir test dosyası olarak girer.
+Bu, ADR'nin en sağlam iki kararıdır — ve `CapabilityRegistry.cs:93`'ün `FrozenSet` dersini
+sınıfa yaymanın yolu ölçülerek doğrulanmıştır.
+
+> Not: `CapabilityRegistry.Packs`/`EnabledPacks` `IReadOnlyCollection` dönüyor ama içerik
+> `FrozenSet` olabilir — tarama **statik dönüş tipine** bakar, ADR de öyle diyor. Doğru
+> davranış budur: dönüş tipi bir sözleşmedir, içerik değil.
+
+### E-8.2 Denetim tablosu — ADR §6'nın ölçülmüş hâli
+
+| Karar | ADR'nin iddiası | **Ölçüm** | Sınıf mı örnek mi |
+|---|---|---|---|
+| **K-1** | Sınıf (derleyici) — `private` kurucu taklidi engeller | ⛔ **YANLIŞ** — `record` + `init` ile `with` mührü koruyarak yetki yükseltiyor (E-1.1). `sealed class`'a geçilirse **doğru** | Bugünkü tasarımla **örnek**; `class` ile **sınıf** |
+| **K-2** | Sınıf (derleyici) — imzalar ham `string` almaz | Tip zorlaması **doğru**, ama *kanonikleştirmenin doğruluğu* Türkçe'de kapanmıyor (E-3.1) ve M-3 BCL'de **uygulanamaz** (E-3.2) | Yüzey **sınıf**, içerik **eksik** |
+| **K-3** | **Kısmen** — analyzer gerekir | Analyzer **çalışıyor** (E-4.1) ama `#pragma` ile bastırılıyor ve yanlış yazılmış yasak satırı **sessiz** (E-4.2). Yüzey çok dar: kernel'de `UtcNow` **1 yerde** | **Örnek+** — analyzer konvansiyondan güçlü, tipten zayıf |
+| **K-4** | Sınıf (derleyici) + exhaustive `switch` | `abstract record` + varyant **doğru**; ama `readonly record struct` eşikler `default(T)` ile atlanıyor ve `required` **kapatmıyor** (E-2.1) | `class` ile **sınıf**, `struct` ile **örnek** |
+| **K-5** | Sınıf (mimari test) | ✔ **DOĞRULANDI** — tarama yazıldı, çalıştı, 22 ihlal saydı (E-8.1) | **Sınıf** |
+| **K-6** | Sınıf (mimari test) | Tarama ✔ (36 ihlal), ama `Measured` `IComparable` değil → `Scheduler` **sessizce çalışma-zamanında kırılıyor** (E-5.3) | **Sınıf**, ama eksik tip sözleşmesiyle |
+
+### E-8.3 ADR'nin kendi ölçütünün ihlali — üç yerde
+
+ADR §1'in ölçütü: *"Bir karar, ancak 'unutmak' derleme hatası ya da tip hatası üretiyorsa
+sınıfı kapatır."* Ölçülen üç ihlal:
+
+1. **K-1** — `with` ifadesi bir derleme hatası üretmiyor; **hiçbir tanı** yok (E-1.1).
+2. **K-4/K-6** — `default(DecayRate)`, `default(Measured)` **hiçbir tanı** üretmiyor (E-2.1).
+   `class` varyantı `CS8618` üretiyor ama proje `<WarningsAsErrors>` taşımıyor (E-2.4).
+3. **K-6** — `OrderByDescending(Measured)` **hiçbir tanı** üretmiyor, çalışma zamanında
+   patlıyor (E-5.3).
+
+Üçünün ortak yapısı aynıdır ve `Guard.cs`'in hikâyesiyle özdeştir: **doğru mekanizma, görülmemiş
+bir çağrı yeri.** ADR meta-kalıbı doğru teşhis ediyor ama kendi mekanizmalarını C# semantiğine
+karşı sınamadığı için üç kez ona düşüyor.
+
+> **Bu bölümün ana bulgusu:** ADR'nin meta-kalıp savunması (§6) **kod okumasıyla değil,
+> derleyici davranışıyla** yapılmalıydı. Yukarıdaki üç ihlalin hepsi bir günlük spike ile
+> bulunabilirdi ve bulundu.
 
 ## 11. OQ6 — uygulama sırası türetilebilir mi?
 
-*(doldurulacak)*
+**Evet — türetilebilir.** ADR *"bu ADR o planı içermez"* diyor; aşağıdaki sıra ölçülmüş
+bağımlılıklardan çıkarılmıştır, icat değildir.
+
+### E-9.1 Ölçülen bağımlılık grafiği
+
+| Bağ | Yön | Kanıt |
+|---|---|---|
+| **OQ1 → K-4, K-5, K-6** | Önce | `struct`/`class` kararı üç kararın da tip tanımını belirler (E-2.1). Sonradan değiştirmek üç tipin **tüm** kullanım yerlerini ikinci kez değiştirir |
+| **K-3 → K-4** | Önce K-3 değil, **birlikte** | `skew` bir politika değeridir (R9); K-3 tek başına uygulanırsa kendi P4 kusurunu doğurur. ADR bunu doğru tespit etmiş |
+| **K-2 → K-1** | Önce K-2 | `Authorize(ToolName)` imzası `ToolName` tipini gerektirir. Ters sırada `Authorize(string)` iki kez değişir |
+| **K-5 → K-1** | Önce K-5 | `CapabilityRegistry.Packs`/`EnabledPacks` hem K-5 hem K-1 tarafından değişiyor (E-7.2); K-5 ucuz ve düşük riskli, K-1 en derin |
+| **K-6 → K-1** | Bağımsız | Kesişen tek dosya `BoundedAutonomyGate.cs`; farklı üyeler |
+| **Mimari test → K-5, K-6** | **En önce** | Tarama bugün yazılabilir (E-8.1) ve mevcut ihlalleri (22 + 36) **taban ölçüm** olarak dondurur |
+
+### E-9.2 Türetilen sıra
+
+| Faz | İş | Gerekçe (ölçüm) |
+|---|---|---|
+| **0** | OQ1'i kapat (`class`) + `<WarningsAsErrors>Nullable</WarningsAsErrors>` | Tek satır; K-4/K-5/K-6'nın "derleyici zorlar" iddiasını **doğru** yapan şey (E-2.4) |
+| **0** | Mimari tarama testini yaz — **kırmızı olarak** (22 + 36 ihlal) | Kapanış otomatik ve yanlışlanabilir ölçülür; ADR §8'in "elle sayım kalksın" talebinin ön koşulu |
+| **1** | **K-5** (P6, 5 üye) | En temiz kapanış; en düşük test etkisi (3-4 dosya); 22 ihlalin çoğu mekanik |
+| **2** | **K-6** (P7, 6 üye) + `IComparable`/operatör sözleşmesi (T-5) + OQ2 kararı (2 çağrı yeri, E-5.2) | K-5'in tarama altyapısını yeniden kullanır |
+| **3** | **K-2** (P2, 11 üye) + M-4 (`PackStatus`) | En geniş yüzey; K-1'in imza ön koşulu. Türkçe kararı (T-2) burada verilir |
+| **4** | **K-3 + K-4 birlikte** (P3 6 + P4 5 üye) | R9 zorunlu bağı; ayrılamaz. `DomainEvent.Timestamp` tasarımı burada (E-6.5) |
+| **5** | **K-1** (P1, 11 üye) — `sealed class` olarak, `Rehydrate` yetki çözümüyle | En derin ve en breaking; en son. `Ens.Kernel.Demo` burada güncellenir |
+
+### E-9.3 Sıranın yanlışlanma koşulu
+
+Bu sıra **yanlıştır** eğer: K-5 uygulandıktan sonra 373 testin kırılan sayısı **20'yi
+aşarsa** — o durumda "K-5 en düşük etkili karardır" ölçümü çürür ve sıra yeniden türetilmelidir.
+Bu, faz-1 sonunda tek `dotnet test` koşusuyla sınanabilir.
+
+> **Ek gözlem:** 17 üretim dosyasının **17'si** dokunuluyor ve 8'i üç ya da daha fazla karar
+> tarafından (E-7.2). Bu, **kararların paralel uygulanamayacağı** anlamına gelir — her faz
+> arasında yeşil test kapısı zorunludur. ADR'nin "altı karar" sunumu, bunların bağımsız
+> seçilebilir olduğu izlenimini veriyor; ölçüm bunu **çürütüyor**.
 
 ## 12. Talepler
 
-*(doldurulacak)*
+Şiddet sırasına göre. **Bloke ediciler kapanmadan `status: draft` → `accepted` yapılmamalıdır**
+— Madde VII gereği Accepted bir ADR koda dayanak olur ve bu üç kusur koda geçer.
+
+### Bloke edici
+
+- **T-A — K-1'in kod iskeleti `record`'tan çıkarılır.** `sealed record ToolAuthorization` +
+  `init` property kombinasyonu, ayrı assembly'den `with` ile mühür-koruyan yetki yükseltmesine
+  açıktır (ölçüldü: `Tool=wire_transfer Scope=9999 KABUL=True`). Karar cümlesine eklenmelidir:
+  *"yetki tipleri `sealed class`tır; `record` ve `init` üye kullanılamaz."* Aynı kısıt K-2'nin
+  `readonly record struct`'ları, K-4'ün `abstract record` varyantları ve `Domain/DomainEvent.cs`
+  için de yeniden değerlendirilmelidir (§8.4).
+
+- **T-B — K-2'nin Türkçe kararı verilir.** `ToUpperInvariant` `U+0130`/`U+0131`'e dokunmuyor;
+  `"işletme"` ile `"İŞLETME"` **iki ayrı kimlik** oluyor. ADR ya açık bir `I`-ailesi
+  ön-eşlemesi tanımlamalı (ve R5 sessiz-birleştirme riskini Türkçe'de kabul etmeli) ya da
+  **`G4`'ün Türkçe'de kapanmadığını yazmalı**. Bugünkü hâliyle K-2, ENS'in fiilî ana
+  kullanım durumunda kapanış iddiasını **yerine getirmiyor**.
+
+- **T-C — M-3 yeniden yazılır.** ADR yalnız `confusables.txt`'in eksikliğini kabul ediyor;
+  ölçüm .NET BCL'de **Script API'sinin de olmadığını** gösteriyor (`CharUnicodeInfo`'nun 4
+  public static üyesi var, hiçbiri script vermiyor). Mixed-script kısıtı geri çekilme yolu
+  **değildir**. Ya `Scripts.txt` + `confusables.txt` gömülür (bakım yükü kabul edilir), ya
+  `W2c` **açık borç** hanesine yazılır ve ADR'nin sayısı 40 → **39** olur.
+
+### Yüksek
+
+- **T-1 — OQ1 `class` lehine kapatılır + `<WarningsAsErrors>Nullable</WarningsAsErrors>`
+  eklenir.** `required` `default(T)`'yi kapatmıyor (ölçüldü); `class` `CS8618` üretiyor ama
+  bugün proje uyarıyı hataya çevirmiyor. Bu tek satır olmadan K-4/K-5/K-6'nın "derleyici
+  zorlar" iddiası **konvansiyondur**. İstisna değerlendirilmeli: `Measured` sıcak yolda
+  `struct` kalmak isteyebilir (alloc); o zaman OQ1'in cevabı karar-başına ayrışır ve ADR'nin
+  "tek cevap bekliyor" varsayımı düzeltilir.
+- **T-5 — `Measured`/`UnitMeasured` `IComparable<T>` + karşılaştırma + aritmetik operatörleri
+  uygulamak zorundadır.** `OrderByDescending` derleniyor, çalışma zamanında
+  `InvalidOperationException` atıyor; `Scheduler.cs:124` ve `CompanyMemory.cs:260` tam bu
+  yoldadır. Aritmetik operatörler olmadan `W8a`/`W8b` kapanmaz ve sayı 40 → **38** iner.
+- **T-6 — K-1'in karar cümlesine `Rehydrate` yetki çözümü yazılır.** Mühür serileşemiyor
+  (ölçüldü: `NotSupportedException`, fail-closed **değil**, çöküş). Önerilen: event'e mühür
+  değil `IssuerId` + `RegistryVersion` yazılır. Bugün kernel'de serileştirme **yok**, yani
+  bu bir gelecek borcudur — ama K-1'in maliyet tablosuna `Rehydrate` imza değişikliği eklenir.
+- **T-4 — K-3, analyzer'a EK OLARAK mimari test gerektirir.** `#pragma warning disable RS0030`
+  tek satırda bastırıyor ve build yeşil kalıyor (ölçüldü). ADR §6'nın "analyzer **ya da**
+  tarama" alternatifi yanlıştır.
+- **T-3 — `BannedSymbols.txt`'in her satırı için negatif test.** Yanlış yazılmış bir yasak
+  satırı **hiçbir tanı üretmiyor** (ölçüldü: `M:System.Environment.get_TickCount64` ve
+  `P:System.Totally.Bogus.Symbol` → sıfır tanı). Yasak listesi, testsiz, `Guard.cs`'in
+  "kapatılan N nokta" listesinin ikizidir.
+
+### Orta
+
+- **T-7 — `AdversarialWave_SecurityTests.cs` (51 test) altı maliyet tablosuna eklenir.**
+  ADR'nin etkilenen-test listelerinin birleşimi 18 test dosyasının 17'sini kapsıyor; kapsanmayan
+  tek dosya, ADR §2.5'in kendi konusu olan dosyadır. Bu, NUL-baytı körlüğünün maliyet
+  tarafındaki artığıdır.
+- **T-8 — `Cs` (surrogate) K-2 adım-1 ret listesine eklenir.** Bugün eşlenmemiş surrogate
+  adım 1'i geçiyor ve adım 3'te (`Normalize`) `ArgumentException` ile patlıyor; `TryParse`
+  yolu bunu yakalamıyor.
+- **T-9 — `DomainEvent.cs` K-3'ün maliyet tablosuna eklenir.** Kernel'de `DateTimeOffset.UtcNow`
+  **tek bir yerde** geçiyor ve orası bir property initializer'dır — `TimeProvider` enjekte
+  edilemez, `Timestamp` `required` olmalı ve **tüm event üretim çağrıları** değişir.
+- **T-10 — Taban satır sayısı düzeltilir.** ADR §1 "~899 satır" diyor; ölçüm: **2421 ham,
+  1017 kod satırı, 17 dosya**. Maliyet tahminlerinin paydası yanlıştır.
+- **T-11 — Faz sırası (§11) ADR'ye §10 olarak eklenir.** OQ6 kapatılabilir; bu inceleme
+  ölçülmüş bir sıra türetti ve yanlışlanma koşulunu yazdı.
+- **T-12 — R19 düzeltilir, K-6 korunur.** OQ2'nin cevabı depoda zaten var
+  (`Guard.cs:133` — *"NaN ise KIRPILMAZ — reddedilir"*). `Measured.Of` `Guard.Finite`
+  kullandığı için çelişki `Measured`'da değil R19'un metnindedir. Etkilenen üretim çağrı
+  yeri **2**, etkilenen test **2** (§7.2) — bu bir tasarım krizi değil.
+
+---
+
+## 13. Ölçülemeyenler (DOĞRULANMADI)
+
+`work-protocol.md` §4 ve SKR-041 emsali gereği, bu turda **ölçülmeyen** her şey burada:
+
+| # | Ne ölçülmedi | Neden |
+|---|---|---|
+| 1 | K-1..K-6 uygulandığında **gerçekten kaç test kırılır** | Kod yazmak Madde VII gereği yasak (ADR `draft`). §7.2'deki **2** sayısı yalnız OQ2 için, gövde okumasıyla sayıldı |
+| 2 | `Measured` `class` olursa `Scheduler`/`ContextScore` sıcak yolunda alloc maliyeti | Benchmark kurulmadı |
+| 3 | IL taraması (`System.Reflection.Metadata`) ile `get_UtcNow` çağrısı avlamanın maliyeti (T-4) | Spike yazılmadı; metadata tarama yerine yalnız **imza** taraması ölçüldü |
+| 4 | `C3`'ün test gövdesi (ADR §4.1'in kendi `DOĞRULANMADI` uyarısı) | Bu incelemenin lensi dışında; skeptic turuna ait |
+| 5 | `confusables.txt` / `Scripts.txt` gömmenin gerçek boyutu ve bakım maliyeti | Ölçülmedi; yalnız BCL'de **olmadığı** ölçüldü |
+| 6 | ADR'nin **40 kimlik** sayısal iddiası | Bu bir *bilimsel/envanter* iddiasıdır; bu boyutun kapsamında değildir (SKR-049) |
+
+**Bu incelemede çalıştırılan her komut ve her çıktı yukarıda alıntılanmıştır.** Spike kaynakları
+`D:\Temp\claude\D--Dev-ENS\762f2e12-fd9e-4fde-81d3-669100cabb34\scratchpad\spike\` altındadır
+(`FakeKernel`, `Spike1`, `BanSpike`, `XSpike`, `Scan`); ENS deposunda **hiçbir dosya
+değiştirilmemiştir** — bu inceleme dosyası hariç.

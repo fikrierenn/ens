@@ -85,6 +85,26 @@ ve ayrışma **birlikte** gözlendi — G4'ün öngördüğü tam desen budur.
 > kanıtıdır**: "farklı boyutlar farklı kusur bulur" önermesinin en az bir doğrulayıcı örneği
 > vardır. v0.1.0'ın iddiası bundan fazlasını söylüyordu ve dayanağı yoktu.
 
+### 1.3 İkinci vaka — n=1 → n=2 (`ADR-0003`, 2026-07-27)
+
+Aynı desen ikinci kez, farklı bir yapıtta ve **daha keskin** gözlendi. `ADR-0003`'e iki boyut
+baktı:
+
+| Boyut | Yalnız o buldu |
+|---|---|
+| `SKR-049` — scientific | Aritmetik hatası (`41` → **47**); K-4'ün kendi taslağında K-3'ü ihlal etmesi; ölçüm aletinin künyesinin yalan söylemesi |
+| `ENG-0001` — engineering | `required`'ın `default(T)`'yi kapatmadığı (**ölçüldü**); K-6'nın asıl kırılmasının derlemede değil **çalışma zamanında** olduğu; .NET'te Script API'sinin **hiç** olmadığı; maliyetin ADR'nin dediğinin ~2.7 katı olduğu |
+| **İkisi de** | `record` `with`'in mührü kopyaladığı · Türkçe casing kararının yanlış sonuç verdiği |
+
+**Ayrışmanın niteliği n=1'dekinden farklı ve bu önemli:** mühendislik turunun bulgularının
+hiçbiri *okuyarak* bulunamazdı — `required`'ın davranışı, `IComparable` eksikliğinin çalışma
+zamanı etkisi ve BCL'de Script API'si olmaması **derlenerek/çalıştırılarak** ölçüldü.
+Bilimsel lens ne kadar dikkatli okursa okusun o üçünü üretemez.
+
+> **Sonuç:** T2 (*boyut çeşitliliği korur*) artık iki bağımsız vakada doğrulandı ve ikisinde
+> de **yakınsama + ayrışma birlikte** gözlendi. Hâlâ bir eğilim iddiası değil; ama n=2 ve
+> ikinci vakada boyutlar **yöntem olarak** ayrıştı, yalnız bakış açısı olarak değil.
+
 ## 2. Ç-04 — Ethical Validation ne zaman aktif?
 
 | Taraf | Der ki |
