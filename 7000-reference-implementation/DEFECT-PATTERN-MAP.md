@@ -304,3 +304,48 @@ ADR-0003'te düzeltilmelidir.
 `F3`/`G3`/`G4` hem `AUDIT_DEFECT_*` (MemoryTests) hem `AUDIT_FIXED_*` (AdversarialAuditTests)
 olarak, **farklı anlamlarda** var. Bu vakada atamalar tesadüfen doğru; ama şema bozuk ve
 sonraki bir sayımı sessizce yanıltabilir.
+
+---
+
+## 14. ✅ SINANDI — `ADR-0003`'ün 17 iddiası **iyi-biçimli**, 2026-07-27
+
+Ad-uzayı (§13.2) uygulandıktan **sonra** ilk kez yapılabilen ölçüm.
+
+### Ne sınandı — ve ne SINANMADI
+
+> **Sınanan:** iddia *sınanabilir mi* — 17 kimliğin her birinin canlı bir `AUDIT_DEFECT_*`
+> testi var mı, ve kapanışı taklit edecek rakip bir `AUDIT_FIXED_*` var mı?
+>
+> **SINANMAYAN:** iddianın **doğru** olup olmadığı. Bunu kanıtlamak kararları **uygulamayı**,
+> yani kod yazmayı gerektirir; `ADR-0003` `refuted`/`draft` ve Madde VII kodun yalnız
+> **Accepted** ADR'lere dayanmasını istiyor.
+
+### Sonuç: 17/17 ✅
+
+| Kalıp | Ad-uzaylı kimlikler | Durum |
+|---|---|---|
+| `DP3` (K-3, zaman) | `MEM_A1` `MEM_A2` `MEM_B4` `MEM_D4` `INV_W2_L3` `INV_W2_R6` | 6/6 ✅ |
+| `DP6` (K-5, canlı koleksiyon) | `SCH_W22` `INV_W2_R4` `INV_W2_L4` `SEC_W5a` `SEC_W5b` | 5/5 ✅ |
+| `DP7` (K-6, çıktı kapısı) | `MEM_H4` `SCH_W3` `SCH_W17` `SEC_W5e` `SEC_W8a` `SEC_W8b` | 6/6 ✅ |
+
+Her biri: **tam 1** canlı `AUDIT_DEFECT_*`, **0** rakip `AUDIT_FIXED_*`.
+
+### Sınama sırasında bulunan kusur — iddia hâlâ **çıplak ID** kullanıyor
+
+İlk ölçüm çıplak ID'lerle yapıldı ve **4'ü `⚠️`** verdi (`A1` `A2` `B4` `D4`): çünkü
+`AUDIT_DEFECT_MEM_A1` ile `AUDIT_FIXED_AUD_A1` **farklı kusurlar** ama çıplak `A1`
+ikisini de eşliyor.
+
+> **Ad-uzayı kodu düzeltti; belgeler eski adı kullanmaya devam ediyor.** §1-§9 tabloları
+> ve `ADR-0003`'ün kapanma iddiası hâlâ `A1`, `W22`, `H4` diyor — ve bunların 4'ü
+> **belirsizdir**. Yukarıdaki tablo doğru adları verir; §1-§9'un toplu güncellenmesi
+> ayrı bir edimdir.
+
+**Bu, düzeltmenin yarım olduğunun kaydıdır** — yordam onarıldı, ama onu kullanan metin
+henüz onarılmadı. İkisini karıştırmak bu oturumun altı kez tekrarladığı hatadır.
+
+### Yanlışlanma
+
+Bu bölüm yanlıştır eğer bir kimlik için birden fazla `AUDIT_DEFECT_*` varsa (o zaman
+"tam 1" iddiası düşer) ya da bir kararın uygulanması ilgili testi `AUDIT_FIXED_*`'a
+çevirmezse. Ölçüm komutu §13.1'deki kanonik komuttur.
