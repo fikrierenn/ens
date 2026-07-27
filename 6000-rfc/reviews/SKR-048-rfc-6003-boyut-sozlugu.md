@@ -148,13 +148,206 @@ olabilir — ama §1.1 sonrası RFC'nin elinde bunun **hiçbir ampirik kanıtı 
 RFC'nin kendi ifadesiyle *"yalnızca teorik bir gereklilik olarak kalır."*
 
 ## Yanlışlanabilirlik
-(doldurulacak)
+
+### D-6 — §8 bir **yanlışlanamazlık zırhıdır** (en ince kusur)
+
+RFC `:143-148`:
+
+> *"**Ve bu RFC için özel bir ironi vardır:** boyut çeşitliliğini savunan bir belgenin kendisi
+> de tek boyuttan doğrulanacaktır — çünkü savunduğu roller henüz atanmamıştır. **Bu, RFC'nin
+> kendi tezinin en iyi kanıtıdır** ve gizlenmemektedir."*
+
+**Steelman — dürüstlük payı gerçektir.** Bir sınırı gizlememek erdemdir ve RFC bunu yapıyor.
+Sorun beyanın kendisinde değil, ona verilen **epistemik statüdedir**: *"kendi tezinin en iyi
+kanıtı"*.
+
+**Kusur: iki farklı tez birbirine geçiriliyor.**
+
+| | Tez | Doğrulanabilirliği |
+|---|---|---|
+| **T1** | *ENS'te tek validator rolü vardır; kadro eksiktir.* | Önemsizce doğru; `roles.md:61,63` + 46/46 sayımı ile **zaten** kanıtlı (§1) |
+| **T2** | *Boyut çeşitliliği, tek boyutun kaçırdığı kusurları yakalar.* | **Asıl ve tartışmalı iddia**; tek kanıtı §1.1 idi ve D-2'de düştü |
+
+§8, T1'in gözlemini (tek boyuttan doğrulanacak) alıp **T2'nin kanıtı** diye sunuyor. Ama
+"kadroda tek rol var" gözlemi, "çok rol daha iyi korur" iddiasını **hiç** desteklemez — yalnızca
+kendisini destekler.
+
+**Yanlışlanabilirlik testi (Madde X):** *Bu RFC'yi hangi gözlem çürütür?*
+
+- Tek boyuttan doğrulanırsa → RFC: *"tezimin kanıtı"*.
+- Çok boyuttan doğrulanırsa → RFC: *"kural işledi"* (§8'in zımni alternatifi).
+- Tek boyuttan geçip **hiçbir kusur bulunmazsa** → *"tek boyut yetti"* denebilirdi ama
+  §8 bu okumayı dışlıyor, çünkü tek-boyutluluğu peşinen bir **eksiklik kanıtı** ilan ediyor.
+
+Her sonuç doğrulayıcı olarak okunabiliyorsa, ortada bir yanlışlanabilirlik yoktur. Anayasa
+Madde X'in yasağı budur: *"Saldırılamayan bir teoriye güvenilemez."*
+
+> **Kapatan düzeltme:** §8, T2 için **gerçek bir yanlışlayıcı** ilan etmeli. Örnek ve ucuz
+> olanı: *"Ontology Validator ayrı bir aktöre verildikten sonraki ilk **beş** çok-boyutlu
+> turda, ikinci boyut birinci boyutun kaçırdığı **hiçbir** bulgu üretmezse, T2 çürümüştür ve
+> boyut ayrımı tek aktöre geri döner."* Bu, RFC-6003'ün fc-3'ünü (*"iki isim, tek bakış"*)
+> beyandan **ölçüme** çevirir.
+
+### D-7 — fc-3 doğru teşhis edilmiş ama **ölçüm yordamı yok**
+
+`:126-129` fc-3: *"Ayrı bir Ontology Validator atanır ama fiilen `ens-skeptic` ile **aynı lensi
+kullanırsa** … kural sağlanmış *görünür*, korumaz … mevcut hâlden **daha kötüdür**, çünkü
+kayıtlı borcu görünmez yapar."*
+
+Bu, kaydın en iyi cümlelerinden biridir ve doğrudur. Ama "aynı lens" **nasıl ölçülür**
+yazılmamış. Ölçütsüz bir failure condition, tetiklenip tetiklenmediği belirlenemeyen bir
+koşuldur — yani pratikte yanlışlanamaz. D-6'daki düzeltme (ilk beş turda ikinci boyutun
+**özgün bulgu** üretmesi) bu boşluğu da kapatır.
+
+### D-8 — fc-4 doğru ve **zaten gerçekleşmiş** bir deseni tarif ediyor
+
+`:130-131`: *"**`constitutional` boyutu tanımlanır ama onu yürütecek rol atanmazsa** — Ç-04'ün
+ethical için ürettiği durumun aynısı yeni bir boyutta tekrarlanır."*
+
+Bu koşul **hipotetik değil**: `constitutional` boyutu resmen tanımlanmadan **fiilen
+kullanılmaya başlanmış** ve onu yürüten ayrı bir rol **yok** (SKR-034/035/036, hepsi
+`owner: ens-skeptic`). Yani fc-4'ün tarif ettiği durum, tanımlama adımı **atlanarak** zaten
+oluşmuş durumdadır (bkz. D-5). RFC bunu görmüş olsaydı fc-4'ü *"gerçekleşmiş"* olarak
+işaretlemesi gerekirdi.
 
 ## Varsayım haritası
-(doldurulacak)
+
+| # | Varsayım | Nerede | Kırılma koşulu | Durum |
+|---|---|---|---|---|
+| V1 | 45 SKR var, hepsi tek rol | §1 | mekanik sayım farklı çıkarsa | **kısmen kırıldı** — sayı yanlış, oran sağlam (D-1) |
+| V2 | D-5'i farklı bir **boyut** yakaladı | §1.1 | denetim aynı lensi kullanıyorsa | **kırıldı** (D-2) |
+| V3 | Ç-04 iki **belge** arasında bir çatışmadır | §2 | çatışma tek belgenin içindeyse | **kırıldı** (D-3) |
+| V4 | `constitutional` boyutu tanımlı değil, kullanımda değil | §3.1 | korpusta kullanılıyorsa | **kırıldı** (D-5) |
+| V5 | Ontology Validator ya `ens-architect` ya başkası (ikili seçim) | §4 | mekanik/üçüncü bir aktör mümkünse | **kırıldı** (D-4) |
+| V6 | Tek boyuttan doğrulanmak tezi destekler | §8 | her sonuç destekliyorsa | **kırıldı** (D-6) |
+| V7 | Kurucu yol G4'ten muaf değildir | §3 | RFC-6001 muafiyet vermişse | **ayakta** — üç dayanak doğrulandı |
+| V8 | Ethical'ın sıfır olması borçtur, erteleme değil | §2 | "tüm fazlar" okuması düşerse | **ayakta** (D-3'e rağmen — bkz. sonuç) |
+
+### D-3 — §2'nin yordamsal çözümü **geçersiz**: çatışma `roles.md` ile değil, `validation-framework.md`'nin kendisiyle
+
+RFC `:48-57` Ç-04'ü iki belge arasında bir çatışma olarak kuruyor ve şu yordamla çözüyor:
+
+> *"**Çözüm: `validation-framework.md` kazanır.** Gerekçe yordamsaldır: `roles.md` boyut
+> otoritesi olarak **onu gösterir**; bir belge, atıf yaptığı kaynağı geçersizleştiremez."*
+
+Atıf doğru: `roles.md:55` başlığı gerçekten *"## Validator boyutları (validation-framework.md)"*.
+**Ama çıkarım geçersiz, çünkü `roles.md` kaynağını geçersizleştirmiyor — onu tekrarlıyor.**
+
+`.claude/standards/validation-framework.md:48-51` (§Agent eşlemesi):
+
+> *"- `ens-skeptic` = **Scientific Validator** (adversarial).
+> - Ontology Validator + `formal-checker` (Ontology Linter) — Faz 1'de aktif …
+> - **Engineering/Business/Ethical Validator — fazı gelince (ROSTER).**"*
+
+`governance/roles.md:63`: *"Engineering/Business/Ethical Validator, Governance body:
+**fazı gelince** (ROSTER)."*
+
+Yani *"fazı gelince"* ifadesinin kaynağı `roles.md` **değil**, bizzat `validation-framework.md`'dir.
+`roles.md` burada sadık bir türevdir. Çatışma **intra-dokümandır**: `validation-framework.md:29`
+(*"Ethical Validation — **tüm fazlar**"*) ↔ `validation-framework.md:51` (*"Ethical
+**Validator** — fazı gelince"*).
+
+**Sonuç:** "kazanan belgeyi seç" yordamı burada hiçbir şey çözmez — kazanan belge çatışmanın
+**iki tarafını da** içerir. RFC doğru cevaba **geçersiz bir yoldan** varmıştır.
+
+> **Doğru çözüm zaten metnin içinde ve daha güçlü — RFC bunu kullanmalı:** iki satır **çelişmiyor**,
+> iki **farklı şeyden** söz ediyor. `:29` bir **boyutun normatif aktifliğini** söyler
+> (Ethical Validation tüm fazlarda gereklidir); `:51` bir **rolün atanma zamanlamasını** söyler
+> (Ethical Validator henüz atanmadı). Gereklilik ile kadro farklı eksenlerdir.
+> Bu okuma altında sonuç **aynen korunur ve pekişir**: gereklilik yürürlüktedir, rol yoktur →
+> karşılanamayan bir yükümlülük → **borç**, erteleme değil. Yani `ROADMAP:241`'in (G-27) ve
+> RFC `:64`'ün sonucu doğru; yalnızca gerekçesi değişmeli.
+>
+> Bu düzeltme RFC'yi **güçlendirir**, çünkü yordamsal argüman (`roles.md` türevdir) hem yanlış
+> hem de gereksizdi — ve aynı yordam RFC-6002 §3'te de kullanılıyor (`:57`: *"Aynı yordam
+> RFC-6002 §3'te de uygulandı"*). Orada geçerlidir (GOV-000 ↔ `roles.md`), burada değildir;
+> RFC'nin ikisini aynı sayması bir **yordam aşırı-genellemesidir**.
+
+### D-4 — §4'ün "çözülmemiş gerilimi" aslında **üçüncü bir seçenekle çözülüyor** ve RFC onu atlamış
+
+RFC `:100-102`:
+
+> *"**Uyarı — bu öneri kendi kaçağını taşıyor.** Ontoloji boyutunun en yetkin aktörü, ontoloji
+> yapıtlarının da owner'ıdır. Rolü ona verirsek yapıtlarının yarısında kullanılamaz; başkasına
+> verirsek yetkinlik düşer. Bu gerilim **çözülmemiştir** ve gizlenmiyor."*
+
+Dürüst — ama ikili seçim (V5) **yanlış kurulmuş**. Korpus üçüncü bir aktör tipini zaten
+tanımlamış ve inşa etmiş:
+
+1. `validation-framework.md:50`: *"**Ontology Validator + `formal-checker` (Ontology Linter)** —
+   Faz 1'de aktif (Meta Model gerektirir)."* — yani boyut, en başından beri **insan/ajan +
+   mekanik denetleyici** çifti olarak tasarlanmış.
+2. `ROADMAP.md:233` (G-09/10): Ontology Linter **yazılmış** — *"`tools/ens-ontology-linter/`"*,
+   *"Karar: LLM-agent DEĞİL — … deterministik araç"*, iki invariant + pozitif/negatif kontrol.
+
+Deterministik bir linter'ın **yazarlık çıkarı yoktur**: `ens-architect` kendi ENS-4010'unu
+yazsa bile linter'ın profile-satisfiability ve transitivity denetimi ondan bağımsızdır. Yani
+ontoloji boyutunun **mekanikleştirilebilir kısmı** için G2/G4 gerilimi **yoktur**; gerilim
+yalnızca yargısal artık için kalır ve o artık çok daha küçüktür.
+
+**Öneri sayılır mı?** Evet — açık soru bırakmak RFC'de meşrudur (RFC-6001 §8.3 emsali). Ama
+*"çözülmemiştir"* demek, **korpusta duran çözümü görmemek** anlamına geldiğinde artık dürüstlük
+değil **eksik incelemedir**. §4, üç seçeneği ve aralarındaki iş bölümünü yazarak kapatılabilir:
+mekanik invariant → linter; yargısal ontoloji → `ens-architect` (kendi yapıtları hariç);
+`ens-architect`'in kendi yapıtları → `ens-skeptic` (bugünkü hâl korunur).
 
 ## En güçlü karşı-argüman
-(doldurulacak)
+
+### D-5 — `constitutional` boyutu **tanımsız değil; tanımlanmadan kullanılıyor.** Sözlük boşluğu, RFC'nin sandığından daha ciddi
+
+RFC `:79-84` (§3.1) boşluğu şöyle kuruyor:
+
+> *"Muafiyet yoksa, kurucu bir yapıt **hangi** iki boyuttan doğrulanacak? Doğal cevap
+> {ontology, constitutional} — ama **`constitutional` diye bir boyut tanımlı değil**
+> (`validation-framework.md` beş boyut sayar…)"*
+
+ve iki seçeneği **açık soru** olarak bırakıyor (`:86-89`): (a) altıncı boyut, (b)
+{Ontology + Scientific} eşlemesi.
+
+**Depodaki olgu, seçeneği zaten fiilen belirlemiş — ve bunu izinsiz yapmış:**
+
+| Dosya | Künye alanı |
+|---|---|
+| `6000-rfc/reviews/SKR-034-rfc-6001-constitutive.md:10` | `validation_dimension: constitutional` |
+| `6000-rfc/reviews/SKR-035-rfc-6001-constitutive-round2.md:10` | `validation_dimension: constitutional` |
+| `6000-rfc/reviews/SKR-036-rfc-6001-constitutive-round3.md:10` | `validation_dimension: constitutional` |
+
+Buna karşılık `validation-framework.md:36-37` **kapalı bir değer kümesi** ilan ediyor:
+
+> *"İleride her kayıt bir `dimension` taşır: **`scientific | ontology | engineering | business |
+> ethical`**."*
+
+Yani `constitutional`, izin verilen enum'da **yok** ama korpusta **üç kez yazılmış** — üstelik
+tam da RFC-6003'ün §3'te *"korpusun en ağır doğrulama yolu"* diye emsal aldığı zincirde
+(`:74-77`). Bu üç kayıt bugün **şema-dışıdır**.
+
+**Neden bu, açık sorudan daha ciddi bir bulgu:**
+
+1. **RFC yanlış soruyu soruyor.** Soru *"tanımlayalım mı?"* değil, *"tanımsız kullanımı nasıl
+   geriye dönük meşrulaştıracağız?"*tur. (a) seçeneği artık nötr bir tercih değil, **mevcut
+   durumun onaylanmasıdır**; (b) seçeneği ise üç kaydın künyesini **geçersiz** kılar. RFC bu
+   asimetriyi görmüyor ve iki seçeneği eşit ağırlıkta sunuyor.
+2. **Terminoloji sürüklenmesi (Madde IX / ENS-4000).** Yeni bir doğrulama boyutu, hiçbir
+   yapıtta tanımlanmadan künye alanına girmiş. `validation-framework.md` (owner: `ens-skeptic`)
+   ve `ENS-4000` (sözlük, `canon: true`) ikisi de bunu bilmiyor.
+3. **RFC-6003 bunu yakalamak için en uygun konumdaydı** — konusu tam olarak "boyut sözlüğü".
+   Yakalamamış olması, §1'in *"boyut çeşitliliği pratik olarak yok"* tablosunun neden eksik
+   olduğunu da açıklıyor: tablo yalnızca `owner` alanına bakmış, `validation_dimension` alanına
+   bakmamış.
+
+**Ve bu son nokta §1'in tablosunu düzeltiyor.** Korpusta `validation_dimension` etiketleri
+zaten **dört** farklı değer taşıyor: `ontology` (SKR-017/018/019/020/021/022/023/028/030/031/032/038/039),
+`engineering` (SKR-024/025/026/027/029/037), `constitutional` (SKR-034/035/036), `scientific`
+(SKR-033). Yani RFC'nin *"boyut çeşitliliği bir kural olarak var, pratik olarak yok"* (`:33`)
+cümlesi **fazla güçlüdür**: boyut **etiketi** pratikte var; yok olan şey **aktör
+çeşitliliğidir**.
+
+**Bu düzeltme RFC'nin tezini zayıflatmaz — hedefini netleştirir ve güçlendirir.** Asıl sorun
+"boyut yok" değil, *"boyutlar var ama hepsi tek aktörün elinde"*dir; ve G4'ün lafzı
+(`GOV-000:36` — *"≥2 **bağımsız** validator"*) aktör bağımsızlığını ister, etiket çeşitliliğini
+değil. RFC bu formülasyonu benimserse hem §1 tablosu doğru olur, hem §4'ün gerekçesi
+(*"tek rol, tek bakış açısıdır"*, `:93`) **ampirik** bir temele oturur — D-2'de kaybettiği
+ampirik ayağın yerine geçebilecek tek şey budur.
 
 ## İç tutarlılık
 (doldurulacak)

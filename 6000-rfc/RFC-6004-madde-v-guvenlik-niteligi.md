@@ -63,9 +63,44 @@ bileşen başına talep edilemez). UK NCSC ise kendi ifadesiyle: *"Secure by Def
 set of requirements… It's more like an ethos or a philosophy."* Bir *ethos*, Madde V'in
 denetlenebilir nitelik listesine ait değildir.
 
-> **Karar: `Secure` reddedildi.** Ama Herley'in itirazı **geniş** adlara güçlü,
-> **dar ve gözlemlenebilir** adlara zayıftır. Çözüm, güvenliği atmak değil, onu
-> yanlışlanabilir parçalara ayırmaktır.
+### 2.1 ⚠️ v0.1.0 düzeltmesi — Herley TARTIŞMASIZ DEĞİL (ikinci araştırma turu, 2026-07-27)
+
+İlk sürüm Herley'i **yerleşik** bir sonuç gibi sundu. **Yanlıştı.** Bağımsız ikinci tur,
+aynı yıllarda yürüyen **canlı bir tartışma** buldu:
+
+| Taraf | Kaynak |
+|---|---|
+| Herley'in konumu (genişletilmiş) | Herley, C. & van Oorschot, P.C. (2017), *"SoK: Science, Security and the Elusive Goal of Security as a Scientific Pursuit"*, IEEE S&P (Oakland) |
+| Karşı konum | Spring, J. M., Moore, T. & Pym, D. (2017), *"Practicing a Science of Security: A Philosophy of Science Perspective"*, NSPW 2017. DOI: [10.1145/3171533.3171540](https://doi.org/10.1145/3171533.3171540) |
+
+Spring/Moore/Pym'in tezi: *"bu süreç bilimsel mi"* sorusu yanlış kurulmuştur; asıl soru
+*"bilimsel süreç neden tatmin edici olmayan sonuç üretiyor"*dur. Güvenliğin bilimsel
+olamayacağına dair itirazların **Mantıksal Empirizm** varsayımlarına dayandığını, modern
+bilim felsefesinin bu itirazların **tamamını** hafifletecek kaynaklar sunduğunu savunurlar.
+
+> **Ama dürüst olmak gerekirse — bu tam isabet bir karşı-cevap DEĞİL.** Spring/Moore/Pym'in
+> saydığı beş itiraz şunlardır: deneyler yapılamaz · yeniden üretilebilirlik imkânsız ·
+> güvenlikte doğa yasası yok · tek bir ontoloji yok · güvenlik yalnızca mühendisliktir.
+> **Yanlışlanabilirlik bu beşin içinde yok.** Yani genel "güvenlik bilim olabilir" tezine
+> güçlü bir savunma var, Herley'in **spesifik** yanlışlanabilirlik argümanına doğrudan bir
+> çürütme **bulunamadı**. *(Doğrulama sınırı: `tylermoore.utulsa.edu/nspw17.pdf` ham PDF
+> olarak çekilebildi ama metni ayrıştırılamadı; beş itiraz ikincil bir özetten alındı.
+> Birincil metinden teyit **borç**.)*
+
+**Kararın dayanağı bu yüzden değiştirildi:**
+
+> `Secure`'ü reddetmek için Herley'in haklı olması **gerekmiyor.** Yeterli olan, ENS'in
+> **kendi** Madde X'idir: Külliyat'a giren her kavram, yanlış olacağı koşulları taşımak
+> zorundadır. *"Bu bileşen güvenli değildir"* önermesinin yanlışlanma koşulunu **biz**
+> yazamıyoruz — tartışma kimin lehine sonuçlanırsa sonuçlansın. Dar adlar (`Fail-safe`,
+> `Mediated`) o koşulu taşır; `Secure` taşımaz.
+
+Yani bu RFC **bir bilim felsefesi tartışmasına taraf olmuyor**; ENS'in kendi kanıt
+standardını uyguluyor. İlk sürümün Herley'e yaslanması, dışarıdan bir otoriteye
+gereğinden fazla yük bindirmekti.
+
+> **Karar: `Secure` reddedildi.** Gerekçe artık Herley'in otoritesi değil, ENS'in Madde X
+> ödevidir. Çözüm güvenliği atmak değil, onu **yanlışlanabilir parçalara ayırmaktır**.
 
 ## 3. Öneri: iki dar nitelik
 
@@ -228,9 +263,18 @@ Gerekli yol:
 ## 10. Kaynaklar
 
 - Saltzer, J. H. & Schroeder, M. D. (1975). "The Protection of Information in Computer
-  Systems." *Proceedings of the IEEE* 63(9):1278–1308. *(Fail-safe defaults, complete
-  mediation, open design. DOI için iki değer dolaşımda — `10.1109/PROC.1975.9939` vs
-  `.1090`; cilt/sayı/sayfa kesin, DOI IEEE Xplore'dan teyit edilmeli.)*
+  Systems." *Proceedings of the IEEE* **63(9):1278–1308**.
+  DOI: [10.1109/PROC.1975.9939](https://doi.org/10.1109/PROC.1975.9939) — **DOI
+  tartışması KAPANDI** (2026-07-27): CrossRef kaydı (`api.crossref.org`) bu DOI'yi tam
+  olarak bu yapıta, Saltzer ve Schroeder yazarlığıyla çözüyor. Dolaşımdaki `.1090`
+  değeri **yanlıştır**. Cilt/sayı/sayfa da aynı kayıttan teyitli. 3-0 doğrulandı.
+  Birincil metin (`web.mit.edu/saltzer/www/publications/protection/`) iki ilkeyi
+  birebir doğruladı:
+  - *fail-safe defaults:* "Base access decisions on permission rather than exclusion.
+    … the default situation is lack of access" — ilke **E. Glaser'e (1965)** atfediliyor.
+  - *complete mediation:* "Every access to every object must be checked for authority.
+    This principle, when systematically applied, is the primary underpinning of the
+    protection system."
 - Herley, C. (2016). "Unfalsifiability of security claims." *PNAS* 113(23):6415–6420.
   DOI: [10.1073/pnas.1517797113](https://doi.org/10.1073/pnas.1517797113) —
   **doğrulandı** (2026-07-27, oturum sahibi).
