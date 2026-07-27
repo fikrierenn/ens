@@ -127,6 +127,128 @@ dönüştürecek ve yeniden iki boyuta girecektir.
 
 ---
 
+## 0.7 v0.3.0 — bulgular KARARA dönüştü
+
+v0.2.0 sekiz bulguyu **görünür** kıldı ve kararlara dokunmadı (§0.6). Bu sürüm onları
+karara çeviriyor. **Beş karar değişti, bir kusur kapsamdan çıktı.**
+
+### D-1 — K-1'in tipi: `record` → `sealed class`
+
+`record`'un sentezlediği `<Clone>$` copy-constructor'ı **public**tir; `private` kurucu onu
+kapatmaz. `ENG-0001` ayrı assembly'den ölçtü:
+
+```
+[A2] `with`: Tool=wire_transfer Scope=9999 seal=33826822 KABUL=True
+```
+
+Meşru bir yetki elde eden saldırgan **mührü koruyarak** payload'u değiştiriyor.
+
+> **Karar:** yetki taşıyan tipler `record` **olamaz** — `sealed class`, `private` kurucu,
+> get-only property. `ENG-0001` bu varyantı ölçtü ve deliği **kapattığını** doğruladı.
+> (Get-only `record` de kapatıyor ama `with`'i yasaklamak bir konvansiyondur; `sealed class`
+> derleyiciyle kapatır. **Konvansiyonla zorlanan karar, karar değildir** — `Guard.cs` dersi.)
+
+### D-2 — K-2: harf katlama **kaldırıldı**, yerine **reddetme**
+
+`ToUpperInvariant` Türkçede yanlış sonuç veriyor (`ENG-0001` ölçtü): `ı`(U+0131)→`I`(U+0049)
+yaparak **"ısı" ile "isi"yi birleştiriyor**, `İ`→`İ` bırakarak **"İş" ile "iş"i ayırıyor**.
+Ve daha derin sorun: **hiçbir tek-yönlü katlama Türkçe'yi doğru katlamaz** — case *folding*
+ile case *mapping* farklı şeylerdir, .NET yalnız ikincisini verir.
+
+> **Karar:** kanonik kimlik **harf katlamaz.** Kimlikler **kanonik biçimde kaydedilir**
+> (NFC + belirlenmiş harf düzeni) ve kanonik olmayan girdi **sessizce eşleştirilmez —
+> reddedilir**.
+
+**Neden bu daha iyi, sadece daha kolay değil:** `W1a`/`W1c`'nin kusuru *yanlış harf* değil,
+**sessiz başarı**ydı — operatör `Disable("Wire_Transfer")` çağırıyor, sistem "tamam" diyor,
+yetki canlı kalıyor. Reddetme o kusuru **katlamadan** kapatır: çağrı **hata verir**.
+`W1b` (doğrulama sorgusu yanlış inancı onaylıyor) de böyle kapanır — sorgu artık
+"bulunamadı" der, "kapalı" demez.
+
+**Bedeli dürüstçe:** kullanıcıya daha katı bir arayüz. Bu, fail-safe defaults'un doğrudan
+sonucudur (`RFC-6004` `Fail-safe` niteliği): belirsizlikte **kapalı** tarafa düş.
+
+### D-3 — `W2c` (homoglyph) **kapsamdan çıkarıldı**
+
+`ENG-0001` ölçtü: **BCL'de hiçbir Script API'si yok** — `CharUnicodeInfo`'nun dört public
+static üyesinin hiçbiri script vermiyor, `Rune`'da da yok. UTS #39 `confusables.txt` da yok.
+Yani M-3'ün ne asıl yolu ne geri çekilme yolu .NET'te mevcut.
+
+> **Karar:** `W2c` bu ADR ile **kapanmaz**. §5 açık borcuna taşındı. Kapatmak harici bir
+> veri kümesi (UTS #39) ve onu taşıyan bir karar gerektirir — ayrı bir ADR.
+
+v0.1.0 bunu "kısmen açık" sayıyordu; **tamamen** açık.
+
+### D-4 — K-4'ün `Disabled` varyantı K-3'e uyar
+
+`Disabled(string Reason, Identity Approver, DateTimeOffset At)` — son parametre
+**çağıran-verisi denetim damgasıydı**, yani `W2_L3`'ün birebir kalıbı. K-3'ü kendi taslağında
+ihlal ediyordu.
+
+> **Karar:** `At` parametresi **kaldırıldı**. Zaman damgası K-3'ün saat portundan alınır;
+> `Disabled` varyantı onu **çağırandan almaz**.
+
+### D-5 — K-6: `Measured` `IComparable<Measured>` uygular
+
+`ENG-0001` ölçtü: `Measured` `IComparable` uygulamadığı için `OrderByDescending`
+**derleniyor**, çalışma zamanında `InvalidOperationException` atıyor. `Scheduler.cs:124` ve
+`CompanyMemory.cs:260` tam o yolda.
+
+> **Karar:** `Measured` `IComparable<Measured>` **uygular**. v0.1.0'ın *"Breaking? Düşük"*
+> değerlendirmesi derlemede doğru, çalışma zamanında yanlıştı — düzeltildi.
+
+### D-6 — OQ1 kapandı: `class`, ve `WarningsAsErrors` zorunlu
+
+`required` (C# 11+) `default(T)`'yi **kapatmıyor** (`ENG-0001` ölçtü). `class` varyantı
+`CS8618` üretiyor — ama `Ens.Kernel.csproj`'da `<WarningsAsErrors>` **yok**, yani bugün o da
+konvansiyon.
+
+> **Karar:** `class`. Ve **Faz 0'da** `<WarningsAsErrors>CS8618</WarningsAsErrors>` eklenir —
+> bu olmadan D-6 bir konvansiyondur, karar değil.
+
+### D-7 — `P1..P9` → `DP1..DP9`
+
+Kalıp adları Anayasa Madde III'ün `P1..P8` ilkeleriyle çakışıyordu; künye `principles:`
+alanı gövdenin sözlüğüyle okununca §3'ün **tersini** söylüyordu. Kalıplar artık `DP1..DP9`
+(*Defect Pattern*).
+
+### D-8 — Sayı: **43**
+
+| Adım | Sayı |
+|---|---|
+| Haritanın kapanabilir toplamı (DP1+DP2+DP3+DP4+DP6+DP7) | 12+13+6+5+5+6 = **47** |
+| − `C2` (DP2'ye yanlış atanmış, §2.2) | −1 |
+| − `W1b` (DP2'ye yanlış atanmış, §2.3) | −1 |
+| − `W2_O1` (DP1'e zorlama atama, §2.4) | −1 |
+| − `W2c` (D-3: .NET'te mekanizma yok) | −1 |
+| **Kapanan** | **43** |
+
+v0.1.0 **40** diyordu ve türetilemiyordu (`W1b` çifte çıkarılmıştı — `SKR-049` T-A).
+v0.2.0 sayıyı düzeltmedi, yalnız hatayı kaydetti. **43 burada ilk kez türetiliyor.**
+
+> **Yanlışlanma yolu değişmedi:** kararlar uygulanınca bu 43 kimliğin `AUDIT_DEFECT_*`
+> testleri `AUDIT_FIXED_*`'a dönmelidir. Dönmeyen her test bu sayıyı çürütür.
+
+### D-9 — Uygulama sırası (OQ6 kapandı)
+
+`ENG-0001`'in ölçülmüş bağımlılık grafiğinden:
+
+> **Faz 0** (OQ1 kararı + `WarningsAsErrors` + mimari tarama) → **K-5** → **K-6** → **K-2**
+> → **K-3 + K-4 birlikte** → **K-1**
+
+K-1 en sonda çünkü en geniş yüzeye dokunuyor ve K-2'nin kanonik kimliğine bağımlı.
+
+### Kapanmayan, açıkça
+
+`W2c` (D-3) · `R1`'in event-sourcing çözümü (kernel'de serileştirme yok, geldiğinde
+`System.Text.Json` **`NotSupportedException`** atar — fail-closed değil **çöküş**) ·
+`DP5` reflection (kapsam kararı) · `DP8` öz-beyan (ENS-3022 kalibrasyon borcu) · `DP9` (15
+tekil iş).
+
+> **v0.3.0 yeni bir iki-boyut turu gerektirir** (`work-protocol.md` §3.1): kararlar değişti.
+
+---
+
 ## 1. Bağlam
 
 `Ens.Kernel` (Faz 4 referans implementasyonu, ~899 satır) üzerinde yürütülen düşmanca denetim
@@ -355,7 +477,7 @@ public sealed class CapabilityRegistry
 
 public sealed class AuthoritySeal { internal AuthoritySeal() { } }   // taşıma yok, karşılaştırma var
 
-public sealed record ToolAuthorization
+public sealed class ToolAuthorization   // v0.3.0: `record` DEĞİL — bkz. §0.7 D-1
 {
     private readonly AuthoritySeal _issuer;
     private ToolAuthorization(...) { }                 // PUBLIC KURUCU YOK
@@ -479,7 +601,7 @@ public readonly record struct ToolName
 | 1 | **Karakter sınıfı kapısı** (UAX #31 identifier profili) | `Cc` (kontrol, `NUL` dahil), `Cf` (format; bidi override `U+202E` dahil), `Cn`, `Co` **reddedilir** — kırpılmaz. Reddetme `ArgumentException`, sessiz temizleme **yok** |
 | 2 | **Boşluk** | Baş/son `Trim`; iç ardışık boşluklar tek `U+0020`'ye indirgenir; `NBSP`/`U+3000` vb. `Zs` → `U+0020` |
 | 3 | **Unicode normalizasyon** | **NFC** — `NFKC` DEĞİL (gerekçe aşağıda) |
-| 4 | **Harf katlama** | Yalnız *case-insensitive* profillerde: `ToUpperInvariant()`. Karşılaştırma her yerde `StringComparer.Ordinal` |
+| 4 | ~~**Harf katlama**~~ → **KATLAMA YOK, REDDET** | v0.3.0 kararı (§0.7 D-2): kanonik olmayan girdi **katlanmaz, reddedilir**. Karşılaştırma her yerde `StringComparer.Ordinal` |
 
 **Neden NFC, NFKC değil.** Prior art: **UAX #31 (Unicode Identifier and Pattern Syntax)**
 programlama-dili tanımlayıcıları için **NFC** önerir. NFKC iki nedenle reddedildi:
