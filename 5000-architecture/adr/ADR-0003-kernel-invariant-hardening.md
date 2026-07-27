@@ -10,19 +10,29 @@ realizes:      []
 principles:    [P1, P5, P6, P7, P8]
 status:        draft
 owner:         ens-ai-architect
-version:       0.5.0
+version:       0.6.0
 last_reviewed: 2026-07-27
 maturity:      M0
-skeptic_review: [SKR-049, ENG-0001, SKR-050, ENG-0002]   # SKR-049: wounded (T-A..T-E) · ENG-0001: koşullu
+skeptic_review: [SKR-049, ENG-0001, SKR-050, ENG-0002, SKR-051]   # SKR-049: wounded (T-A..T-E) · ENG-0001: koşullu
                           # SKR-050 (v0.3.0, 2. tur): wounded — 5 bloke edici (T-A..T-E).
                           # En ağırı T-A: §0.7'nin 9 kararından 7'si gövdeye UYGULANMADI;
                           # belge kendi kararlarıyla çelişiyor. Manşet 43 savunulamaz
                           # (yeniden hesap: 40 koşulsuz + 4 koşullu). status: draft KALIR
                           # (skeptic-challenged önerilir; statü değişimini owner onaylar)
+                          # SKR-051 (v0.5.0, 3. tur): REFUTED — 8 bloke edici (T-1..T-8).
+                          # En ağırı T-1: BÖLME İLAN EDİLDİ, GÖVDEYE UYGULANMADI — K-1/K-2
+                          # yedi yerde normatif (§3, §4.1, §4.2, §6, §7:1377, §8:1417,
+                          # künye provides:). ADR-0004:106 "devretti" diyor; ADR-0003 devretmemiş.
+                          # Accepted olursa iki ADR aynı kararı çelişik güçte iddia eder → Madde VII.
+                          # Ayrıca: sonlanma ölçütü SCAN-03:433-436 ile ampirik olarak çürük;
+                          # K-5 tur 2'de HİÇ incelenmedi (yokluğu kanıt saymak); K-4'ün "tuttu"su
+                          # cherry-pick (ENG-0002 E-1.7 K-4'e yeni bloke edici verdi); 22 doğru
+                          # türetiliyor AMA beşinci sayıdır ve §7 hâlâ 40 diyor.
+                          # status: draft KALIR — accepted ÖNERİLMEZ (statü değişimini owner onaylar)
 failure_conditions: stated
 evidence:      {sci: E0, eng: E1, ops: E0, econ: E0}
 requires:      [ADR-0001]
-provides:      [Authority Token, Canonical Identity, Time Acceptance Window, Explicit Policy Value, Sealed Collection, Measured Output]
+provides:      [Time Acceptance Window, Explicit Policy Value, Sealed Collection, Measured Output]   # v0.6.0: Authority Token→ADR-0004, Canonical Identity→ADR-0005
 consumed_by:   []
 ---
 
@@ -46,6 +56,35 @@ consumed_by:   []
 > Ayrıca: `AdversarialWave_SecurityTests.cs` **altı maliyet tablosunun hiçbirinde yok**
 > (44 kimliğin 13'ü orada). SKR-049 §Katıldığım noktalar, ADR'nin yanlışlanabilirlik
 > disiplinini ayrıca kayda geçirir — `C3` uyarısı (§4.1) **haklı çıkmıştır**.
+
+> ### ⛔ ÜÇÜNCÜ SKEPTIC TURU — `refuted` (SKR-051, 2026-07-27, v0.5.0)
+> `5000-architecture/reviews/SKR-051-adr-0003-v050-bolunmus.md`. **Sekiz bloke edici bulgu;
+> `accepted` ÖNERİLMEZ.** Verdict kararların içeriğine değil, **belgenin bugünkü durumuna**
+> aittir — K-3/K-4/K-5/K-6 savunulabilir kararlardır (SKR-051 §K).
+>
+> **T-1 (en ağır):** §0.10'un ilan ettiği **bölme gövdeye uygulanmadı.** K-1 ve K-2 hâlâ
+> §3 kapsam beyanında, §4.1/§4.2'de tam karar cümleleriyle, §6 tablosunda, §7'nin 1377.
+> satırında, §8'in `// TRACE:` zorunluluğunda ve künye `provides:` alanında **normatiftir**.
+> `ADR-0004:106` *"K-1'i devretti"* diyor; bu belge devretmemiş. Accepted olursa iki ADR aynı
+> kararı **çelişik güçte** iddia eder (§4.1 *"referans eşitliğiyle doğrulanır"* ↔ `ADR-0004:29`
+> *"hedefi küçülür, kazayla taklidi durdurur"*) → **Madde VII kırılır.** Bu, sicilin
+> *"changelog ≠ gövde"* kalıbının **altıncı** tekrarıdır. ·
+> **T-2** Sonlanma ölçütü `SCAN-03:433-436` ile ampirik olarak çürük (ENS'in kendi kaydında
+> bir hata **iki ardışık scientific turdan** geçmiştir); ölçüt boyut-kör ve "incelenmedi" ile
+> "dayandı"yı ayırt edemiyor. ·
+> **T-3** K-4'ün `✅`'i cherry-pick: `ENG-0002` E-1.7 aynı turda K-4'ün `DecayPolicy.Disabled`
+> varyantını kırdı (`with` ile `Approver=mallory`, derleme hatası **yok**). ·
+> **T-4** K-5 tur 2'de **hiç incelenmedi** — `ENG-0002`'de K-5'e ait ölçüm bölümü yok;
+> "yeni bulgu yok" burada **yokluğu kanıt saymaktır**. ·
+> **T-5** Bölme K-4'ü K-1'den kopardı: §4.4'ün iz mekanizması ve R12 azaltması **K-1 mührüne**
+> dayanıyor, K-1 artık `ADR-0004`'te (atomiklik ihlali). ·
+> **T-6** 22 **doğru türetiliyor** (bağımsız sayım: 6+5+5+6, çakışma yok) ama gövdede
+> **beşinci** sayıdır; §7:1377 hâlâ *"K-1…K-6 … 40 kimlik"* diyor. ·
+> **T-7** K-3'ün analyzer koşulunun üç yüzeyinden ikisi (`#pragma` bastırma, sessiz yasak
+> satırı) ADR'nin **kendi kapattığını iddia ettiği** sınıflardır (`E3`, sessiz başarı). ·
+> **T-8** OQ1 açık ve ADR'nin kendi cümlesiyle *"K-5/K-6'nın tip seçimini bağlar"*.
+> SKR-051 §Katıldığım noktalar, §2'nin devralınan-bulgu doğrulamasını ve K-0'ın kaldırılışını
+> ayrıca kayda geçirir.
 
 ---
 
@@ -490,6 +529,71 @@ Eski iddia 6 kararı kapsıyordu. Yeni kapsam **dört** karar:
 
 ---
 
+## 0.11 v0.6.0 — sonlanma ölçütü **GERİ ÇEKİLDİ**, bölme **yapıldı**
+
+### Bölme: ilan edildi (v0.5.0) → **yapıldı** (v0.6.0)
+
+`SKR-051` T-1: v0.5.0 bölmeyi ilan etti, K-1 ve K-2 **250 satır normatif metin** olarak
+gövdede kaldı. Şimdi çıkarıldı ve **doğrulandı** (normatif bölüm 2 → **0**, `provides:`
+temizlendi, ~230 satır). Ayrıntı: §4'teki devir kutusu.
+
+### Sonlanma ölçütü — **çürütüldü ve geri çekildi**
+
+v0.5.0 şunu kural yapmıştı:
+
+> ~~*"Bir karar, iki ardışık turda yeni bloke edici bulgu almazsa kapanır."*~~
+
+**`SKR-051` bunu ENS'in kendi kaydıyla çürüttü** ve doğrulandı
+(`governance/SCAN-03-gate-compliance.md:433-436`):
+
+> ENS-2003 §3a'daki `c` çift-sayım hatası **iki ardışık bağımsız scientific turdan da geçti**
+> (`SKR-040`, `SKR-041`) ve ancak **farklı boyuttan** bir denetimle yakalandı.
+
+Aynısı bu ADR'de tekrarlandı: `SKR-049` + `SKR-050` — **ikisi de scientific** — `Unsafe.As`
+deliğini kaçırdı; `ENG-0002` buldu.
+
+> **Ölçüt o gün yürürlükte olsaydı K-1 kapanırdı ve `ADR-0004` hiç yazılmazdı.**
+
+Üç kusuru vardı:
+1. **Boyut-kör.** G4 *farklı boyut* ister; ölçüt yalnız *tur sayar*.
+2. **Edilgen çatı yokluğu kanıt sayıyor.** *"Bulgu almazsa"*, **"incelendi ve dayandı"** ile
+   **"hiç bakılmadı"** arasını ayırt etmiyor.
+3. **Kendine göre uygulandı.** `SKR-051` üç örnek verdi ve **K-5'inki benim de şüphelendiğim
+   yerdi**: `ENG-0002`'de K-5'e ait **ölçüm bölümü yok** — `✅` bir **yokluğa** verilmiş.
+
+### Yerine ne kondu — hiçbir şey, bilerek
+
+Yeni bir ölçüt **uydurmuyorum.** Sonlanma sorusu (*"bu işin sonu var mı"*) gerçektir ama
+cevabı bir sayaç değil:
+
+> **Zaten yazılı olan ölçüt yeterlidir:** `GOV-000` **G4** (≥2 **farklı boyut**) +
+> `RFC-6002`'nin R1–R3 ratifikasyon kapısı. Eksik olan ölçüt değil, **onay makamıydı** —
+> ve o, `RFC-6002`/`RFC-6003`'ün konusu.
+
+Bu ADR için pratik sonuç: `Accepted` kararı bu belgenin kendi içinden **çıkarılamaz**.
+
+### `K-4`'ün K-1 bağımlılığı — açık borç
+
+`SKR-051`: §4.4 ve R12 **K-1'in mührüne** dayanıyor, ve mühür devredildiği yerde
+(`ADR-0004`) **zayıflatılmış** hâlde. K-4 Accepted'a gitmeden önce çözülmeli.
+K-2'nin ayrılması ise **savunulabilir** bulundu — K-3..K-6'nın hiçbiri ona mekanizma
+düzeyinde bağlı değil.
+
+### `K-3`'ün "koşullu" statüsü
+
+`SKR-051`: koşullu bir karar Accepted belgede kalamaz — üstelik analyzer'ın üç
+sessiz-başarısızlık yüzeyinin ikisi (`#pragma` bastırma · **yanlış yazılmış yasak satırının
+hiçbir tanı üretmemesi**) ADR'nin **kendi kapattığını iddia ettiği** sınıflardır.
+Ve §4.1 analyzer'ı *"`E3`'ün aynısı"* diye **reddetmişti** — ama K-3'ün tek zorlayıcısı o.
+
+### Verdict kaydı
+
+`SKR-051` = **`refuted`**, 8 bloke edici. Çürütülen şey kararların kendisi değil,
+belgenin **`Accepted` olabileceği** iddiasıdır — skeptic bunu açıkça yazdı ve
+K-3/K-4/K-5/K-6'yı *"savunulabilir kararlar"* olarak ayırdı.
+
+---
+
 ## 1. Bağlam
 
 `Ens.Kernel` (Faz 4 referans implementasyonu, ~899 satır) üzerinde yürütülen düşmanca denetim
@@ -691,254 +795,34 @@ kimlik sayısı **40**, ve bu sayı §7'nin yanlışlanma noktasıdır).
 >
 > Kutu kalıcıdır (EC-001): bir ADR'nin yanlış zeminden karar üretebildiğinin kaydı.
 
-### K-1 — Yetki, yalnızca **mühür sahibi** otoritenin üretebildiği bir nesne olur (P1)
+### K-1, K-2 — ⛔ **DEVREDİLDİ** (v0.6.0, `SKR-051` T-1)
 
-> **Karar cümlesi:** Bir yetkiyi temsil eden her tip (`ToolAuthorization`, `GateResult`,
-> `Proposal`, actuation girişi) `public` kurucu taşımaz; yalnızca onu **veren otoritenin**
-> çalışma-zamanı mührüyle üretilir ve tüketici, mührü **referans eşitliğiyle** doğrulamadan
-> yetkiyi kabul etmez.
-
-#### Mekanizma — üçüncü seçenek: **sealer/brand** (ne imza, ne `internal`)
-
-Görev metni iki seçenek sordu; her ikisi de yetersiz:
-
-| Seçenek | Neden yetersiz |
-|---|---|
-| **İmzalı gate-token** | Kriptografik anahtar yönetimi getirir. Kernel'de anahtar nerede durur? Anahtar bir alan olursa onu okuyan herkes token üretir; `IKeyStore` portu olursa **port taklit edilebilir** — sorun bir seviye yukarı taşınır. Ayrıca `HMAC` her gate çağrısında alloc + hash maliyeti. Faz-4 in-process kernel'de **çözdüğünden fazla yüzey açar**. |
-| **`internal` tip** | Aynı assembly'den atlatılır. Dahası `InternalsVisibleTo(Ens.Kernel.Tests)` zaten gerekli olacak → test assembly'si tam yetki üretebilir hâle gelir. `internal`, güven sınırı **assembly** olduğunda işe yarar; burada güven sınırı **çağrı grafiğidir**. |
-
-**Seçilen: brand / sealer-unsealer deseni.**
-
-```
-public sealed class CapabilityRegistry
-{
-    private readonly AuthoritySeal _seal = new();     // örnek başına benzersiz, dışarıdan erişilemez
-    public ToolAuthorization Authorize(ToolName t) => ToolAuthorization.Issue(_seal, ...);
-}
-
-public sealed class AuthoritySeal { internal AuthoritySeal() { } }   // taşıma yok, karşılaştırma var
-
-public sealed class ToolAuthorization   // v0.3.0: `record` DEĞİL — bkz. §0.7 D-1
-{
-    private readonly AuthoritySeal _issuer;
-    private ToolAuthorization(...) { }                 // PUBLIC KURUCU YOK
-    internal static ToolAuthorization Issue(AuthoritySeal seal, ...) => new(...);
-    internal bool IssuedBy(AuthoritySeal seal) => ReferenceEquals(_issuer, seal);
-}
-```
-
-Gate imzası **otoriteyi zorunlu kılar**:
-
-```
-BoundedAutonomyGate.Evaluate(..., CapabilityRegistry registry, ToolName tool)
-```
-
-— `ToolAuthorization` artık **parametre değil**, gate'in registry'den kendisinin çözdüğü bir
-iç değerdir. Çağıran hiçbir yetki nesnesi **taşımaz**.
-
-**Prior art (ENS'in icadı değil):**
-- **Morris, J.H. (1973), "Protection in Programming Languages", CACM 16(1)** — sealer/unsealer
-  çiftleri. Bu desenin kaynağı budur.
-- **Miller, M.S. (2006), *Robust Composition* (PhD tezi)** — object-capability modeli, "brand"
-  ve unforgeable reference. `ReferenceEquals` ile marka doğrulama tam olarak buradan.
-- **Rust `newtype` + private field** — aynı fikrin tip-sistemi versiyonu; C#'ta `private`
-  kurucu ile taklit edilir.
-- **Java `SecurityManager`/`AccessController` — NEDEN BAŞARISIZ OLDU:** yetkiyi **çağrı yığınına**
-  (stack inspection) bağladı, nesneye değil. Sonuç: doPrivileged sarmalayıcıları, yığın
-  derinliğine duyarlı hatalar, ve nihayet **JEP 411 ile deprecate, JEP 486 (JDK 24) ile
-  kaldırıldı**. Ders: **yetki ortam (ambient) değil, nesne olmalıdır.** K-1 bu dersi alır.
-- **MCP tool registry** — yetkilendirmeye agnostiktir (ADR-0001 §6.1 bunu zaten yazıyor);
-  ENS'in deltası registry→gate bağının **kernel içinde zorunlu** olmasıdır.
-
-#### Kalıbın tamamını neden kapatıyor (11 üye — `W2_O1` hariç)
-
-| ID | Nasıl kapanıyor |
-|---|---|
-| `E3` | `GateResult` kurucusu private + mühürlü → tek satırda taklit edilemez |
-| `W4a` | Sahte `ToolAuthorization` **inşa edilemez**; gate zaten registry'yi kendisi sorar |
-| `W15` | `public record` → private kurucu; reddi aklama yolu kapanır |
-| `W16` | `toolAuthorization: null` parametresi **kalkar**; `PendingDecision.Tool` zorunlu alan olur, `Scheduler.Schedule` `CapabilityRegistry` alır. "Unutmak" derleme hatası olur |
-| `H1` | Öneri uygulama girişi `Proposal` mührünü ister; herhangi bir çağıran uygulayamaz |
-| `G5` | `Proposal` yalnızca curator mührüyle doğar → sıfır-provenance sahte kayıt üretilemez |
-| `W2_L1` | `ActuationLayer` kurucusu private; yalnızca `DecisionAggregate.CommitSeal` üzerinden doğar → commit edilmemiş karar için lifecycle başlatılamaz |
-| `W2_L2` | `ProofTrace` mühre ek olarak `Subject: Identity` taşır; `RecordTrace` `trace.Subject == DecisionId` şartı arar → tek trace beş kararı meşrulaştıramaz |
-| `W2_R2` | `Rehydrate` her event için `e.Target == id` doğrular (mühür değil, ama aynı kararın parçası: **provenance zorunluluğu**) |
-| `W5d` | `CanHandle` öz-beyanı kalkar; adapter yeteneği registry'de **deklaratif** kaydedilir ve `Resolve` registry'den çözer — kayıt sırası değil, deklarasyon belirler |
-| `C3` | **KOŞULLU — bkz. aşağıdaki uyarı** |
-
-> **⚠️ `C3` için dürüst uyarı (DOĞRULANMADI):** `C3`'ün test gövdesi bu turda **okunmadı**.
-> Sicildeki tarifi (*"hayalet-kayıt guard'ı **değer-eşit klonla** atlatılıyor"*) `C2` ile
-> **aynı biçimdedir** ve `C2`'nin kökü §2.2'de kimlik normalizasyonu değil **entity/value
-> karışımı** çıktı. `C3` de aynı kökten geliyorsa **K-1 onu kapatmaz**. Uygulamadan önce
-> gövde okunmalıdır; kapanmıyorsa §5'e taşınır ve bu ADR'nin sayısı 40'tan 39'a iner.
-
-> **`W2_O1` KAPANMIYOR** (§2.4). K-1 altyapıyı verir, `Owner` alanını vermez.
-
-#### Maliyet
-
-| Ölçüt | Tahmin |
-|---|---|
-| Dokunulan üretim dosyası | 6 — `CapabilityRegistry.cs`, `BoundedAutonomyGate.cs`, `Scheduler.cs`, `ActuationLayer.cs`, `ProofTrace.cs`, `Domain/DecisionAggregate.cs` (+1 yeni `Capability/AuthoritySeal.cs`) |
-| Breaking? | **EVET — bu ADR'nin en breaking kararı.** `Evaluate` ve `Schedule` imzaları değişir; `ToolAuthorization` dışarıdan inşa edilemez hâle gelir |
-| Etkilenen test | `AdversarialWave_SchedulerGateTests.cs`, `BoundedAutonomyGateTests.cs`, `SchedulerTests.cs`, `ActuationLayerTests.cs`, `CapabilityRegistryTests.cs`, `ProofTraceTests.cs`, `AdversarialWave_InvariantTests.cs` — **7 dosya**. Elle `ToolAuthorization` kuran her test derlenmez → test-yardımcı fabrika (`TestAuthority`) gerekir |
-| `Ens.Kernel.Demo` | `Program.cs` gate çağrıları güncellenir |
-
-#### Reddedilen alternatifler
-
-1. **İmzalı token (HMAC/Ed25519).** Reddedildi: anahtar yönetimi kernel'in sorunu değil,
-   in-process güven sınırında **çözdüğünden fazla yüzey açar** (anahtar sızıntısı, rotasyon,
-   saat bağımlı nonce). Dağıtık/çok-process kernel'e geçildiğinde yeniden değerlendirilir —
-   o zaman brand deseni **serileşemez** ve imza kaçınılmaz olur (bkz. yeni risk).
-2. **`internal` + `InternalsVisibleTo`.** Reddedildi: güven sınırı yanlış yerde; test
-   assembly'sine tam yetki verir; aynı assembly büyüdükçe koruma erir.
-3. **Roslyn analyzer ile "yetki tipi elle inşa edilemez" kuralı.** Reddedildi: derleme-zamanı
-   uyarısı **çalışma-zamanı değişmezi değildir**; analyzer devre dışı bırakılabilir ve
-   `#pragma warning disable` tek satırdır — E3'ün aynısı.
-
-#### Yeni risk (bu karar hangi yüzeyi açıyor?)
-
-- **R1 — Mühür serileşemez.** `ReferenceEquals` süreç-içi bir kimliktir. Kernel event-sourced
-  olduğu için mühürlü nesneler **event store'a yazılamaz**; yazılırsa deserialize edilen token
-  mührü kaybeder ve **fail-open değil fail-closed** olur (iyi yön), ama replay yolunda yetki
-  yeniden çözülmek zorundadır. **Bu, K-1'in en ciddi yeni yüzeyidir** ve `W2_R2`/`W2_R3`
-  replay asimetrisi ailesini büyütebilir.
-- **R2 — Çoklu registry.** İki `CapabilityRegistry` örneği iki farklı mühür üretir; yanlış
-  registry ile gate çağrısı **her şeyi bloke eder**. Fail-closed, ama teşhis edilmesi zor bir
-  arıza sınıfı doğar. Azaltma: mühür uyuşmazlığı `InvalidOperationException` + açık mesaj.
-- **R3 — Reflection.** `private` alan reflection'la okunabilir → mühür kopyalanabilir. Bu
-  **P5'tir ve kapsam dışıdır**; K-1 reflection'a karşı koruma **iddia etmez**.
-- **R4 — Test ergonomisi.** Testler artık gerçek registry kurmak zorunda; "hızlı sahte yetki"
-  yolu kapanır. Bu kasıtlıdır ama test yazma maliyetini artırır ve **testlerin gerçek
-  konfigürasyonu atlaması** riskini doğurur.
-
----
-
-### K-2 — Ad taşıyan her kimlik, kanonikleştirilmiş bir **tip** olur; ham `string` sınır geçemez (P2)
-
-> **Karar cümlesi:** `string` bir kimlik değildir — `ToolName`, `PurposeType`, `PackName`,
-> `AdapterId`, `ContextKey`, `OwnerName` birer `readonly record struct` olur; kanonik biçime
-> **kurucuda** getirilir, kanonik biçime getirilemeyen ad **reddedilir**, ve kernel'in hiçbir
-> public imzası bu roller için ham `string` kabul etmez.
-
-#### Mekanizma
-
-Tek bir kanonikleştirme çekirdeği, altı ince sarmalayıcı:
-
-```
-public readonly record struct ToolName
-{
-    public string Value { get; }                       // kanonik biçim
-    private ToolName(string v) { Value = v; }
-    public static ToolName Parse(string raw) => new(CanonicalName.Canonicalize(raw, Profile.Tool));
-    public static bool TryParse(string raw, out ToolName n, out string? reason);
-    public override string ToString() => Value;
-}
-```
-
-`CanonicalName.Canonicalize` **dört** adımdır ve sırası bağlayıcıdır:
-
-| # | Adım | Karar |
-|---|---|---|
-| 1 | **Karakter sınıfı kapısı** (UAX #31 identifier profili) | `Cc` (kontrol, `NUL` dahil), `Cf` (format; bidi override `U+202E` dahil), `Cn`, `Co` **reddedilir** — kırpılmaz. Reddetme `ArgumentException`, sessiz temizleme **yok** |
-| 2 | **Boşluk** | Baş/son `Trim`; iç ardışık boşluklar tek `U+0020`'ye indirgenir; `NBSP`/`U+3000` vb. `Zs` → `U+0020` |
-| 3 | **Unicode normalizasyon** | **NFC** — `NFKC` DEĞİL (gerekçe aşağıda) |
-| 4 | ~~**Harf katlama**~~ → **KATLAMA YOK, REDDET** | v0.3.0 kararı (§0.7 D-2): kanonik olmayan girdi **katlanmaz, reddedilir**. Karşılaştırma her yerde `StringComparer.Ordinal` |
-
-**Neden NFC, NFKC değil.** Prior art: **UAX #31 (Unicode Identifier and Pattern Syntax)**
-programlama-dili tanımlayıcıları için **NFC** önerir. NFKC iki nedenle reddedildi:
-1. **Anlam değiştiren katlamalar yapar** — `ﬁ`→`fi`, `①`→`1`, `㎏`→`kg`, `²`→`2`. Bir araç adı
-   ya da purpose type'ta bu, iki farklı varlığı **birleştirir**; P2'nin ters yönde hatası.
-2. **Homoglyph'leri zaten katlamaz.** Yaygın yanlış inanç budur: NFKC, Kiril `а` (U+0430) ile
-   Latin `a` (U+0061)'yı **birleştirmez** — farklı script, farklı karakter, NFKC'de aynen kalır.
-   Yani `W2c` (homoglyph araç adı) **normalizasyonla kapanmaz**.
-
-**Bu yüzden `W2c` için ayrı ve açıkça adlandırılmış bir mekanizma var — M-3:**
-
-> **M-3 — Confusable çakışma indeksi (UTS #39).** `Register`, adın **skeleton**'unu
-> (Unicode **UTS #39 §4 confusable detection**, `confusables.txt` eşlemesi) hesaplar ve
-> registry'de bir `skeleton → ad` indeksi tutar. Aynı skeleton'a düşen **ikinci** bir ad
-> kaydı **açık hata**dır (`InvalidOperationException`), sessiz ikiz değil. Ek olarak
-> **mixed-script kısıtı** (UTS #39 "Moderately Restrictive"): tek bir ad birden fazla
-> script'ten harf taşıyamaz.
+> **v0.5.0 bölmeyi İLAN ETTİ, YAPMADI.** K-1 (mühürlü yetki) ve K-2 (kanonik kimlik)
+> bölünme duyurusundan sonra da **250 satır normatif metin** olarak burada durdu.
+> `SKR-051` bunu bloke edici bulgu olarak verdi ve haklıydı: `ADR-0004:106` *"K-1'i
+> devretti"* diyordu, ADR-0003 devretmemişti.
 >
-> **Dürüst sınır:** `confusables.txt` .NET BCL'de **yoktur**; ya veri dosyası gömülür ya da
-> mixed-script kısıtıyla yetinilir. Mixed-script tek başına `W2c`'nin *aynı script içi*
-> varyantlarını (`rn` ↔ `m`) kapatmaz. Bu, K-2'nin bilinen artığıdır.
+> **Neden ciddi:** bu belge `Accepted` olsaydı `Ens.Kernel`'e `// TRACE: ADR-0003 K-1`
+> yazılabilirdi — `ADR-0004`'ün *"öncül çöktü, hedef küçüldü"* kararının **tersi**.
+> Madde VII bir **tekillik** varsayımı taşır (kod tek bir Accepted ADR'ye dayanır);
+> iki belgede iki farklı K-1 onu kırar.
+>
+> **Sicilin ALTINCI "changelog ≠ gövde" tekrarı** — ve kalıbı adıyla teşhis eden D-7
+> paragrafının **48 satır üstünde** gerçekleşti. Kalıbı bilmek onu durdurmuyor;
+> **doğrulama** durduruyor.
 
-**Türkçe `I`/`ı` tuzağı — açıkça karar:** harf katlama **yalnızca `ToUpperInvariant()`** ile
-yapılır; `CultureInfo.CurrentCulture` bağımlı hiçbir çağrı (`ToLower()`, `ToUpper()`,
-`string.Compare(...)` kültürlü aşırı yüklemesi) kernel'de **yasaktır**.
-Gerekçe: `tr-TR` altında `"IT".ToLower()` → `"ıt"` ve `"it".ToUpper()` → `"İT"`; iki ENS
-düğümü farklı kültür ayarıyla koşarsa **aynı ad iki farklı kimliğe** düşer — P2'nin tam
-kendisi, üstelik dağıtık ve teşhis edilemez biçimde. `ToLowerInvariant` yerine
-`ToUpperInvariant` seçilmesi .NET'in kendi yönergesidir (*Best Practices for Using Strings in
-.NET* — "Use `ToUpperInvariant` ... when normalizing strings for comparison"), çünkü
-küçük-harfe katlama bazı karakterlerde geri dönüşsüzdür.
+**Şimdi gerçekten devredildi:**
 
-**M-4 — `W1b`'nin eş-koşulu (§2.3):** `CapabilityRegistry.IsEnabled` `bool` yerine
-`PackStatus { NotRegistered, Enabled, Disabled }` döner; `Disable`/`Enable` kayıtlı olmayan
-adda **hata verir**. Bu K-2'den bağımsızdır ama K-2 ile birlikte uygulanmazsa `W1b`
-kapanmaz — yalnız tetikleyicisi değişir.
+| Karar | Yeni yeri | Neden |
+|---|---|---|
+| **K-1** (+ `DP5`) | `ADR-0004-guven-siniri-process-tur.md` | Sorun mekanizma seçimi değil **fizibilite**; `Unsafe.As` ölçümüyle cevaplandı |
+| **K-2** | `ADR-0005-kanonik-kimlik.md` | İki turda kırıldı; tek profil yetmiyor (PRECIS iki-profil adayı) |
 
-**Prior art:** UAX #31 (identifier syntax, NFC), UTS #39 (confusables, restriction levels,
-mixed-script), IETF **PRECIS** çerçevesi (RFC 8264/8265 — kullanıcı adı/parola
-hazırlama profilleri; "her string sınıfı kendi profilini taşır" fikri buradan),
-Rust/Haskell **newtype** deseni (ham skaler yerine anlamlı tip). ENS'in icadı değildir.
+v0.5.0'ın metni **silinmedi, taşındı** — git geçmişinde ve iki yeni ADR'de durur (EC-001).
 
-#### Kalıbın tamamını neden kapatıyor (11 üye — `C2` ve `W1b` çıkarıldı, §2.2/§2.3)
-
-| ID | Nasıl kapanıyor |
-|---|---|
-| `F3` | Unicode-eşdeğer purpose type'lar NFC ile tek biçime düşer → bellek parçalanmaz |
-| `G3` | Adım 2 (boşluk) — dolgu ile örüntü tespitinden kaçılamaz |
-| `G4` | Adım 4 (`ToUpperInvariant`) — büyük/küçük varyantlar tek öneri üretir |
-| `W1a` | `PackName.Parse` yanlış harfi kanonikleştirir; kalan gerçek yanlış ad M-4 ile **hata verir**, sessiz "başarılı" olmaz |
-| `W1c` | Aynı: near-miss revoke jesti artık ya doğru pack'i bulur ya hata verir |
-| `W2c` | **M-3 ile** (normalizasyonla değil) — mixed-script + confusable indeksi; *aynı-script* artığı açık |
-| `W2e` | Adım 1 — `NUL` ve tüm `Cc` reddedilir |
-| `W2f` | `Register` ve `Authorize` **aynı `ToolName` tipini** alır; birinin kabul edip diğerinin soramayacağı ad kalmaz (asimetri tip düzeyinde imkânsız) |
-| `W5g` | `AdapterId` tipi + registry'de tekillik kontrolü → denetim anahtarı injective |
-| `W7f` | `OwnerName` kanonik → `"Ali"`/`"ali"` aynı aktör; attribution ters dönmez |
-| `W7h` | Adım 1+2 — boş ad reddedilir, boşluklu ad kanonikleşir → ayrı evrenler kalmaz |
-
-#### Maliyet
-
-| Ölçüt | Tahmin |
-|---|---|
-| Yeni dosya | 2 — `Domain/CanonicalName.cs`, `Domain/Names.cs` (6 tip) |
-| Dokunulan üretim dosyası | 7 — `Identity.cs`, `CompanyMemory.cs`, `CapabilityRegistry.cs`, `ContextScore.cs`, `ReflectiveDoubleLoop.cs`, `Adapter/LlmAdapter.cs`, `Scheduler.cs` |
-| Breaking? | **EVET, ama mekanik.** `string` → tip; `Parse` çağrısı eklenerek düzelir |
-| Etkilenen test | Ad geçen **her** test — `CompanyMemoryTests`, `CapabilityRegistryTests`, `ContextScoreTests`, `ReflectiveDoubleLoopTests`, `LlmAdapterTests`, `AdversarialWave_MemoryTests`, `AdversarialAuditTests`, `AdversarialWave_SchedulerGateTests`. **8 dosya**; bu ADR'nin **en geniş yüzeyli** kararı (K-1 en derin, K-2 en geniş) |
-| Azaltma | Testlerde `implicit operator ToolName(string)` **KOYULMAZ** — koyulursa kapı yeniden delinir. Bunun yerine test projesinde `static ToolName T(string s) => ToolName.Parse(s);` yardımcıları |
-
-#### Reddedilen alternatifler
-
-1. **`StringComparer.OrdinalIgnoreCase` ile karşılaştırma yapmak, tip eklememek.** Reddedildi:
-   comparer **çağrı yerine** bağlıdır — `Guard.cs`'in yaşadığı hatanın aynısı ("doğru guard,
-   eksik çağrı yeri"). Yeni bir sözlük eklenince comparer unutulur ve kimse fark etmez.
-   Ayrıca `IgnoreCase` NFC'yi ve `NUL`'u hiç ele almaz.
-2. **NFKC + agresif katlama.** Reddedildi: `ﬁ`→`fi` gibi **anlam değiştiren** katlamalar
-   yapar ve asıl hedef olan homoglyph'leri zaten katlamaz (yukarıda).
-3. **Kanonikleştirmeyi `Register`'da yapıp `Authorize`'da yapmamak (tek taraflı).** Reddedildi:
-   `W2f` tam olarak bu asimetriden doğuyor.
-
-#### Yeni risk
-
-- **R5 — Sessiz birleştirme.** Kanonikleştirme **iki gerçekten farklı varlığı** aynı kimliğe
-  düşürebilir (`"read stock"` ve `"read  stock"` bilinçli olarak farklı tutulmak istenmişse).
-  P2'nin ters yönü. Azaltma: `Register` kanonik çakışmada **hata verir**, sessizce üzerine
-  yazmaz — böylece birleşme görünür olur.
-- **R6 — Ham biçim kaybı.** İnsana gösterilecek ad kanonik biçimdir; operatörün yazdığı
-  orijinal kaybolur. Denetim izinde `RawInput` alanı saklanmalı (ama **karşılaştırmada
-  kullanılmamalı**) — aksi hâlde `W2d`-benzeri "insana gösterilen metin" sorunları teşhis
-  edilemez.
-- **R7 — Unicode veri sürümü.** NFC ve confusables ICU/BCL sürümüne bağlıdır; .NET sürümü
-  değiştiğinde kanonik biçim **değişebilir** ve kalıcı verideki kimlikler kayar. Bu gerçek ve
-  ciddi bir risktir; azaltma: kanonik ad **event'e yazılırken** Unicode sürümü de yazılır.
-- **R8 — `confusables.txt` bağımlılığı.** Gömülü veri dosyası bakım yükü getirir; güncellenmezse
-  koruma bayatlar.
-
----
+> **`K-4`'ün K-1 bağımlılığı açık borçtur** (`SKR-051`): §4.4 ve R12 mühre dayanıyor,
+> ve mühür devredildiği yerde **zayıflatılmış** hâlde. Bu, K-4'ün Accepted'a gitmeden
+> önce çözülmesi gereken bir atomiklik sorunudur.
 
 ### K-3 — Zaman kernel'e aittir: saat portu **ve** kabul aralığı — iki mekanizma, tek karar (P3)
 
@@ -1374,7 +1258,11 @@ bu tuzağa karşı **açık bir zorlama mekanizması** taşımak zorundadır. De
 
 Bu ADR **yanlıştır** eğer:
 
-1. **Sayısal iddia tutmazsa.** İddia: **K-1…K-6 uygulandığında 40 kimlik kapanır**
+1. **Sayısal iddia tutmazsa.** İddia: **K-3…K-6 uygulandığında 22 kimlik kapanır**
+   (`DP3`+`DP4`+`DP6`+`DP7` = 6+5+5+6; `SKR-051` aritmetiği bağımsız doğruladı, çakışma yok).
+   *v0.6.0 düzeltmesi: bu satır `40` diyordu ve **K-1…K-6** kapsıyordu — K-1/K-2 artık
+   `ADR-0004`/`ADR-0005`'te. Gövdede beş farklı sayı dolaşıyordu (41/40/43/"40+4"/22);
+   geçerli olan tek sayı **22**'dir ve kapsamı **K-3..K-6**'dır.*
    (P1: 11, P2: 11, P3: 6, P4: 5, P6: 5, P7: 6 = 44 üye; eksi `C3` koşullu (§4.1),
    eksi `W3`'ün düşük şiddeti, eksi `W1b`'nin M-4'e bağımlılığı → **doğrulanabilir çekirdek
    40**). Uygulama sonrası `AUDIT_FIXED_*`'a dönmeyen her kimlik bu ADR'yi yanlışlar.
