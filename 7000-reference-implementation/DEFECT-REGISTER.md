@@ -379,3 +379,104 @@ Beş kusur, **kapatılmadığı için değil, ADR-0001'in henüz bir karar verme
 - Saldırı yöntemi: `.claude/skills/adversarial-test/SKILL.md`
 - Yetki: Anayasa Madde X (Yanlışlanabilirlik Ödevi), Madde VIII (İzlenebilirlik Yasası),
   Madde VI (Anti-Pattern'ler — black-box çıktı)
+
+---
+
+## 13. ⛔ T9 KAPANDI — ID uzayı tekil değil, ve **kapanış testi bu yüzden bozuk**
+
+**Tarih:** 2026-07-27 · **Bulan:** `ENG-0003` (6 vaka) · **Ölçen:** oturum sahibi (14 vaka)
+
+### Bulgu
+
+Bu sicilin ve ona dayanan **her** ADR'nin tek yanlışlanma yordamı §11/3'tür:
+
+> *"Kararlar uygulanınca ilgili `AUDIT_DEFECT_*` testleri `AUDIT_FIXED_*`'a dönmelidir."*
+
+**Bu yordam bugün 14 kimlik için sahte pozitif üretiyor.** Çünkü o 14 kimliğin **hem**
+`AUDIT_DEFECT_<ID>_*` **hem** `AUDIT_FIXED_<ID>_*` testi var — ve ikisi **farklı kusurları**
+doğruluyor:
+
+```
+AUDIT_FIXED_A1_NaN_stake_is_rejected_instead_of_granting_full_autonomy   ← gate'te NaN stake
+AUDIT_DEFECT_A1_Future_AssertedAt_disables_decay_forever_with_no_evidence ← memory'de zaman
+```
+
+Ad üzerinden yapılan her denetim bu 14'ü **"kapandı"** sayar. 373/373 geçtiği için
+**ikisi de yeşildir** — yani sistem aynı anda *"kusur açık"* ve *"kusur kapandı"* diyor.
+
+### Kök neden — mekanik ve tam
+
+| Yön | Adet | Kimlikler |
+|---|---|---|
+| `DEFECT` = `AdversarialWave_MemoryTests` · `FIXED` = `AdversarialAuditTests` | **11** | `A1` `A2` `B4` `D4` `E4` `F3` `G1` `G2` `G3` `G4` `G5` |
+| Ters yön | 2 | `C1` `E5` |
+| Aynı dosya (§10'da zaten kayıtlı `D1` bölünmesi) | 1 | `D1` |
+
+> **İki denetim dalgası, birbirinden habersiz, aynı `A1/A2/B4/G1…` harf numaralamasını
+> kullandı.** Kimse çakışmayı görmedi çünkü **ID uzayı hiçbir yerde tanımlı değildi.**
+
+Ayrıca **31 kimlik** birden fazla verdict taşıyor (`DEFECT`+`HOLDS` gibi kombinasyonlar dâhil);
+bunların çoğu meşrudur (aynı alanda bir iddia ayakta, bir kusur açık olabilir).
+**Tehlikeli olan yalnız `DEFECT`+`FIXED` çiftidir** — çünkü kapanış sinyali odur.
+
+### Önerilen düzeltme — dalga ad-uzayı
+
+Her ID, üretildiği dalganın ön ekini taşır:
+
+| Dosya | Ön ek |
+|---|---|
+| `AdversarialAuditTests` | `AUD-` |
+| `AdversarialWave_MemoryTests` | `MEM-` |
+| `AdversarialWave_InvariantTests` | `INV-` |
+| `AdversarialWave_SchedulerGateTests` | `SCH-` |
+| `AdversarialWave_SecurityTests` | `SEC-` |
+| `AuditFixed_CommitmentProofTraceTests` | `CPT-` |
+
+`MEM-A1` ≠ `AUD-A1`. Ad-uzayı **kendini belgeler** ve çakışma **yapısal olarak** imkânsız hâle
+gelir.
+
+> **Bu ADR/sicil bunu tek başına UYGULAMIYOR.** 200+ test metodunun yeniden adlandırılması
+> ayrı bir edimdir ve kendi turunu ister. Burada **kayıt** ve **öneri** var.
+
+### Bu bulgunun kapsamı — dürüstçe
+
+**Her kapanış iddiası ID'ler ayrıştırılana kadar sınanamaz.** Bu şunları etkiler:
+
+- `ADR-0003` v0.7.0'ın **17** iddiası — 17'nin kaçının çakıştığı **sayılmadı**
+- `ADR-0004`'ün `DP4` (5) ve `DP1` iddiaları
+- `DEFECT-PATTERN-MAP` §11/3'ün **kendisi**
+
+> **Kayıtlı bir kusur (§2.6, `SKR-049`), üzerine kurulan yordamı sessizce bozdu.**
+> Kusur biliniyordu; **sonucu** bilinmiyordu. Bu, "bilinen borç" ile "ölçülmüş etki"
+> arasındaki farkın maliyetidir.
+
+### Yanlışlanma
+
+Bu bölüm **yanlıştır** eğer: `AUDIT_FIXED_<ID>` ile `AUDIT_DEFECT_<ID>` çiftlerinden herhangi
+biri gerçekten **aynı** kusuru konu ediyorsa (yani ID paylaşımı meşruysa). Ölçüm komutu:
+
+```bash
+for f in Ens.Kernel.Tests/*.cs; do
+  grep -aoE "AUDIT_(DEFECT|FIXED)_[A-Za-z0-9]+_[A-Za-z0-9_]+" "$f" | tr -d [octal-NUL]      # <- gercek kacis dizisi ASCII-guvenli yazilmali
+done | sort -u
+```
+
+### 13.1 Bu bölüm yazılırken tuzak **altıncı kez** tetiklendi — ve hedefi bu dosyaydı
+
+Yukarıdaki komut örneği bir kaçış dizisi içeriyordu ve yazım sırasında o dizi **gerçek bir
+NUL baytına** dönüştü. Sonuç:
+
+- `DEFECT-REGISTER.md` `file` komutuna göre **`data`** oldu (bir markdown dosyası).
+- `grep` onu **binary** saydı.
+- Ve `inventory-check.sh` — **bu tuzağı yakalamak için yazılmış hook** — sicilin sayısını
+  okuyamayıp `DEFECT 7000` diye **saçma bir değer** raporladı, yani **yanlış alarm** verdi.
+
+> **Özyineleme:** NUL tuzağını belgeleyen bölüm, kendi dosyasına bir NUL yazdı ve tuzağı
+> izleyen aracı bozdu.
+
+**Alınan ders — kurala eklenecek:** kaçış dizileri (` `, ` `, ` `) belge
+metnine **yazılmaz**; adıyla anılır. Bir belgeyi bozan şey, o belgenin konusu olabilir.
+
+**Bir ders daha — hook'un kendi kusuru:** araç okuyamadığında **sessizce geçmedi**, ama
+*"7000"* gibi anlamsız bir sayı üretip **yanlış alarm** verdi. Doğru davranış
+*"dosya okunamadı"* demekti. `inventory-check.sh` bu ayrımı yapmıyor — açık kusur.
