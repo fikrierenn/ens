@@ -474,7 +474,7 @@ NUL baytına** dönüştü. Sonuç:
 > **Özyineleme:** NUL tuzağını belgeleyen bölüm, kendi dosyasına bir NUL yazdı ve tuzağı
 > izleyen aracı bozdu.
 
-**Alınan ders — kurala eklenecek:** kaçış dizileri (` `, ` `, ` `) belge
+**Alınan ders — kurala eklenecek:** kaçış dizileri (oktal-NUL, onaltılık-NUL, Unicode-NUL biçimleri) belge
 metnine **yazılmaz**; adıyla anılır. Bir belgeyi bozan şey, o belgenin konusu olabilir.
 
 **Bir ders daha — hook'un kendi kusuru:** araç okuyamadığında **sessizce geçmedi**, ama

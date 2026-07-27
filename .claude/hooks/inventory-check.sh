@@ -40,8 +40,12 @@ count() { printf '%s\n' "$ALL" | grep -c "^AUDIT_$1_" || true; }
 D=$(count DEFECT); F=$(count FINDING); X=$(count FIXED); H=$(count HOLDS)
 
 # Sicilin başlığındaki iddia edilen sayıları çek (ilk iki kalın sayı).
-CLAIMED="$(grep -m1 -oE '\*\*[0-9]+\*\* açık kusur' "$REGISTER" | grep -oE '[0-9]+' || true)"
-CLAIMED_F="$(grep -m1 -oE '\*\*[0-9]+\*\* açık gözlem' "$REGISTER" | grep -oE '[0-9]+' || true)"
+# `grep -a` ZORUNLU: sicil bir kez tek bir NUL baytı yüzünden `binary` sayıldı ve bu hook
+# sayıyı okuyamayıp `DEFECT 7000` gibi anlamsız bir değer üretti — sessiz geçmedi ama
+# YANLIŞ ALARM verdi. work-protocol.md §3.2: "yok" ile "okuyamadım" ayırt edilmeden
+# "yok" yazılmaz. (2026-07-27, DEFECT-REGISTER §13.1)
+CLAIMED="$(grep -a -m1 -oE '\*\*[0-9]+\*\* açık kusur' "$REGISTER" | grep -oE '[0-9]+' || true)"
+CLAIMED_F="$(grep -a -m1 -oE '\*\*[0-9]+\*\* açık gözlem' "$REGISTER" | grep -oE '[0-9]+' || true)"
 
 if [ -z "$CLAIMED" ]; then
   echo "⚠️  ENS envanter: DEFECT-REGISTER.md başlığından sayı okunamadı (biçim değişmiş olabilir)."
