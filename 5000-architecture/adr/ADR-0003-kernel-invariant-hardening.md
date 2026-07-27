@@ -13,7 +13,8 @@ owner:         ens-ai-architect
 version:       0.1.0
 last_reviewed: 2026-07-27
 maturity:      M0
-skeptic_review: pending
+skeptic_review: SKR-049   # verdict: wounded — 5 bloke edici talep (T-A..T-E). status: draft KALIR
+                          # (skeptic-challenged önerilir; statü değişimini owner onaylar)
 failure_conditions: stated
 evidence:      {sci: E0, eng: E1, ops: E0, econ: E0}
 requires:      [ADR-0001]
@@ -27,6 +28,20 @@ consumed_by:   []
 > yordamıyla olur (skeptic saldırısı + hiza incelemesi + Accepted). Madde VII gereği
 > `7000-reference-implementation/` bu ADR **Accepted olana kadar** buradaki hiçbir karara
 > dayanamaz.
+
+> ### ⚠️ BAĞIMSIZ SKEPTIC TURU — `wounded` (SKR-049, 2026-07-27)
+> `5000-architecture/reviews/SKR-049-adr-0003-kernel-invariant-hardening.md`. Beş bloke edici
+> bulgu, **kabul öncesi** kapatılmalıdır:
+> **T-A** aşağıdaki §1'in "41"i **aritmetik olarak yanlış** — `12+13+6+5+5+6 = 47`; ADR'nin
+> "40"ı da türetilemiyor (`W1b` çifte çıkarılmış, `C3` kapanmadığı doğrulandığı hâlde sayıda).
+> Doğru manşet **43**. · **T-B** `AdversarialWave_SecurityTests.cs:27-29` künyesi yanlış →
+> doğrulama yordamı sessizce fail-open. · **T-C** K-1'in `record` taslağı `with` ile mühür
+> kopyalamaya açık → `W15`/`W4a`/`E3` geri gelir. · **T-D** K-4'ün `Disabled(..., DateTimeOffset At)`
+> taslağı K-3'ü ihlal ediyor. · **T-E** `ToUpperInvariant` Türkçede `ı`/`i`'yi birleştirir,
+> `İ`/`i`'yi ayırır → `G4`/`W7f`/`W1a`/`W1c` kapanışları desteklenmiyor.
+> Ayrıca: `AdversarialWave_SecurityTests.cs` **altı maliyet tablosunun hiçbirinde yok**
+> (44 kimliğin 13'ü orada). SKR-049 §Katıldığım noktalar, ADR'nin yanlışlanabilirlik
+> disiplinini ayrıca kayda geçirir — `C3` uyarısı (§4.1) **haklı çıkmıştır**.
 
 ---
 

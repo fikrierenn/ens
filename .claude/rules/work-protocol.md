@@ -122,6 +122,14 @@ RFC, ADR, kod değişikliği — **önce o bulguyu kendin doğrula.**
    güven: `grep` ile metni ara, numarayla teyit et.
 3. **Bulgu, iddia ettiği şeyi mi kanıtlıyor?** Alıntılanan metin, çıkarılan sonucu gerçekten
    taşıyor mu — yoksa iki farklı kavram birbirine mi karışmış?
+4. **Sayıyı yeniden OKUMA, yeniden HESAPLA.** Devraldığın her toplam, oran ve sayım
+   sıfırdan üretilir. Kaynaktaki rakama bakıp "evet öyle yazıyor" demek doğrulama değildir.
+
+> **4. madde neden var (2026-07-27, `SKR-049` T-A):** `DEFECT-PATTERN-MAP` §10
+> *"12+13+6+5+5+6 = **41**"* yazdı. Doğrusu **47**. Düz toplama hatası — ve `ADR-0003` onu
+> **doğrulamadan devraldı**, üstüne kendi hesabını kurdu. İlk üç kontrol uygulanmıştı:
+> dosya vardı, satır gerçekten öyle diyordu, alıntı sonucu taşıyordu. **Aritmetik kimsenin
+> aklına gelmedi.** Bir sayı, cümlelerden daha kolay devralınır çünkü doğru *görünür*.
 
 **Bu adım bir kez atlanmadı diye eklenmedi; atlanmadığı için eklendi.** 2026-07-27'de bir
 RFC yazmadan önce yapılan doğrulama, tek turda üç ayrı sorun buldu:

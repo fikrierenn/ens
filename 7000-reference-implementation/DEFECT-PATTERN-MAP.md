@@ -223,8 +223,18 @@ gizlenmiyor** — v1'in hatası tam da bu artığı hiç saymamaktı.
 
 ### Düzeltilmiş kapanma iddiası
 
-> **6 karar → 41 kusur** (P1 + P2 + P3 + P4 + P6 + P7 = 12+13+6+5+5+6).
+> **6 karar → 47 kusur** (P1 + P2 + P3 + P4 + P6 + P7 = 12+13+6+5+5+6 = **47**).
 > P8 kısmen; P5 ve P9 **kapanmaz**.
+
+> ### ⛔ ARİTMETİK HATASI — düzeltildi (`SKR-049` T-A, 2026-07-27)
+> Bu satır ilk hâlinde **41** diyordu. `12+13+6+5+5+6 = 47`. Düz toplama hatası.
+> Bağımsız kontrol de aynı sonucu veriyor: toplam 74 satır − kapanmayan 27 (P5=2, P8=10,
+> P9=15) = **47**.
+>
+> **Asıl ders bu değil.** `ADR-0003` bu sayıyı **doğrulamadan devraldı** ve üstüne kendi
+> hesabını kurdu. Yani `work-protocol.md` §3.5 (*"devraldığın bulguyu doğrula"*) **düzyazıya
+> uygulandı, aritmetiğe uygulanmadı** — kuralın kör noktası. §3.5'e dördüncü kontrol eklendi:
+> **sayıyı yeniden oku değil, yeniden HESAPLA.**
 
 v1'in *"6 karar 33 kusuru kapatır"* iddiası **hem sayı hem içerik olarak yanlıştı**: sayı
 düşük, ama kapsam yanlış — P5'i "kapanan" hanesine yazıyordu. Düzeltilmiş iddia **daha
