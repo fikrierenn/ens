@@ -126,19 +126,36 @@ temsil edilmeyen bir değişmezi zorlayamaz.
 `Owner` alanının kendisi **ayrı bir iştir** — ENS-2001 Individuation'ın dördüncü koşulunun
 implementasyonu. §5'te açık borç.
 
-### 2.5 On üç kimliğin **hiç testi yok** — iddia bu kadarı için sınanamaz
+### 2.5 ⛔ GERİ ÇEKİLDİ — "on üç kimliğin testi yok" iddiası YANLIŞTI
 
-`DEFECT-PATTERN-MAP.md` §11/3 kendi yanlışlanma koşulunu şöyle yazmış: *"karar verildikten
-sonra ilgili `AUDIT_DEFECT_*` testleri `AUDIT_FIXED_*`'a dönmelidir."*
+> **Bu bölümün ilk hâli yanlıştı ve K-0 kararı onun üzerine kurulmuştu.** Kayıt, kalıbın
+> ne kadar yapışkan olduğunu göstermek için kalıcıdır (EC-001).
 
-Test dizininde arama yapıldığında şu kimlikler için **hiçbir test metodu yok**:
-`W1a` `W1b` `W1c` `W2c` `W2e` `W2f` `W5a` `W5b` `W5d` `W5e` `W5g` `W7f` `W7h`.
-Bunlar `AUDIT-WAVE2-SECURITY.md`'nin **kod okuyarak** ürettiği bulgulardır; o dosyanın §0'ı
-`dotnet test` çalıştırılamadığını açıkça söylüyor.
+İlk hâli şunu iddia ediyordu: `W1a` `W1b` `W1c` `W2c` `W2e` `W2f` `W5a` `W5b` `W5d` `W5e`
+`W5g` `W7f` `W7h` için **hiçbir test metodu yok**, dolayısıyla `DEFECT-PATTERN-MAP` §11/3'ün
+kapanış testi 41'in %32'si için uygulanamaz.
 
-**Sonuç:** 41 kimliğin **13'ü (≈%32)** için §11/3 kapanış testi **uygulanamaz**. Bu ADR
-kabul edilse ve mükemmel uygulansa bile, o 13 kimlik için "kapandı" demek bir **kod okuma
-iddiası** olur, bir test sonucu değil. K-0 (§4.0) bunu kapatma önkoşuludur.
+**Onüçünün de testi var.** Hepsi `Ens.Kernel.Tests/AdversarialWave_SecurityTests.cs`
+içinde. Oturum sahibi tarafından mekanik olarak doğrulandı (kural §3.5):
+
+```
+W1a → 1   W1b → 1   W2c → 1   W5a → 1   W5d → 1   W7f → 1   W7h → 1
+```
+
+**Neden görünmediler — ve bu, üçüncü tekrar:** o dosyada `W2e` testinin fixture'ı olarak
+**4 gerçek NUL baytı** duruyor. Dört bayt, `file`'a *"data"* dedirtiyor ve `grep`/`rg`
+**tüm dosyayı** binary sayıp atlıyor. Aynı dört bayt bu oturumda üç kez yanılttı:
+
+1. `DEFECT-REGISTER` v1 → **68** kusur saydı, gerçek **75**'ti.
+2. `AUDIT-WAVE2-SECURITY` → dosyayı hiç göremedi, raporu ajan yazamadan öldü.
+3. **Bu bölüm** → "13 kimliğin testi yok".
+
+Kural `work-protocol.md` **§3.2**'ye yazıldı: *bir araç sıfır sonuç dediğinde, "yok" ile
+"okuyamadım" ayırt edilmeden "yok" yazılmaz.*
+
+**Sonuç:** §11/3'ün kapanış testi **40 kimliğin tamamı için uygulanabilir.** Bu ADR'nin
+sayısal iddiası tam olarak sınanabilir durumdadır — ki bu, ilk hâlin sandığından **daha
+güçlü** bir konumdur.
 
 ### 2.6 ID uzayı global olarak tekil DEĞİL (envanter riski)
 
@@ -197,21 +214,22 @@ kimlik sayısı **40**, ve bu sayı §7'nin yanlışlanma noktasıdır).
 
 ## 4. Kararlar
 
-### K-0 — Testi olmayan hiçbir kimlik "kapandı" sayılamaz (önkoşul)
+### K-0 — ⛔ GERİ ÇEKİLDİ (dayanağı yanlıştı)
 
-**Karar:** §2.5'teki 13 kimlik için, ilgili karar uygulanmadan **önce** birer
-`AUDIT_DEFECT_*` testi yazılır; ancak o zaman `AUDIT_FIXED_*`'a dönüşleri bir kanıt olur.
-
-**Gerekçe:** aksi hâlde 41'lik iddianın %32'si kod-okuma iddiası olarak kalır ve
-`DEFECT-PATTERN-MAP` §11/3 uygulanamaz. Bu bir "iyi olurdu" değil, **iddianın
-yanlışlanabilirlik önkoşuludur** (Madde X).
-
-**Maliyet:** 13 yeni test metodu, 0 üretim dosyası, breaking değil.
-**Yeni risk:** testler kusuru *bugünkü* davranışa göre yazılır; kusur zaten kısmen kapanmışsa
-test kırmızı doğar ve envanter şişer. Bu yüzden her yeni test, kusuru **gösteren** assertion'la
-yazılır (yeşil = kusur var), mevcut `AUDIT_DEFECT_*` konvansiyonuna uygun.
-
----
+> **K-0 kaldırıldı.** Gerekçesi §2.5'in ilk hâliydi: *"13 kimliğin testi yok, o hâlde
+> testleri yazılmadan kapandı sayılamaz."* O önerme **yanlıştı** — onüçünün de testi var
+> (§2.5, doğrulandı). Yanlış bir önermeden türeyen bir karar, sonucu makul olsa bile
+> **karar değildir**; taşıdığı gerekçe onu taşımıyorsa kaldırılır.
+>
+> **Ne kayboldu:** hiçbir şey. §11/3'ün kapanış testi zaten 40 kimliğin tamamına uygulanır;
+> K-0 var olmayan bir boşluğu kapatıyordu.
+>
+> **Ne kaldı:** `AUDIT-WAVE2-SECURITY.md`'nin bulgularının **kod okumasıyla** üretildiği ve
+> `dotnet test` çalıştırılmadığı doğrudur (o dosyanın §0'ı bunu kendisi söyler). Ama bu,
+> testlerin **yokluğu** değil, o raporun **kendi sınırıdır**; testler sonradan yazıldı ve
+> bugün 373/373 geçiyor (owner tarafından çalıştırıldı, 2026-07-27).
+>
+> Kutu kalıcıdır (EC-001): bir ADR'nin yanlış zeminden karar üretebildiğinin kaydı.
 
 ### K-1 — Yetki, yalnızca **mühür sahibi** otoritenin üretebildiği bir nesne olur (P1)
 
@@ -896,8 +914,8 @@ Bu ADR **yanlıştır** eğer:
    (P1: 11, P2: 11, P3: 6, P4: 5, P6: 5, P7: 6 = 44 üye; eksi `C3` koşullu (§4.1),
    eksi `W3`'ün düşük şiddeti, eksi `W1b`'nin M-4'e bağımlılığı → **doğrulanabilir çekirdek
    40**). Uygulama sonrası `AUDIT_FIXED_*`'a dönmeyen her kimlik bu ADR'yi yanlışlar.
-2. **K-0 uygulanmazsa iddia zaten sınanamaz.** §2.5'teki 13 kimliğin testi yazılmadan
-   "kapandı" demek bir kod-okuma beyanıdır. **K-0 uygulanmadan bu ADR Accepted olmamalıdır.**
+2. ~~**K-0 uygulanmazsa iddia zaten sınanamaz.**~~ **GERİ ÇEKİLDİ** — §2.5'in 13-kimlik önermesi yanlıştı;
+   kapanış testi 40'ın tamamına uygulanabilir. Bu koşul artık ADR'yi bloke etmez.
 3. **`C3`'ün gövdesi okunduğunda `C2` ile aynı kökten çıkarsa** → K-1 onu kapatmaz, sayı 39'a
    iner (§4.1'deki uyarı).
 4. **Üç kararın ortak `default(struct)` deliği (R14/R15/R20) kapatılmazsa** — K-4, K-5, K-6'nın
@@ -931,7 +949,7 @@ ve `CapabilityRegistry.cs:5-11`'de zaten kurulmuş; K-* onu genişletir, değiş
 
 | Karar | Yeni/değişen dosyada zorunlu iz |
 |---|---|
-| **K-0** | `// TRACE: ADR-0003 §4.0 K-0 — testi olmayan kimlik kapandı sayılamaz` (13 yeni testin her birinde) |
+| ~~**K-0**~~ | *(geri çekildi — §4.0)* |
 | **K-1** | `// TRACE: ADR-0003 K-1 (brand/sealer; Morris 1973, Miller 2006) — yetki nesnedir, ortam değil`<br>`// TRACE: ADR-0001 §5.6 (bounded autonomy), §6 (capability registry)` |
 | **K-2** | `// TRACE: ADR-0003 K-2 — UAX #31 (NFC), UTS #39 (confusables/mixed-script); ToUpperInvariant zorunlu (tr-TR I/ı)` |
 | **K-3** | `// TRACE: ADR-0003 K-3 M-1..M-4 — TimeProvider + kabul aralığı; A1/A2 SAAT DEĞİL VERİ kusurudur` |
