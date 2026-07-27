@@ -3,12 +3,12 @@ id: RFC-6003
 type: rfc
 canon: false
 status: draft
-owner: ens-philosopher
-version: 0.1.0
+owner: fikri-eren            # G5: fiilî yazar (SKR-048 D-10). v0.1.0 yanlış yazıyordu
+version: 0.2.0
 last_reviewed: 2026-07-27
 depends_on: [ENS-0000, GOV-000, GOV-010, RFC-6001, RFC-6002]
 referenced_by: []
-skeptic_review: pending
+skeptic_review: [SKR-048, ARCH-0001]
 failure_conditions: stated
 principles: [P6, P7]
 ---
@@ -25,25 +25,65 @@ G4 *"farklı boyutlardan ≥2 bağımsız validator"* istiyor. Ölçüm:
 
 | Ölçüt | Değer |
 |---|---|
-| Bugüne kadar yazılmış SKR | **45** |
-| Bunlardan `ens-skeptic` tarafından yazılan | **45** — yani **%100** |
+| Bugüne kadar yazılmış SKR | **46** |
+| Bunlardan `ens-skeptic` tarafından yazılan | **46** — yani **%100** |
 | Ethical boyutunda yapılmış doğrulama | **0** |
 | `canon: true` yapıtlardan çok-boyutlu zinciri olan | **0** |
+
+> **⚠️ v0.1.0 burada 45 diyordu — ve bu, RFC'nin kendi fc-1'ini tetikledi.** RFC
+> `find . -name 'SKR-*.md'` komutunu **mekanik doğrulanabilir bir failure condition olarak
+> ilan etti ve çalıştırmadı** (`SKR-048`). Çalıştırılınca eksik olan bulundu:
+> `.claude/rules/SKR-046-tier3-discipline-rules.md` — `reviews/` dışındaki **tek** SKR, ve
+> aynı oturumda üretilmiş. Oran (**%100**) değişmedi; ama *"kendi ilan ettiğin testi
+> çalıştırmamak"* bu deponun tekrarlayan kusurudur ve burada tekrarlandı.
 
 Yani boyut çeşitliliği bir **kural olarak var, pratik olarak yok.** Ve bunun nedeni ihmal
 değil **kadro**: `governance/roles.md` bugün *"Engineering/Business/Ethical Validator,
 Governance body: fazı gelince"* diyor. Rol atanmamışsa boyut çalışamaz.
 
-### 1.1 Bunun bedeli ölçüldü — ve kanıt Külliyat'ın kendi kaydında
+### 1.1 ⛔ v0.1.0'ın ampirik ayağı ÇÜRÜTÜLDÜ — ve yerine gerçeği kondu
 
-ENS-2003'teki `c` çift-sayım hatası (D-5):
+**v0.1.0 şunu iddia ediyordu:** ENS-2003'teki `c` çift-sayım hatası iki *scientific* turdan
+(SKR-040, SKR-041) geçti, `AUDIT-WAVE2-FIDELITY` yakaladı, ve o *"fiilen bir **engineering**
+denetimidir"*.
 
-- **SKR-040**'tan geçti — bağımsız, scientific.
-- **SKR-041**'den geçti — bağımsız, scientific.
-- Ancak `AUDIT-WAVE2-FIDELITY` yakaladı — ki o fiilen bir **engineering** denetimidir.
+**Yanlıştı.** `SKR-048` belgenin kendi sınır beyanını gösterdi
+(`AUDIT-WAVE2-FIDELITY.md:12-16`):
 
-İki bağımsız *aynı boyuttan* tur, hatayı görmedi. **Farklı** boyuttan bir bakış, gördü.
-G4'ün neden "farklı boyutlardan" dediğinin ampirik kanıtı burada, deponun kendi tarihinde.
+> *"Bu context'te **shell/Bash aracı yoktu**; `dotnet build` ve `dotnet test`
+> **ÇALIŞTIRILAMADI.** Aşağıdaki hiçbir bulgu bir test koşusuna dayanmıyor — hepsi
+> **statik kaynak okuması + teori metni karşılaştırması**."*
+
+`validation-framework.md:44`'ün engineering ölçütlerinin (inşa edilebilirlik, ölçek,
+replaceability, test edilebilirlik) **hiçbirini** karşılamıyor. Dahası bulgunun kendisi bir
+**teori** kusuruydu (`:236-239` — *"Yanlış olan kodun formülü değil, **ortogonallik
+iddiasıdır**"*) ve hat `ens-skeptic`'in SKR-045'iyle sürdü.
+
+> **Gerçek ayırt edici boyut değil, KAPSAMDI:** iki metnin yan yana okunması. Bu, RFC'nin
+> **tek** ampirik kanıtıydı ve fc-2'yi lafzen tetikledi. Doğrulandı (oturum sahibi,
+> `dosya:satır`, kural §3.5).
+
+### 1.2 Yerine geçen kanıt — bu RFC'nin kendi doğrulama turundan
+
+İronik olan şu: v0.1.0 sahte bir kanıt kullanırken, **gerçek kanıt onun kendi incelemesinde
+üretildi.** Aynı iki belgeye (`RFC-6002` + `RFC-6003`) iki farklı boyut baktı ve
+**birbirinin kaçırdığını buldu**:
+
+| Boyut | Yakaladığı | Kaçırdığı |
+|---|---|---|
+| `ARCH-0001` — architectural | Atomiklik testi (6002 tek başına kabul edilirse G4 uyumu %0→~%40 **sahte** yükselir); R2'nin uygulanamazlığı; kabul sırasının tersliği | 45/46 sayım hatası; üç kanıt kusuru |
+| `SKR-048` — scientific | §1.1'in çürük ampirik ayağı; sayım hatası; `constitutional`'ın şema-dışı kullanımı; §8'in zırhı | İki yapısal ölçüm |
+
+**Ve ikisi de birbirini görmeden aynı yere vardı** (Ç-04 çatışmasının intra-doküman olduğu:
+`validation-framework.md:29` ↔ `:51`).
+
+Bu, v0.1.0'ın uydurduğundan **daha iyi** bir kanıttır çünkü: (a) bu depoda, bu hafta,
+gözlemlenerek üretildi; (b) boyutların **etiketi** değil **çıktısı** farklıydı; (c) yakınsama
+ve ayrışma **birlikte** gözlendi — G4'ün öngördüğü tam desen budur.
+
+> **Dürüstlük sınırı:** bu tek bir vakadır (n=1). Bir eğilim değil, bir **varoluş
+> kanıtıdır**: "farklı boyutlar farklı kusur bulur" önermesinin en az bir doğrulayıcı örneği
+> vardır. v0.1.0'ın iddiası bundan fazlasını söylüyordu ve dayanağı yoktu.
 
 ## 2. Ç-04 — Ethical Validation ne zaman aktif?
 
@@ -140,9 +180,45 @@ Bu RFC **yanlıştır** eğer:
 4. Geçmişe dönük: `canon: true` olan ENS-1000 tek boyutlu bir zincire sahip (ROADMAP G-28).
    Yeni boyutlar atandıktan sonra geriye dönük tamamlama mı, yoksa "bu tarihten sonrası" mı?
 
-## 8. Bu RFC'nin kendi yolu
+## 8. Bu RFC'nin kendi yolu — ve v0.1.0'ın zırhının sökülmesi
 
-En az bir bağımsız `ens-skeptic` turu + Madde XIV yordamı. **Ve bu RFC için özel bir
-ironi vardır:** boyut çeşitliliğini savunan bir belgenin kendisi de tek boyuttan
-doğrulanacaktır — çünkü savunduğu roller henüz atanmamıştır. Bu, RFC'nin kendi tezinin
-en iyi kanıtıdır ve **gizlenmemektedir.**
+En az bir bağımsız `ens-skeptic` turu + Madde XIV yordamı.
+
+### 8.1 ⛔ v0.1.0'ın §8'i bir YANLIŞLANAMAZLIK ZIRHIYDI — kabul ediliyor
+
+v0.1.0 şöyle yazıyordu:
+
+> *"Boyut çeşitliliğini savunan bir belgenin kendisi de tek boyuttan doğrulanacaktır…
+> Bu, RFC'nin kendi tezinin en iyi kanıtıdır."*
+
+`SKR-048` bunu **zırh** olarak teşhis etti ve haklı. Cümle iki tezi karıştırıyordu:
+
+| | Tez | Durumu |
+|---|---|---|
+| **T1** | Kadro eksik (boyut rolleri atanmamış) | **Önemsizce doğru** — ROSTER'a bakmak yeter |
+| **T2** | Boyut çeşitliliği **korur** (kusur yakalar) | **Asıl iddia** — kanıt ister |
+
+v0.1.0, T1'in gözlemini T2'nin kanıtı sayıyordu. Ve yapı kendini yanlışlanamaz kılıyordu:
+tek boyuttan geçerse *"tezim doğru"*, çok boyuttan geçerse *"kural işledi"* — **her iki
+sonuç da RFC'yi doğruluyorsa Madde X ihlali vardır.**
+
+### 8.2 Öngörü CANLI SINANDI — ve yanlış çıktı
+
+v0.1.0 *"tek boyuttan doğrulanacak"* diye **öngörüde** bulundu. Öngörü **çürüdü**: bu RFC
+iki boyuttan geçti (`SKR-048` scientific + `ARCH-0001` architectural).
+
+Ama ilginç olan şu: **tam da o çürüme, T2'ye ilk gerçek veriyi verdi** (§1.2). Yani:
+
+> Öngörü yanlış çıktı, **tez ayakta kaldı** — ve ayakta kalmasının nedeni öngörünün
+> tutması değil, **tutmaması** oldu.
+
+Bu, zırhın sökülmüş hâlidir. T2 artık yanlışlanabilir bir biçimde duruyor: *"iki farklı
+boyut aynı belgeye baksa **aynı** kusurları bulsaydı, T2 için kanıt olmazdı."* Bulmadılar
+(§1.2 tablosu). Bir dahaki turda bulurlarsa, bu RFC zayıflar.
+
+### 8.3 Kalan borç
+
+`ARCH-0001:50` 45/45 sayımını **"DOĞRU"** damgaladı ama aynı satırda *"yeniden sayılmadı,
+**DEVRALINDI**"* dedi (`SKR-048`). Bu, `work-protocol.md` **§3.5** ihlalidir — ve hata
+zincir boyunca **üç belge** taşındı: `SCAN-03` → `RFC-6003` → `ARCH-0001`. §3.5'in var olma
+sebebi tam olarak budur; kural yazıldı, aynı oturumda ihlal edildi.
