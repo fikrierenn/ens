@@ -10,10 +10,14 @@ realizes:      []
 principles:    [P1, P5, P6, P7, P8]
 status:        draft
 owner:         ens-ai-architect
-version:       0.1.0
+version:       0.3.0
 last_reviewed: 2026-07-27
 maturity:      M0
-skeptic_review: [SKR-049, ENG-0001]   # verdict: wounded — 5 bloke edici talep (T-A..T-E). status: draft KALIR
+skeptic_review: [SKR-049, ENG-0001, SKR-050]   # SKR-049: wounded (T-A..T-E) · ENG-0001: koşullu
+                          # SKR-050 (v0.3.0, 2. tur): wounded — 5 bloke edici (T-A..T-E).
+                          # En ağırı T-A: §0.7'nin 9 kararından 7'si gövdeye UYGULANMADI;
+                          # belge kendi kararlarıyla çelişiyor. Manşet 43 savunulamaz
+                          # (yeniden hesap: 40 koşulsuz + 4 koşullu). status: draft KALIR
                           # (skeptic-challenged önerilir; statü değişimini owner onaylar)
 failure_conditions: stated
 evidence:      {sci: E0, eng: E1, ops: E0, econ: E0}
@@ -246,6 +250,77 @@ K-1 en sonda çünkü en geniş yüzeye dokunuyor ve K-2'nin kanonik kimliğine 
 tekil iş).
 
 > **v0.3.0 yeni bir iki-boyut turu gerektirir** (`work-protocol.md` §3.1): kararlar değişti.
+
+---
+
+## 0.8 v0.3.1 — `SKR-050`: changelog gövdeye uygulanmamıştı
+
+`SKR-050` (`wounded`) en ağır bulgu olarak **S-1**'i verdi ve doğrulandı: `§0.7` bir
+*changelog*, `§4.x` *normatif* — ve dokuz kararın **yedisi gövdeye hiç uygulanmamıştı.**
+İki bölüm on noktada çelişiyordu.
+
+**Sebebi utandırıcı ve teknik:** künye `version:` alanı **hizalı** yazılmış
+(`version:       0.1.0`, çoklu boşluk); uygulanan `replace` tek boşluk arıyordu ve
+**sessizce hiçbir şey yapmadı**. Script "v0.3.0 yazıldı" dedi çünkü §0.7 eklenmesi tuttu.
+**Kontrol edilmedi.**
+
+> Aynı ders, aynı oturumda **dördüncü kez**: *yazdım ≠ oldu.* `work-protocol.md` §4'ün
+> tam konusu bu. Kural vardı, uygulanmadı.
+
+### Uygulananlar (doğrulandı)
+
+| Karar | Ne yapıldı | Doğrulama |
+|---|---|---|
+| Künye | `0.1.0` → **`0.3.0`** | `sed -n '13p'` ✅ |
+| **D-4** | `Disabled`'dan `DateTimeOffset At` **kaldırıldı** | `grep` → 0 eşleşme ✅ |
+| **D-5** | `Measured : IComparable<Measured>` | `grep` → var ✅ |
+| **D-1** | `sealed class` (v0.3.0'da zaten tutmuştu) | ✅ |
+
+### UYGULANMAYANLAR — bilerek
+
+**D-2 (harf katlama → reddetme) gövdeye İŞLENMEDİ**, çünkü `SKR-050` onu yaraladı ve
+itirazı güçlü:
+
+1. **`G4`'ün kapanışı düşüyor.** Test gövdesi (`AdversarialWave_MemoryTests.cs:757-769`)
+   `"fiyatlandirma"` vs `"Fiyatlandirma"` için `Assert.Equal(2, proposals.Count)` diyor —
+   D-2 sonrası bu assert **hâlâ geçer**. Yani `G4` kapanmıyor, ADR kapandı sayıyordu.
+2. **`W7f`'nin gerekçesi yanlışlanıyor** (*"`Ali`/`ali` aynı aktör"*).
+3. **Prior art aleyhte ve ADR onu kendi §Prior art'ında anmıştı:** Unicode `CaseFolding.txt`
+   Türkçe için ayrı **`T` statüsü** tanımlar — yani sorun *"doğru katlama yok"* değil, BCL
+   `toCasefold` **sunmuyor**. PRECIS **iki profil** tanımlar
+   (`UsernameCaseMapped`/`CasePreserved`). Ve **IDNA2003→IDNA2008 tam bu kararı verdi;
+   ekosistem taşıyamadı, UTS #46 mapping'i geri getirdi.**
+
+**D-3 (`W2c` kapsam dışı) gövdeye İŞLENMEDİ.** Öncül doğru (BCL'de Script *property* yok),
+ama çıkarım geçersiz: geri çekilme yolu var ve **ADR'nin kendisi onu adıyla yazmış**
+(mixed-script kısıtı). `\p{IsCyrillic}` named blocks ve `System.Text.Unicode.UnicodeRanges`
+BCL'de mevcut; `W2c`'nin gerçek gövdesi (`AdversarialWave_SecurityTests.cs:241` — tek Kiril
+U+0430, gerisi Basic Latin) bununla kapanır. **Bu bir kaçıştı.**
+
+### Sayı yeniden askıda
+
+`SKR-050` mekanik saydı: taban **47 doğru**. Ama `−W2c` haksız (D-3 kaçış), `G4` haksız
+sayılmış (D-2 kapatmıyor), `−W1b` D-2'nin kendi metniyle çelişiyor, `C3` "gövdesi okunmadı"
+uyarısına rağmen kesin haneye yazılmış. Yeniden hesap: **40 koşulsuz + 4 koşullu.**
+
+`W2_O1`'in çıkarılması **haklı** bulundu — skeptic itirazı sınadı, tutmadı.
+
+### Kaydedilmemiş üç yeni yüzey (`SKR-050`)
+
+- `sealed class`'ın **değer-eşitliği kaybı** (`record`'dan geçişin bedeli)
+- Reddetme + M-3'ün birlikte bir **varlık oracle'ı** üretmesi (`RFC-6004` §4 / CWE-209)
+- Reddetme mesajının **`W2d` kanalını yeniden açması**
+
+### D-6 kavram hatası doğrulandı
+
+`CS8618` `default(T)`'yi **kapatmıyor**: struct'ta hiç doğmaz, ve `default(T)` **çağrı
+yerinde** üretilir, kurucu çıkışında değil. `Ens.Kernel.csproj:6`'da `Nullable=enable` var,
+`WarningsAsErrors` yok. Ayrıca `ImmutableArray<T>` BCL `struct`'ı olduğu için OQ1
+blanket `class` kararıyla **kapanamaz** — ADR kapalı ilan ediyordu.
+
+> **v0.4.0 gerekiyor:** D-2 ve D-3 yeniden karara bağlanmalı (PRECIS iki-profil deseni
+> ciddi bir aday), D-6'nın OQ1 kapanışı geri alınmalı, üç yeni yüzey kaydedilmeli.
+> Paralel `ENG-0002` turu ölçüm getiriyor; **v0.4.0 onun sonucunu bekler.**
 
 ---
 
@@ -811,7 +886,9 @@ Kurucu `Guard.PositiveFinite` + üst sınır uygular. **Varsayılan parametre de
 public abstract record DecayPolicy
 {
     public sealed record Active(DecayRate Rate) : DecayPolicy;
-    public sealed record Disabled(string Reason, Identity Approver, DateTimeOffset At) : DecayPolicy;
+    // v0.3.0 / D-4: `At` KALDIRILDI — cagiran-verisi denetim damgasiydi (W2_L3 kalibi).
+    // Zaman damgasi K-3'un saat portundan alinir.
+    public sealed record Disabled(string Reason, Identity Approver) : DecayPolicy;
 }
 ```
 
@@ -980,7 +1057,9 @@ meta-kalıbının en temiz örneği burasıdır.
 #### Mekanizma
 
 ```
-public readonly record struct Measured
+// v0.3.0 / D-5: IComparable<Measured> ZORUNLU — aksi halde OrderByDescending derlenir,
+// calisma zamaninda InvalidOperationException atar (Scheduler.cs:124, CompanyMemory.cs:260).
+public readonly record struct Measured : IComparable<Measured>
 {
     public double Value { get; }
     private Measured(double v) { Value = v; }
