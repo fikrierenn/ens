@@ -113,6 +113,24 @@ Gerçek kusur kayıtlarının **çoğu** ilk üç satırdır. `E3` (*"tek satır
    izolasyon, ya da yetki kararının kernel dışında verilmesi) — **bu ADR onu önermiyor**,
    yalnız tek yolun o olduğunu kaydediyor.
 
+## 6.5 `ADR-0003`'ün **K-4**'ü buraya devredildi (2026-07-27)
+
+`ENG-0003` ve `SKR-051` K-4'ü (politika eşikleri = varyant) iki ayrı sebeple düşürdü:
+
+1. **R12 azaltmasının tamamı bu belgenin konusu olan mühre dayanıyor** — ve §3'te mührün
+   *kararlı bir saldırganı durdurmadığı* ölçüldü. K-4'ün tehdit modeli **tam olarak
+   kernel'e kod yazabilen** roldür; yani mühür orada zaten yok.
+2. **`default(DecayRate).Value == 0.0`** — kurucu hiç çalışmıyor, yani `A5` (`contextDecayRate
+   = 0` sessiz kapatma anahtarı) **geri açılıyor**. `ADR-0003`'ün metni *"tip bunu ctor'da
+   yakalar"* diyordu; `struct` `default`'unda ctor **çalışmaz**.
+
+> **Neden burada:** K-4'ün çözülmemiş sorusu *"eşik tipi nasıl yazılır"* değil,
+> **"mühür yokken politika eşiği neye dayanır"**dır — ve o soru bu belgenin konusudur.
+
+**Getirdiği kusurlar:** `DP4` = `A5` `E4` `G2` `H3` `W10` (5).
+**Getirdiği açık soru:** `struct` `default` deliği `DP4` için nasıl kapatılır — `class` mı,
+factory mi, yoksa politika eşiği hiç tip olmamalı mı?
+
 ## 7. Failure conditions (Madde X)
 
 **Yanlıştır** eğer:

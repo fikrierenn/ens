@@ -10,7 +10,7 @@ realizes:      []
 principles:    [P1, P5, P6, P7, P8]
 status:        draft
 owner:         ens-ai-architect
-version:       0.6.0
+version:       0.7.0
 last_reviewed: 2026-07-27
 maturity:      M0
 skeptic_review: [SKR-049, ENG-0001, SKR-050, ENG-0002, SKR-051]   # SKR-049: wounded (T-A..T-E) · ENG-0001: koşullu
@@ -32,7 +32,7 @@ skeptic_review: [SKR-049, ENG-0001, SKR-050, ENG-0002, SKR-051]   # SKR-049: wou
 failure_conditions: stated
 evidence:      {sci: E0, eng: E1, ops: E0, econ: E0}
 requires:      [ADR-0001]
-provides:      [Time Acceptance Window, Explicit Policy Value, Sealed Collection, Measured Output]   # v0.6.0: Authority Token→ADR-0004, Canonical Identity→ADR-0005
+provides:      [Time Acceptance Window, Sealed Collection, Measured Output]   # v0.7.0: Explicit Policy Value→ADR-0004 (K-4). v0.6.0: Authority Token→ADR-0004, Canonical Identity→ADR-0005
 consumed_by:   []
 ---
 
@@ -594,6 +594,81 @@ K-3/K-4/K-5/K-6'yı *"savunulabilir kararlar"* olarak ayırdı.
 
 ---
 
+## 0.12 v0.7.0 — `ENG-0003`: kapanış testinin **kendisi** güvenilmez
+
+### En ağır bulgu — tüm hattın ölçütünü vuruyor
+
+`DEFECT-PATTERN-MAP` §11/3 bu işin **tek yanlışlanma yordamıdır**:
+*"kararlar uygulanınca `AUDIT_DEFECT_*` testleri `AUDIT_FIXED_*`'a dönmelidir."*
+
+`ENG-0003` ölçtü: **22'nin 6'sı için** (`A1` `A2` `B4` `D4` `E4` `G2`) **zaten yeşil** bir
+`AUDIT_FIXED_<ID>` testi var — ama **bambaşka bir kusuru** doğruluyor:
+
+```
+AUDIT_FIXED_A1_NaN_stake_is_rejected...     ← A1'in kusuru bu DEĞİL
+```
+
+> **Ad üzerinden yapılan her denetim bu altısını "kapandı" sayar.** Yordam **sahte pozitif**
+> üretiyor, ve bunu üreten şey `DEFECT-REGISTER`'ın **zaten kayıtlı** kusuru: *ID uzayı global
+> olarak tekil değil* (`ADR-0003` §2.6, `SKR-049`). Kayıtlı bir kusur, üzerine kurulan
+> yordamı sessizce bozdu.
+
+**Sonuç:** kapanış iddiası ancak ID'ler ayrıştırıldıktan sonra sınanabilir. Bu, bu ADR'nin
+değil `DEFECT-REGISTER`'ın borcudur (`T9`) ve **hâlâ açıktır**.
+
+### K-4 devredildi — §4'teki kutuya bakınız
+
+İki tur ayrı sebeplerle düşürdü: R12'nin mühre bağımlılığı (mühür `ADR-0004`'te
+zayıflatılmış) ve `default(DecayRate).Value == 0.0` (kurucu çalışmıyor → `A5` geri açılıyor).
+
+**Kapanma iddiası 22 → 17** (`DP3`+`DP6`+`DP7` = 6+5+6).
+
+### K-3'ün koşulu kapatılabilir — ama kendi ölçütünün altına düşüyor
+
+`ENG-0003` 40 satırlık bir `BannedSymbols.txt` doğrulayıcısı **yazdı ve çalıştırdı**; iki
+bozuk satırı yakaladı. Yani koşul **kapatılabilir**.
+
+> **Ama üç çarenin üçü de "iz bırakan test", derleme zorlaması değil.** §4.1 analyzer'ı
+> *"`E3`'ün aynısı"* diye reddetmişti; K-3'ün tek zorlayıcısı o analyzer, ve analyzer'ın
+> kendisi ancak testle korunuyor. **K-3 kendi ölçütünün altındadır** — bu, kabul öncesi
+> yazılı olarak kabul edilmesi gereken bir gerilimdir, gizlenecek bir şey değil.
+
+**Yeni yüzey:** `<NoWarn>`, `WarningsAsErrors`'ı **sessizce** iptal ediyor — `#pragma`'dan
+tehlikeli, çünkü kod incelemesinde göze çarpmıyor.
+
+### `Identity` — hiçbir ADR'nin sahiplenmediği tip
+
+Kernel'de **16 kullanım**, `record struct Identity(string Value)`, **doğrulama yok**.
+`ADR-0001` onu tanımlamıyor, bu ADR sahiplenmiyor, `ADR-0005` yalnız *ad taşıyan* kimlikleri
+kapsıyor. K-4'ün `Approver`'ı ona dayanıyordu.
+
+> **Açık borç:** `Identity`'nin sahibi belirlenmelidir. Sahipsiz bir tip, hiçbir kararın
+> kapsamadığı bir yüzeydir.
+
+### R20 ve OQ1 — düzeltme
+
+`ENG-0003` ölçtü: `default(Measured).Value == 0.0` **sonlu** ve `Of(0.0)` ile özdeş → R20
+K-6 için **gerçek risk değil**. Ve OQ1 *"tek cevap"* isteyemez: R14 `class` ister, R20
+`struct` kalabilir, **R15'in seçimi yoktur** (`ImmutableArray<T>` BCL struct'ı).
+
+### Maliyet tabloları eksik
+
+K-5 **5 → 7** dosya, K-6 **6 → 9** dosya. Mimari tarama `ENG-0001` ile **birebir** yeniden
+üretildi (K-5 = 22, K-6 = 36 ihlal) — tarama **tekrarlanabilir**, bu da onu Faz 0'ın
+kapanış ölçütü yapmaya uygun kılıyor.
+
+### İki turun ortak sonucu
+
+| | Kararların tasarımı | Belgenin durumu |
+|---|---|---|
+| `SKR-051` | *"savunulabilir kararlar"* | `refuted` — Accepted olamaz |
+| `ENG-0003` | *"karar tasarımları sağlam"* | *"kusurlar metinsel ve kapsamsal"* |
+
+Yani **kararlar ayakta, belge değil.** Kalan üçü (K-3, K-5, K-6) koşullu ve koşulları
+yazılı.
+
+---
+
 ## 1. Bağlam
 
 `Ens.Kernel` (Faz 4 referans implementasyonu, ~899 satır) üzerinde yürütülen düşmanca denetim
@@ -908,112 +983,24 @@ değildir — `CompanyMemory` zaten saat taşıyor, kullanmıyor. Saat portu tek
 
 ---
 
-### K-4 — "Kapalı", bir sayı değil bir **varyanttır**; politika eşikleri tipte doğrulanır (P4)
+### K-4 — ⛔ **DEVREDİLDİ → `ADR-0004`** (v0.7.0, `ENG-0003` T-9/T-3)
 
-> **Karar cümlesi:** Bir kontrolü kapatmak, eşiğe `0`/negatif yazmakla değil, yalnızca
-> `Disabled(reason, approver)` varyantını **açıkça seçmekle** mümkün olur; eşik değerleri
-> kullanım yerinde değil **inşa yerinde**, tipin kurucusunda doğrulanır.
+> **Bu, üçüncü bir ADR açmak değil — kararı bağımlılığının yaşadığı yere koymaktır.**
 
-#### Mekanizma
+İki bağımsız tur K-4'ü ayrı sebeplerle düşürdü:
 
-İki parça, ikisi de zorunlu:
-
-**(a) Eşik = kısıtlı tip, opsiyonel parametre değil.**
-
-```
-public readonly record struct DecayRate      // (0, 10]  — sonlu, pozitif
-public readonly record struct StaleThreshold // (0, 1]
-public readonly record struct MagnitudeFloor // (0, ∞)  — sonlu
-```
-
-Kurucu `Guard.PositiveFinite` + üst sınır uygular. **Varsayılan parametre değeri yok** —
-`= 0` yazılamaz çünkü `default(DecayRate)` geçersizdir ve tip bunu ctor'da yakalar
-(`struct` default sorunu için `IsValid` bayrağı + `EnsureInitialized()` kapısı).
-
-**(b) "Kapalı" bir varyant olur — sayı değil.**
-
-```
-public abstract record DecayPolicy
-{
-    public sealed record Active(DecayRate Rate) : DecayPolicy;
-    // v0.3.0 / D-4: `At` KALDIRILDI — cagiran-verisi denetim damgasiydi (W2_L3 kalibi).
-    // Zaman damgasi K-3'un saat portundan alinir.
-    public sealed record Disabled(string Reason, Identity Approver) : DecayPolicy;
-}
-```
-
-Aynısı `CuratorPolicy`, `ProposalPolicy`, `GatePolicy` için. Tüketici `switch` ile **her iki
-dalı da ele almak zorundadır** (exhaustive matching); `Disabled` dalı **iz yayar**
-(`PolicyDisabled` event'i, K-1 mührüyle).
-
-**(c) Doğrulama yeri = inşa yeri.** `W10`'un kökü budur: eşikler *bazı* girdilerde
-doğrulanıyordu. Tipe taşındığında doğrulama **girdiden bağımsız** hâle gelir — doğrulanmamış
-bir eşik nesnesi var **olamaz**.
-
-#### Kalıbın tamamını neden kapatıyor (5 üye)
-
-| ID | Nasıl kapanıyor |
+| Bulgu | Kaynak |
 |---|---|
-| `A5` | `contextDecayRate: double` → `DecayPolicy`. `0` yazılamaz; sönümü kapatmak `Disabled(reason, approver)` ister ve **iz bırakır** |
-| `E4` | `staleThreshold: 0` → `StaleThreshold` tipi reddeder; curator'ı kapatmak `CuratorPolicy.Disabled` |
-| `G2` | `MagnitudeFloor` sıfırı reddeder → "her purpose type öneri üretir" hâli açık bir kararla seçilir |
-| `H3` | Negatif eşik **tip düzeyinde temsil edilemez** → gate no-op'a düşemez |
-| `W10` | Doğrulama kullanım yerinden inşa yerine taşınır → "yalnız bazı girdilerde" durumu ortadan kalkar |
+| **R12 azaltmasının tamamı K-1'in mührüne dayanıyor** — ve `ADR-0004:101` mührün *kararlı bir saldırganı durdurmadığını* **ölçtü**. K-4'ün tehdit modeli tam olarak **kernel'e kod yazabilen** roldür; yani mühür orada zaten yok. | `SKR-051`, `ENG-0003` |
+| **`default(DecayRate).Value == 0.0`** — kurucu **hiç çalışmıyor**. Bu `A5`'in ta kendisidir: K-4'ün kapattığını iddia ettiği kusur. `new DecayRate[3]` üç geçersiz eşiği tek satırda üretiyor, **hiçbir tanı yok**. | `ENG-0003` (spike ile ölçüldü) |
 
-**Hepsi kapanıyor. Kapanmayan yok.**
+İkinci bulgu ayrıca ADR'nin kendi cümlesini yanlışlıyor: metin *"tip bunu **ctor'da yakalar**"* diyordu — `struct` `default`'unda **ctor çalışmaz**.
 
-> Not: **`W16`** (P1'de sayıldı) aslında bu kalıbın kardeşidir — `null` da bir sentineldir.
-> K-1 onu yapısal olarak kapatıyor; burada sayılmıyor ki **çifte sayım** olmasın.
+> **Neden `ADR-0004`:** K-4'ün çözülmemiş sorusu *"eşik tipi nasıl yazılır"* değil,
+> **"mühür yokken politika eşiği neye dayanır"**dır. O soru `ADR-0004`'ün konusudur.
+> Ayrı bir ADR açmak, bağımlılığı üçüncü bir belgeye dağıtmak olurdu.
 
-#### Prior art
-
-- **Hoare (2009), "null references: my billion-dollar mistake"** — sentinel'in temel eleştirisi.
-- **"Parse, don't validate"** (Alexis King, 2019) — doğrulamayı sınıra ve **tipe** taşımak.
-- **"Make illegal states unrepresentable"** (F#/OCaml topluluğu, Yaron Minsky) — `Disabled`
-  varyantının gerekçesi.
-- **Rust `NonZeroU32` / `NonZeroUsize`** — sıfırın tip düzeyinde dışlanması; BCL karşılığı yok,
-  elle yazılır.
-- **12-Factor / Kubernetes admission policy** — "kapalı" bir konfigürasyon değeri değil, açık
-  bir kaynak durumudur.
-
-#### Maliyet
-
-| Ölçüt | Tahmin |
-|---|---|
-| Yeni dosya | 1 — `Domain/Policies.cs` |
-| Dokunulan üretim dosyası | 5 — `Domain/CompanyMemory.cs`, `Laws/DecisionGravity.cs`, `BoundedAutonomyGate.cs`, `Scheduler.cs`, `Adapter/LlmAdapter.cs` |
-| Breaking? | **EVET, ama dar.** Yalnız politika parametreli imzalar |
-| Etkilenen test | `CompanyMemoryTests`, `AdversarialWave_MemoryTests`, `BoundedAutonomyGateTests`, `AdversarialWave_SchedulerGateTests`, `SchedulerTests` — **5 dosya**. Eşik geçen çağrılar `new DecayRate(1.0)` biçimine döner |
-
-#### Reddedilen alternatifler
-
-1. **`Guard.PositiveFinite`'ı her eşik kullanımına eklemek.** Reddedildi: bu **tam olarak
-   `Guard.cs`'in yaşadığı hikâyedir** — "yedi noktada kapatıldı" denilip sekizinci nokta
-   bulundu. Çağrı yerini elle saymak sınıfı kapatmaz; `W10`'un kendisi bu alternatifin
-   başarısızlık kanıtıdır.
-2. **`double?` + `null` = kapalı.** Reddedildi: `null` yeni bir sentineldir ve `W16` tam olarak
-   `null`'un iki farklı anlamı taşımasından doğuyor. Ayrıca gerekçe ve onaylayan taşımaz.
-3. **Konfigürasyon doğrulamasını başlangıçta (startup) bir kez yapmak.** Reddedildi: kernel
-   içinde politika **çalışma zamanında** parametre olarak dolaşıyor; startup doğrulaması
-   `Scheduler.Schedule(..., autonomyThreshold, blockThreshold)` gibi çağrıları kapsamaz.
-
-#### Yeni risk
-
-- **R12 — `Disabled` yeni bir bypass yoludur.** Sentinel'i kaldırıp yerine *meşru* bir kapatma
-  yolu koyuyoruz. Fark: eskisi **sessiz ve izsiz**, yenisi **açık ve izli**. Ama yol hâlâ
-  vardır ve kötüye kullanılabilir. Azaltma: `Disabled` üretimi K-1 mührü ister (yalnız
-  policy-otoritesi verebilir) ve `PolicyDisabled` event'i zorunlu.
-- **R13 — `Reason` serbest metindir → P8'in tekrarı.** Bu, sicilin **8. kalıbının** (öz-beyan
-  kalibre edilmemiş) bu ADR içindeki yeniden doğuşudur ve **gizlenmiyor**: `B2` ("boşluk
-  olmayan herhangi bir karakter kanıt sayılıyor") kusuru `Reason` alanında aynen tekrar
-  edebilir. K-4 bunu **çözmez**; §5.2'de açık borç.
-- **R14 — `struct` `default` deliği.** `readonly record struct` için `default(DecayRate)`
-  ctor'u atlar. `IsValid` bayrağı + her kullanım noktasında `EnsureInitialized()` gerekir —
-  bu **yine bir çağrı-yeri sayımıdır** ve K-4'ün kendi ölçütünü zayıflatır. Alternatif:
-  `sealed class` kullanıp `default`'u `null` yapmak, `null` kontrolünü derleyicinin nullable
-  analizine bırakmak. **Bu açık bir tasarım sorusudur, §7'de yazılı.**
-
----
+`DP4`'ün 5 kusuru (`A5` `E4` `G2` `H3` `W10`) bu ADR'nin kapanma iddiasından **çıkarıldı**.
 
 ### K-5 — Sınırdan çıkan her koleksiyon **mühürlü snapshot**'tır; `IReadOnly*` dönüş tipi yasaktır (P6)
 
@@ -1258,7 +1245,7 @@ bu tuzağa karşı **açık bir zorlama mekanizması** taşımak zorundadır. De
 
 Bu ADR **yanlıştır** eğer:
 
-1. **Sayısal iddia tutmazsa.** İddia: **K-3…K-6 uygulandığında 22 kimlik kapanır**
+1. **Sayısal iddia tutmazsa.** İddia: **K-3, K-5, K-6 uygulandığında 17 kimlik kapanır**
    (`DP3`+`DP4`+`DP6`+`DP7` = 6+5+5+6; `SKR-051` aritmetiği bağımsız doğruladı, çakışma yok).
    *v0.6.0 düzeltmesi: bu satır `40` diyordu ve **K-1…K-6** kapsıyordu — K-1/K-2 artık
    `ADR-0004`/`ADR-0005`'te. Gövdede beş farklı sayı dolaşıyordu (41/40/43/"40+4"/22);
