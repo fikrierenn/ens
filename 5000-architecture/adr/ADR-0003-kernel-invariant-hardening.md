@@ -10,7 +10,7 @@ realizes:      []
 principles:    [P1, P5, P6, P7, P8]
 status:        draft
 owner:         ens-ai-architect
-version:       0.4.0
+version:       0.5.0
 last_reviewed: 2026-07-27
 maturity:      M0
 skeptic_review: [SKR-049, ENG-0001, SKR-050, ENG-0002]   # SKR-049: wounded (T-A..T-E) · ENG-0001: koşullu
@@ -414,6 +414,79 @@ Ajan bunu kendi raporunda kaydetti — talep edilmeden.
 > **v0.4.0'ın durumu:** bu sürüm ölçümleri **kaydeder**; D-1'in yeni karar cümlesi, D-2'nin
 > alt-kararı ve D-6'nın kategori düzeltmesi **v0.5.0'a** kalır ve yeni bir tur ister.
 > §0.6'nın ayrımı korunuyor: **kaydetmek ≠ karara bağlamak.**
+
+---
+
+## 0.10 v0.5.0 — ADR **BÖLÜNDÜ**, kapsam daraldı
+
+### Neden bölündü
+
+v0.1.0 → v0.4.0 arası dört sürüm, altı karara **birden** baktı. Her turda bazı kararlar
+sağlam çıktı, bazıları kırıldı — ama hepsi tek belgede olduğu için **bir karar kırılınca
+altısı birden** yeni sürüme girdi. Bu, tur sayısını kararların zorluğuyla değil,
+**paketlemeyle** şişirdi.
+
+İronik olan: `CEO-0002`'nin `RFC-6001` üzerine düştüğü **kapsam-orantısı** uyarısı bu oturumda
+RFC'ler için **alıntılandı** (`RFC-6002` §5, `RFC-6003` §5) ve ADR'de **ihlal edildi**.
+
+### Yeni dağılım
+
+| Belge | Kararlar | Gerekçe |
+|---|---|---|
+| **ADR-0003** (bu belge) | **K-3, K-4, K-5, K-6** | İki turda da yeni bloke edici bulgu almadı |
+| **ADR-0004** | K-1 + `DP5` | Sorun *mekanizma seçimi* değil **"mümkün mü"** — ve cevaplandı |
+| **ADR-0005** | K-2 | İki turda da kırıldı; tek profil yetmiyor (PRECIS iki-profil adayı) |
+
+### Sonlanma ölçütü — bu oturumda kondu
+
+> **Bir karar, iki ardışık turda yeni bloke edici bulgu almazsa kapanır.**
+
+Bugünkü durum:
+
+| Karar | Tur 1 | Tur 2 | Durum |
+|---|---|---|---|
+| **K-4** (`At` kaldırıldı) | — | `ENG-0002`: **tuttu** | ✅ ölçüt sağlandı |
+| **K-5** (mühürlü snapshot) | `ENG-0001`: tek koşulsuz `uygulanabilir` | yeni bulgu yok | ✅ ölçüt sağlandı |
+| **K-6** (`Measured` + `IComparable`) | `ENG-0001`: kırılma bulundu | `ENG-0002`: **tuttu**, NaN riski yok | ✅ ölçüt sağlandı |
+| **K-3** (saat + kabul aralığı) | `ENG-0001`: koşullu (analyzer) | koşul bilinir, karar kırılmadı | ⚠️ koşullu |
+
+K-3'ün koşulu **yazılı ve ölçülmüş**: `BannedApiAnalyzers` çalışıyor (`ENG-0001` derledi),
+ama üç sessiz-başarısızlık yüzeyi var — `#pragma` bastırma, **yanlış yazılmış yasak satırının
+hiçbir tanı üretmemesi**, ve `WarningsAsErrors` yokluğu. Bunlar **Faz 0** işidir.
+
+### D-6 düzeltmesi (v0.4.0'da tespit, burada karar)
+
+`CS8618` `default(T)`'yi kapatmıyor — `default(class)` **`CS8600`** üretiyor (listede yoktu),
+`default(struct)` ve `new T[n]` **hiçbir tanı** üretmiyor.
+
+> **Karar:** tek koda daraltma **geri alındı**. `ENG-0001`'in orijinal talebi geçerlidir:
+> **`Nullable` kategorisi** hataya çevrilir (`CS8600` dâhil). Ve **OQ1 yeniden açık** —
+> `ImmutableArray<T>` BCL `struct`'ı olduğu için blanket `class` kuralı kapatamaz.
+> OQ1 artık **ADR-0004/0005'e değil, buraya** aittir ve K-5/K-6'nın tip seçimini bağlar.
+
+### D-7 — bu sefer **uygulanacak**, ilan edilmeyecek
+
+v0.3.0 `P`→`DP` ad değişikliğini ilan etti, metne uygulamadı (`ENG-0002`: **8 `DP` / 78 `P`**).
+Beşinci "changelog ≠ gövde" tekrarıydı. **v0.5.0 bu değişikliği ayrı bir edim olarak
+bırakıyor** — ilan edip uygulamamaktansa, **hiç ilan etmemek** dürüsttür.
+
+### Sayı — daralan kapsamda yeniden
+
+Eski iddia 6 kararı kapsıyordu. Yeni kapsam **dört** karar:
+
+| | Üye |
+|---|---|
+| `DP3` (K-3) | 6 |
+| `DP4` (K-4) | 5 |
+| `DP6` (K-5) | 5 |
+| `DP7` (K-6) | 6 |
+| **ADR-0003'ün kapanma iddiası** | **22** |
+
+`DP1` (12, → ADR-0004 · kısmen), `DP2` (13, → ADR-0005), `DP5`/`DP8`/`DP9` kapsam dışı.
+
+> **Yanlışlanma yolu değişmedi:** bu 22 kimliğin `AUDIT_DEFECT_*` testleri `AUDIT_FIXED_*`'a
+> dönmelidir. Ve **22, gövdedeki dört eski sayının (41/40/43/"40+4") yerine geçer** —
+> `ENG-0002` gövdenin dört farklı sayı taşıdığını tespit etmişti.
 
 ---
 
