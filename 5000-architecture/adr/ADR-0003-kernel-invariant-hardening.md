@@ -13,7 +13,7 @@ owner:         ens-ai-architect
 version:       0.1.0
 last_reviewed: 2026-07-27
 maturity:      M0
-skeptic_review: SKR-049   # verdict: wounded — 5 bloke edici talep (T-A..T-E). status: draft KALIR
+skeptic_review: [SKR-049, ENG-0001]   # verdict: wounded — 5 bloke edici talep (T-A..T-E). status: draft KALIR
                           # (skeptic-challenged önerilir; statü değişimini owner onaylar)
 failure_conditions: stated
 evidence:      {sci: E0, eng: E1, ops: E0, econ: E0}
@@ -42,6 +42,88 @@ consumed_by:   []
 > Ayrıca: `AdversarialWave_SecurityTests.cs` **altı maliyet tablosunun hiçbirinde yok**
 > (44 kimliğin 13'ü orada). SKR-049 §Katıldığım noktalar, ADR'nin yanlışlanabilirlik
 > disiplinini ayrıca kayda geçirir — `C3` uyarısı (§4.1) **haklı çıkmıştır**.
+
+---
+
+## 0. v0.1.0 → v0.2.0 — iki boyutun bulguları
+
+v0.1.0 **iki bağımsız incelemeden de** bloke edici bulgu aldı. `work-protocol.md` §3.1
+gereği ADR'ler iki boyut ister; bu bölüm ikisinin çıktısını kaydeder.
+
+| İnceleme | Boyut | Verdict |
+|---|---|---|
+| `SKR-049` | Scientific | `wounded` — 5 bloke edici |
+| `ENG-0001` | Engineering | K-5 `uygulanabilir`, diğer beşi `koşullu` — 3 bloke edici |
+
+### 0.1 İkisinin de bulduğu (yakınsama)
+
+| Bulgu | Nasıl bulundu |
+|---|---|
+| **K-1'in mührü `record` `with` ile kopyalanıyor** | `SKR-049` C# semantiğinden türetti; `ENG-0001` **ayrı assembly'den derleyip kanıtladı**: `legit with { IsAllowed = true }` → registry KABUL. `record`'un `<Clone>$` copy-constructor'ı **public**tir; `private` kurucu onu kapatmaz |
+| **Türkçe casing kararı yanlış sonuç veriyor** | `SKR-049` Unicode tablolarından; `ENG-0001` **ölçtü**: `'işletme'` vs `'İŞLETME'` → `IŞLETME` ≠ `İŞLETME` |
+
+### 0.2 Yalnız `SKR-049` (okuyarak bulunabilenler)
+
+- **T-A — sayı yanlış.** `DEFECT-PATTERN-MAP` `12+13+6+5+5+6 = 41` yazmıştı; doğrusu **47**.
+  Bu ADR onu **doğrulamadan devraldı**. §3.5 düzyazıya uygulandı, **aritmetiğe uygulanmadı**;
+  kurala dördüncü kontrol eklendi (*"sayıyı yeniden hesapla"*). ADR'nin kendi "40"ı da
+  türetilemiyor: `W1b` **çifte çıkarılmış**. Doğru sayı **43**.
+- **T-D — K-4 kendi taslağında K-3'ü ihlal ediyor.** `Disabled(string Reason, Identity
+  Approver, DateTimeOffset At)` — çağıran-verisi denetim damgası, yani `W2_L3`'ün birebir
+  kalıbı. K-3↔K-4 bağı yalnız **tek yönde** görülmüştü.
+- **T-B — ölçüm aletinin künyesi yalan söylüyor.** `AdversarialWave_SecurityTests.cs:27-29`
+  *"hiçbir çıplak non-ASCII yok"* diyor; `:106` Kiril `а`, `:107` ZWSP, `:110` RTL, `:219`
+  NFD `é` — hepsi çıplak. Semptom (4 NUL baytı) teşhis edilmişti, **kök neden** değil.
+- **`P1..P9` iki anlamda:** künye `principles:` Anayasa §III'e, gövde kalıp sözlüğüne
+  gönderiyor → §3 kapsam beyanının **tersi** okunuyor. `DP1..DP9` kullanılacak.
+
+### 0.3 Yalnız `ENG-0001` (yalnız **derlenerek/çalıştırılarak** bulunabilenler)
+
+Bu üçü okuyarak üretilemezdi — kaydı bu yüzden önemli:
+
+- **OQ1 cevaplandı: `class`.** `required` (C# 11+) `default(T)`'yi **kapatmıyor** (ölçüldü).
+  `class` varyantı `CS8618` üretiyor — ama `Ens.Kernel.csproj`'da `<WarningsAsErrors>` yok,
+  yani bugün o da konvansiyon. **Faz 0'da eklenmeli.**
+- **K-6'nın asıl kırılması derlemede değil, çalışma zamanında.** `Measured` `IComparable`
+  uygulamıyor → `OrderByDescending` **derleniyor**, çalışırken `InvalidOperationException`
+  atıyor. `Scheduler.cs:124` ve `CompanyMemory.cs:260` tam o yolda. v0.1.0'ın *"Breaking?
+  Düşük"* değerlendirmesi derlemede doğru, **çalışma zamanında yanlış**.
+- **M-3'ün geri çekilme yolu .NET'te YOK.** v0.1.0 yalnız `confusables.txt`'in eksikliğini
+  itiraf ediyordu. Ölçüm: BCL'de **hiçbir Script API'si yok** (`CharUnicodeInfo`'nun 4 public
+  static üyesinin hiçbiri, `Rune`'da da yok). `W2c` **tamamen** açık, kısmen değil.
+
+### 0.4 Ölçülmüş gerçekler (v0.1.0'ın tahminleri yerine)
+
+| | v0.1.0 | Ölçüm (`ENG-0001`) |
+|---|---|---|
+| Kernel boyutu | ~899 satır | **2421 ham / 1017 kod / 17 dosya** |
+| Altı kararın dokunduğu dosya | tahmin | **17/17 (%100)**, 8'i üç+ karar tarafından |
+| Test tabanı | "373" (DOĞRULANMADI) | **373/373 geçiyor, 217 ms** — bağımsız koşuldu |
+| `AdversarialWave_SecurityTests.cs` | altı maliyet tablosunun **hiçbirinde yok** | **51 test**, tabanın %13.7'si |
+| `R1` (mühür ↔ event-sourcing) | "fail-closed olur" | Kernel'de serileştirme **yok** (grep: sıfır) → bugün teorik. Geldiğinde `System.Text.Json` **`NotSupportedException`** atar — bu fail-closed değil, **çöküş** |
+| `OQ2` çelişkisi | açık | **Dar**: `Guard.NormalizedDeficit` üretimde 2 çağrı yeri, 2 test etkileniyor. Cevap `Guard.cs:133`'te zaten var; düzeltilecek olan K-6 değil **R19'un metni** |
+| `OQ6` (uygulama sırası) | yok | **Türetildi**: Faz 0 (OQ1 + tarama) → K-5 → K-6 → K-2 → K-3+K-4 birlikte → K-1 |
+
+### 0.5 Ayakta kalanlar
+
+- **P5/P9 sızması YOK** (`SKR-049` `survives`) — v1'in hatası tekrarlanmadı, kapsam-dışı hane
+  kendi aleyhine yazılmış (R13'ün P8'i yeniden ürettiği itirafı dâhil).
+- **Uydurma prior art YOK** (`SKR-049` `survives`). Tek ifade hatası: JEP 486 Security
+  Manager'ı *kaldırmadı*, **kalıcı olarak devre dışı bıraktı**.
+- **K-5 tek koşulsuz `uygulanabilir` karar.** K-5/K-6 için mimari tarama **yazıldı ve
+  çalıştırıldı** (`Ens.Kernel.dll`): K-5 **22 ihlal**, K-6 **36 ihlal**, ~15 satır. Bu iki
+  karar hem en sağlam hem **otomatik denetlenebilir** olanlar.
+
+### 0.6 Bu bölümdeki düzeltmeler v0.2.0'da UYGULANMADI — kaydedildi
+
+Sekiz bloke edici bulgunun **metne işlenmesi** ayrı bir edimdir ve K-1'in tip seçimi
+(`sealed class` mı get-only `record` mı), K-2'nin Türkçe katlama mekanizması ve K-4'ün
+zaman damgası bu ADR'nin **kararlarını değiştirir** — yani yeni bir tur ister
+(`work-protocol.md` §3.1). v0.2.0 bulguları **görünür** kılar; v0.3.0 onları **karara**
+dönüştürecek ve yeniden iki boyuta girecektir.
+
+> **Bu ayrım bilinçlidir:** bulguyu kaydetmekle kararı değiştirmek aynı edim değildir.
+> İkisini karıştırmak, bu oturumda `K-0`'ın yanlış önermeden karar üretmesine yol açtı.
 
 ---
 
