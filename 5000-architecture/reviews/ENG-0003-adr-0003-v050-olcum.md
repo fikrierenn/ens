@@ -1,24 +1,50 @@
 ---
 id:            ENG-0003
-title:         ADR-0003 v0.5.0 — mühendislik ölçümü (üçüncü tur, bölme sonrası)
+title:         ADR-0003 v0.5.0/v0.6.0 — mühendislik ölçümü (üçüncü tur, bölme sonrası)
 type:          review
 canon:         false
-origin:        ADR-0003-kernel-invariant-hardening.md v0.5.0
+origin:        ADR-0003-kernel-invariant-hardening.md v0.5.0 → v0.6.0 (ölçüm sırasında değişti)
 depends_on:    [ADR-0003, ENG-0001, ENG-0002]
 referenced_by: []
 status:        draft
 owner:         ens-backend-architect
-version:       0.1.0
+version:       1.0.0
 last_reviewed: 2026-07-27
 maturity:      M0
 dimension:     Engineering
-verdict:       ÖLÇÜM SÜRÜYOR
+verdict:       belge hazır DEĞİL (§2.0) · K-3 koşullu · K-4 hazır değil · K-5 koşullu · K-6 koşullu
 ---
 
-# ENG-0003 — ADR-0003 v0.5.0 ölçümü
+# ENG-0003 — ADR-0003 v0.5.0 → v0.6.0 ölçümü
 
-> **ÖLÇÜM SÜRÜYOR.** Bu iskelet ilk adımda yazıldı (stall önleme). Aşağıdaki her bölüm
-> ayrı bir edimle doldurulur; doldurulmamış bölüm `[BEKLİYOR]` taşır.
+> ### Manşet
+> **Bölme, kararların kendisi için TUTUYOR — belgenin hâli için TUTMUYOR.**
+>
+> K-3/K-4/K-5/K-6'nın hiçbiri `ADR-0005`'in kanonik kimlik tipine bağımlı değildir; `ADR-0005`
+> reddedilse dördü de ayakta kalır (§2). Bu, v0.5.0'ın ana iddiasıdır ve **ölçümle
+> doğrulanmıştır**. `22` sayısı **aritmetik olarak doğrudur** (§3) ve yanlışlanma yolu 22'nin
+> 22'si için açıktır (§3.1). D-6 düzeltmesi **tutmuştur** (§5).
+>
+> Ama: (1) bölme **yalnız changelog'da** yapıldı — gövdede hâlâ **33** `K-1`/`K-2` atfı var ve
+> `22` gövdede **sıfır** kez geçiyor (§2.0); (2) `default(DecayRate).Value == 0.0` ölçüldü —
+> K-4 kapattığını iddia ettiği sentinel'i geri açıyor (§6.1); (3) K-4'ün tek azaltması
+> `ADR-0004`'ün zayıflattığı mühre dayanıyor ve bu **hiç anılmıyor** (§2.2).
+>
+> **Ölçülen taban: 373/373, değişmedi. `Ens.Kernel/`'e dokunulmadı.**
+
+> ### ⚠️ ÖLÇÜM SIRASINDA BELGE DEĞİŞTİ — v0.5.0 → v0.6.0
+> Ölçüm v0.5.0 üzerinde başladı. Ortasında `c15a584` (*"actually perform the split v0.5.0 only
+> announced"*) commit'i ADR'yi **380 satır** değiştirdi ve `SKR-051`'i (863 satır, verdict
+> **`refuted`**) ekledi. `work-protocol.md` §3.5 gereği **her bulguyu v0.6.0'a karşı yeniden
+> ölçtüm**; bu belge v0.6.0 durumunu raporlar ve v0.5.0 ölçümlerini *tarihsel kanıt* olarak
+> saklar (hangi bulgunun neyi tetiklediği izlenebilsin diye).
+>
+> **Yakınsama kaydı (dürüstlük gereği):** §2.0 (bölme gövdeye uygulanmadı) ve §2.2 (K-4'ün
+> K-1 bağı koptu) bulgularına `SKR-051` **bağımsız olarak ve önce** ulaştı (T-1 ve
+> §0.11 "K-4'ün K-1 bağımlılığı"). İki boyutun **aynı** kusuru bulması, kusurun gerçekliğini
+> güçlendirir — ama bu ölçümün özgün katkısı değildir ve öyleymiş gibi sunulmuyor.
+> `SKR-051`'in gövdesini **okumadım**; yakınsamayı v0.6.0'ın changelog'undan (§0.11) tespit
+> ettim. Bu turun özgün bulguları: **§3.2, §5.2, §6.1, §6.2, §6.3, §7.2, §8.1-8.3.**
 
 ## 0. Bağımsızlık kaydı — G4 anlamında bu AYRI BİR BOYUT DEĞİLDİR
 
@@ -106,8 +132,29 @@ belgenin **hangi kararları içerdiği** kod yazarı için belirsizdir: §0.10 "
 "altı" der. Bir uygulayıcı §8'i okur ve `// TRACE: ADR-0003 K-1` yazar — `ADR-0004` ise
 `draft`. Madde VII **ihlal edilmiş olur ve kimse fark etmez.**
 
-**Ölçümün geri kalanı, bölmenin *niyetine* göre yapılmıştır** (kapsam = K-3..K-6). Yani
-aşağıdaki bulgular, §2.0 kapatıldıktan **sonra** geçerli olacak bulgulardır.
+#### v0.6.0 durumu — **kısmen düzeltildi; kalıp daha küçük ölçekte TEKRARLADI**
+
+`c15a584` bu bulguyu (ve `SKR-051` T-1'i) kısmen kapattı. Yeniden ölçtüm:
+
+| Öge | v0.5.0 | **v0.6.0** | Durum |
+|---|---|---|---|
+| `### K-1` / `### K-2` normatif gövdeleri | 250 satır | **çıkarıldı** → `§4:798-826` "⛔ DEVREDİLDİ" kutusu | ✅ **düzeldi** |
+| `§7/1` failure condition | *"K-1…K-6 → **40**"* | *"**K-3…K-6** uygulandığında **22** kimlik kapanır"* | ✅ **düzeldi** |
+| `K-1`/`K-2` atfı, gövdede (`§1`+) | 33 | **31** | ⚠️ 2 azaldı |
+| **`§3 Kapsam`** | *"P1 (11), P2 (11) … bu ADR **40** iddia ediyor"* | **AYNEN AYNI** (satır 761-764) | ❌ **düzelmedi** |
+| **`§7/1`'in kalanı** | — | Düzeltme notu **eklendi**, eski metin **silinmedi**: aynı maddede *"P1: 11, P2: 11 … = 44 üye … doğrulanabilir çekirdek **40**"* (satır 670-672) | ❌ **aynı madde iki sayı taşıyor** |
+| **`§7/2`** | *"40'ın tamamına uygulanabilir"* | **AYNEN AYNI** (satır 674) | ❌ |
+| **`§7/3`** | *"**K-1** onu kapatmaz, sayı **39**'a iner"* | **AYNEN AYNI** (satır 675) | ❌ kapsam dışı karar hakkında |
+| **`§8 TRACE` tablosu** | `K-1` ve `K-2` satırları | **AYNEN AYNI** (satır 705, 710) | ❌ başka belgelerin kararlarına kod izi dayatıyor |
+| **`§1 Bağlam`** | *"altı mimari kararın **41**'ini"* | **AYNEN AYNI** | ❌ |
+
+> **Kalıp yedinci kez tekrarladı — bu sefer düzeltmenin kendi içinde.** `§7/1`'e *"geçerli
+> olan tek sayı **22**'dir"* diyen bir not eklendi, **ama notun hemen altındaki üç satır hâlâ
+> `44` ve `40` diyor.** Yani düzeltme, düzelttiğini iddia ettiği cümlenin **yanına** yazıldı,
+> **yerine** değil. `§0.11` bölmeyi *"yapıldı ve **doğrulandı** (normatif bölüm 2 → 0)"* diye
+> ilan ediyor; doğrulama **normatif bölüm sayısına** bakmış, **atıflara ve sayılara** değil.
+
+**Ölçümün geri kalanı, kapsamın K-3..K-6 olduğu varsayımıyla yapılmıştır.**
 
 ### 2.1 K-3 ↔ ADR-0005 (K-2) bağımlılığı — **YOK. Bölme K-3 için tutuyor.**
 
@@ -183,6 +230,13 @@ tehdit modelinin altında kalıyor.**
 Bu, bölmeyi *geçersiz* kılmaz — ama **bölme bunu görünmez yaptı.** Tek belgedeyken K-1'in
 zayıflaması K-4'ün R12'sini otomatik olarak aynı sürüme sokuyordu; şimdi `ADR-0003` v0.5.0,
 `ADR-0004`'ün bulgusunu **hiç anmadan** K-4'ü "ölçüt sağlandı ✅" ilan ediyor (`§0.10:448`).
+
+**v0.6.0 durumu:** `§0.11` bu bağı artık **açık borç olarak kaydediyor** (*"§4.4 ve R12
+K-1'in mührüne dayanıyor… K-4 Accepted'a gitmeden önce çözülmeli"*) — `SKR-051` de aynı
+bulguya ulaşmış. ✅ **Tanı kaydedildi.** Ama **gövde değişmedi**: satır **947**
+(*"`PolicyDisabled` event'i, K-1 mührüyle"*) ve satır **1004** (*"`Disabled` üretimi K-1
+mührü ister"*) aynen duruyor. Yani K-4'ün metni hâlâ, `ADR-0004`'ün zayıflattığı bir
+mekanizmayı azaltma olarak sunuyor. (§2.0'daki kalıp: changelog kabul ediyor, gövde bilmiyor.)
 
 > **T-3 (bloke edici):** K-4'ün R12'si `ADR-0004`'ün sonucuna göre yeniden yazılmalı ya da
 > `Disabled`'ın izinin mühürden **bağımsız** bir dayanağı gösterilmeli (ör. event-store'a
@@ -388,6 +442,27 @@ kapanma sayısı bu belgede geçiyor.
 > §7/3'teki 41/44/40/39 ya kaldırılmalı ya *"tarihsel kayıt — geçersiz"* diye işaretlenmelidir.
 > `ENG-0002` bu talebi zaten yapmıştı; v0.5.0 talebi karşılamadı, **sayıyı bir artırdı.**
 
+### 4.1 v0.6.0'da yeniden ölçüm — **manşet düzeldi, gövde düzelmedi**
+
+`§7/1` artık *"**K-3…K-6** uygulandığında **22** kimlik kapanır"* diyor. ✅ **T-7'nin
+manşet kısmı karşılandı.** Ama eski sayılar **kaldırılmadı**:
+
+| Sayı | v0.6.0'daki yeri | Durum |
+|---|---|---|
+| **22** | `§7/1:665` — manşet | ✅ geçerli |
+| **41** | `§1:601` — *"altı mimari kararın 41'ini"* · `§2.5:700` — *"41'in %32'si"* | ❌ duruyor |
+| **44** | `§3:763` · `§7/1:670` | ❌ duruyor |
+| **40** | `§2.5:720` · `§3:761,764` · `§7/1:672` · `§7/2:674` | ❌ duruyor — **beş yerde** |
+| **39** | `§7/3:675` | ❌ duruyor (K-1 hakkında, kapsam dışı) |
+
+**Beş sayı hâlâ aynı belgede.** Ve en ağırı: `§7/1` **tek bir numaralı maddede** hem
+*"geçerli olan tek sayı 22'dir"* hem *"doğrulanabilir çekirdek 40"* diyor. Madde X'in
+yanlışlanma noktası, kendi içinde çelişen bir maddedir.
+
+> **T-7 (güncellenmiş, hâlâ bloke edici):** düzeltme notu **eklemek yetmez** — eski metin
+> **silinmelidir**. Bugün bir uygulayıcı `§3`'ü okusa kapsamı "P1 + P2 dâhil, 40 kimlik"
+> sanır; `§8`'i okusa `// TRACE: ADR-0003 K-1` yazar.
+
 ## 5. D-6'nın yeni hâli — **ölçülebilir, ölçüldü, ve düzeltme DOĞRU**
 
 Spike: `scratchpad/d6/` (net10.0, `<Nullable>enable</Nullable>`,
@@ -462,6 +537,19 @@ uygulanmıyor, ve elde edilen değer **tam olarak `A5`'in yasakladığı sıfır
 > ölçütünü ihlal ediyor ve ADR bunu **kendisi söylüyor** (`:1127-1128`: *"bu **yine bir
 > çağrı-yeri sayımıdır** ve K-4'ün kendi ölçütünü zayıflatır"*).
 >
+**v0.6.0'da bu metin AYNEN duruyor** (yeniden ölçüldü). Ve v0.6.0'ı okuyunca bulgu
+**güçleniyor** — çünkü ADR yalnız kapanışı iddia etmiyor, **mekanizmayı da yanlış tarif
+ediyor** (`§4.4`, satır **930**):
+
+> *"`= 0` yazılamaz çünkü `default(DecayRate)` **geçersizdir ve tip bunu ctor'da yakalar**"*
+
+**Ölçüm bu cümleyi doğrudan çürütüyor:** `default(DecayRate)` için **kurucu hiç çalışmaz** —
+`struct` `default`'u bellek sıfırlamasıdır, ctor çağrısı değil. Dolayısıyla ctor "yakalayamaz";
+yakalayacak bir şey çalışmıyor. Cümlenin devamı (*"`struct` default sorunu için `IsValid`
+bayrağı + `EnsureInitialized()` kapısı"*) sorunu **kabul ediyor** — yani aynı iki satır önce
+"tip yakalar" der, sonra "yakalamıyor, bayrak gerek" der. `A5` kapanış satırı (`:957`) ise
+ilkine dayanıyor.
+
 > **T-9 (bloke edici):** K-4'ün 5 üyelik kapanış tablosu, `default` deliği kapatılmadan
 > **doğru değildir**. Ya OQ1 `class` lehine kapatılır (ölçüldü: §5 CASE-I, `class` için
 > `CS8602` **hata** üretiyor — yani zorlanabilir), ya `A5`/`E4`/`G2`/`H3` satırlarına
@@ -505,18 +593,254 @@ derleyici **hiçbir tanı üretmedi**, ve reflection da üretemez.
 > "Mimari test tarar" bugünkü hâliyle **doğrulanmamış bir azaltmadır** —
 > `work-protocol.md` §4'ün *"'yazıldı' YETMEZ"* kuralı buraya uygulanmalı.
 
-## 7. K-3'ün analyzer koşulu Faz 0'da kapatılabilir mi?
+## 7. K-3'ün analyzer koşulu Faz 0'da kapatılabilir mi? — **Üçü de kapatılabilir, ama bir seviye ZAYIF mekanizmayla**
 
-[BEKLİYOR]
+Spike: `scratchpad/banned/` (`Microsoft.CodeAnalysis.BannedApiAnalyzers` 4.14.0, net10.0) +
+`scratchpad/bannedcheck/`. `ENG-0001`'in üç yüzeyini tek tek sınadım.
 
-## 8. K-5/K-6 mimari taraması — yeniden çalıştırma
+### 7.1 Yüzey 1 — "yanlış yazılmış yasak satırı hiçbir tanı üretmiyor": **ÖLÇÜLDÜ, gerçek**
 
-[BEKLİYOR]
+`BannedSymbols.txt`'e iki geçerli, iki bozuk satır koydum:
+
+```
+P:System.DateTimeOffset.UtcNow      → warning RS0030  ✅
+P:System.DateTime.Now               → warning RS0030  ✅
+P:System.DateTimeOffset.UtcNowww    → (hiçbir tanı)   ❌   ← yazım hatası
+M:System.Foo.Bar                    → (hiçbir tanı)   ❌   ← uydurma tip
+```
+
+**Toplam tanı: 2.** Yasak listesinin **yarısı ölüydü ve derleyici bunu söylemedi.** Bu, tam
+olarak `ENG-0001`'in bulgusudur ve v0.5.0'da hâlâ geçerlidir.
+
+### 7.2 Çaresi VAR — ve çalıştırdım
+
+Görev metni sordu: *"bunun bir çaresi var mı (ör. `BannedSymbols.txt`'i doğrulayan bir test)?"*
+**Evet. Yazdım, çalıştırdım, iki bozuk satırı da yakaladı.**
+
+`scratchpad/bannedcheck/Program.cs` (~40 satır, reflection): her satırın `DocID`'sini ayrıştırır
+(`T:`/`P:`/`M:`/`F:`), tipi ve üyeyi çözmeye çalışır, çözemezse başarısız olur.
+
+```
+L3: UYE YOK -> 'System.DateTimeOffset.UtcNowww'   (satir: P:System.DateTimeOffset.UtcNowww)
+L4: TIP YOK -> 'System.Foo'                       (satir: M:System.Foo.Bar)
+
+SONUC: gecerli=2  COZULEMEYEN=2
+```
+
+> **Bu, K-3'ün koşulunun "kapatılamaz" olmadığının ÖLÇÜLMÜŞ kanıtıdır.** `ENG-0001` yüzeyi
+> doğru buldu; v0.5.0 onu Faz 0'a ertelemekte **haklıdır**, ve erteleme **boş bir vaat
+> değildir** — mekanizma bugün 40 satırda uygulanabiliyor.
+
+### 7.3 Yüzey 2 — `WarningsAsErrors` yokluğu: **kapatılabilir**
+
+`dotnet build -p:WarningsAsErrors=RS0030` → `error RS0030`. ✅ Ölçüldü.
+
+### 7.4 Yüzey 3 — `#pragma` bastırma: **kapatılabilir ama yalnızca metin taramasıyla**
+
+```
+#pragma warning disable RS0030
+    public static DateTimeOffset A() => DateTimeOffset.UtcNow;   →  (hiçbir tanı)  ❌
+    public static DateTime Bb() => DateTime.Now;                 →  error RS0030   ✅
+```
+
+`WarningsAsErrors=RS0030` **açıkken bile** `#pragma` bastırıyor. Aynısı §5.2'de D-6 için de
+ölçüldü (`#pragma` ve `<NoWarn>`). Çare kaynak metnini taramaktır (`#pragma warning disable
+RS0030|CS86xx` arayan bir test) — uygulanabilir, ama derleyici zorlaması değil.
+
+### 7.5 Kritik değerlendirme — koşul kapanıyor, ama **K-3 kendi ölçütünün altına düşüyor**
+
+`ADR-0003:509` kendi tasarım ölçütünü koyuyor:
+
+> *"Bir karar, ancak **'unutmak' derleme hatası ya da tip hatası üretiyorsa** sınıfı kapatır.
+> Çağrı yerlerini elle saymak, sayımın kendisini yanlışlanabilir bir iddia hâline getirir."*
+
+Üç yüzeyin de çaresi ölçüldü ve **üçü de bu ölçütü sağlamıyor**:
+
+| Yüzey | Çare | Derleme hatası mı |
+|---|---|---|
+| Bozuk yasak satırı | doğrulayıcı **test** (§7.2) | ❌ test — silinebilir |
+| `WarningsAsErrors` yok | `.csproj` özelliği | ❌ ayar — `NoWarn` ile geri alınır (§5.2) |
+| `#pragma` bastırma | kaynak **metin taraması** | ❌ test — silinebilir |
+
+Yani K-3'ün M-1 mekanizması, K-5/K-6'nın mimari testleriyle **aynı sınıftadır** ve ADR bunu
+K-5'te dürüstçe kabul ediyor (`:1201-1202`: *"Analyzer uyarısı reddedildi… Mimari **test**
+seçildi çünkü **test bastırılırsa iz kalır**"*).
+
+> **T-11:** K-3'ün M-1'i "derleme zorlaması" olarak sunulmamalı; K-5/K-6 gibi
+> **"iz bırakan test"** kategorisine yazılmalıdır. Fark önemlidir: `ADR-0003 §6`
+> (meta-kalıp savunması) tablosunda K-3'ün zorlama sütunu **düzeltilmeli**.
+>
+> **Faz 0 kapanış ölçütü önerisi (ölçülmüş, uygulanabilir):** (1) `BannedSymbols.txt`
+> doğrulayıcı testi, (2) `WarningsAsErrors` içeren ve `NoWarn`'da nullable/RS kodu
+> **bulunmadığını** doğrulayan proje testi, (3) `#pragma warning disable` tarayıcısı.
+> Üçü birlikte K-3'ün koşulunu **kapatır**.
+
+## 8. K-5/K-6 mimari taraması — **yeniden çalıştırıldı: 22 ve 36, DEĞİŞMEDİ**
+
+Spike: `scratchpad/scan/` — `Ens.Kernel.csproj`'a `ProjectReference`, reflection ile
+`public`/`nested public` tiplerin `DeclaredOnly` üyeleri.
+
+| Tarama | `ENG-0001` | `ENG-0003` (bugün) | Fark |
+|---|---|---|---|
+| **K-5** — `IEnumerable` türevi dönen, mühürlü olmayan public üye | 22 | **22** | **0** |
+| **K-6** — ham `double`/`double?` dönen public üye | 36 | **36** | **0** |
+
+**Yeniden üretilebilirlik doğrulandı.** Kernel değişmediği için sayılar da değişmedi — bu
+beklenen ve **doğru** sonuçtur; v0.5.0 salt belge değişikliğidir.
+
+### 8.1 K-5 — 22 ihlalin dağılımı (7 dosya)
+
+`ActuationLayer.History` · `LlmAdapterRegistry.Adapters` · `CapabilityPack.AllowedTools`,
+`.RequiresHumanApprovalFor` · `CapabilityRegistry.Packs`, `.EnabledPacks` ·
+`CompanyMemory.AllRecords`, `.Verifications`, `.Retrieve`, `.RetrieveTop`, `.FindStale`,
+`.FindWeaklyAttributed` · `DecisionAggregate.Alternatives`, `.Evidence`, `.History`,
+`.UncommittedEvents` · `AlternativesIdentified.Alternatives`, `.Evidence` ·
+`ReflectiveDoubleLoop.Propose` · `ProofTrace.Premises` · `Scheduler.Schedule`, `.ScheduleTop`
+
+**ADR'nin maliyet tahmini eksik.** `§K-5 Maliyet` (`:1188`) *"Dokunulan üretim dosyası: 5"*
+diyor ve `Capability/CapabilityRegistry.cs`, `ProofTrace.cs`, `Domain/Events/DecisionEvents.cs`,
+`Domain/ReflectiveDoubleLoop.cs`'i **saymıyor**. Ölçüm: **7 dosya**, 22 üye.
+`ProofTrace.Premises` özellikle önemli — proof-trace substratı (P6) canlı koleksiyon dönüyor.
+
+### 8.2 K-6 — 36 ihlalin 30'u gerçek yük
+
+ADR'nin izin listesi `Guard`'ın kendisidir (`:1250`). `Guard`'ın 6 public üyesi
+(`Finite`, `NonNegativeFinite`, `NormalizedDeficit`, `OptionalUnitInterval`, `PositiveFinite`,
+`UnitInterval`) düşülünce: **36 − 6 = 30 üye** değişir.
+
+`§K-6 Maliyet` (`:1282`) *"Dokunulan üretim dosyası: 6"* diyor. Ölçüm **9 dosya**:
+listedeki 6'ya ek olarak `Domain/CompanyMemory.cs` (`MemoryRecord`'un 4 üyesi + `DecayFunction`'ın
+3'ü + `CompanyMemory.DecayFactor`/`.Salience`), `Domain/Events/DecisionEvents.cs`
+(`DecisionCommitted.Confidence`, `LearningRecorded.AttributionConfidence`),
+`ProofTrace.cs` (`Premise.Confidence`, `ProofTrace.Confidence`), `Scheduler.cs`
+(`PendingDecision` ×3, `ScheduledDecision.AttentionPriority`).
+
+> **T-12:** K-5 ve K-6'nın maliyet tabloları **ölçümle değiştirilmelidir** (5→7 ve 6→9 dosya).
+> Bu, `SKR-049`'un altı maliyet tablosu hakkındaki bulgusuyla aynı sınıftandır: maliyetler
+> **tahmin** olarak yazılmış, ölçülebilirken.
+>
+> **v0.6.0'da yeniden ölçüldü: değişmedi.** `§K-5 Maliyet` satır **1072** hâlâ *"5"*,
+> `§K-6 Maliyet` satır **1166** hâlâ *"6"*. Bu tablolar **hiçbir turda ölçülmedi** —
+> `SKR-049`'dan beri üç sürüm geçti. Ölçüm 15 dakika sürüyor (bu bölüm onun kanıtıdır).
+
+### 8.3 Bu tarama Faz 0'ın kapanış ölçütü olabilir mi? — **EVET, ve K-5 için ideal**
+
+Görev metni sordu. Cevap: **evet**, üç gerekçeyle:
+
+1. **Sayı bugün belli:** K-5 = 22, K-6 = 36 (30 net). Faz 0 sonunda **0** beklenir. İkili,
+   yanlışlanabilir, elle sayım gerektirmeyen bir ölçüt.
+2. **Yeni üye otomatik kapsanır** — `Guard.cs`'in "kapatılan N nokta" listesinin çözdüğü
+   sorun budur ve ADR bunu doğru gerekçelendiriyor (`:1424-1427`).
+3. **Ölçüm ucuz:** tarama ~60 satır reflection, `dotnet test` içinde saniyenin altında koşar.
+
+**İki sınırı yazılı olmalı:**
+- Tarama **dönüş tipini** görür, **eleman tipini** ve **`default` durumunu** görmez
+  (§6.3 — R15 kapsanmıyor).
+- Tarama **parametre tarafını** kapsamıyor. Ölçtüm: **15 public giriş noktası** hâlâ
+  değiştirilebilir koleksiyon **kabul ediyor** (`CapabilityPack..ctor(allowedTools)`,
+  `DecisionAggregate.Rehydrate(history)`, `Scheduler.Schedule(pending)`, …). K-5 yalnız
+  **çıkış** kapısını kapatıyor; `W5b` ("en az bir adapter" değişmezi) tam olarak bir **giriş**
+  sorunudur ve `LlmAdapterRegistry..ctor(IEnumerable<ILlmAdapter>)` üzerinden hâlâ açıktır.
+  ADR bunu `:1158-1160`'ta "registry `sealed`, mutasyon API'si yok" ile çözdüğünü söylüyor —
+  ama savunmacı kopyanın **kurucuda** yapıldığını doğrulamak taramanın kapsamı dışındadır.
 
 ## 9. Verdict tablosu
 
-[BEKLİYOR]
+**Belge düzeyinde (v0.6.0): `Accepted`'a HAZIR DEĞİL.** İki sebep:
+(a) §2.0/§4.1 — bölme **kısmen** uygulandı; `§3`, `§7/1`'in kalanı, `§7/2`, `§7/3`, `§8 TRACE`
+hâlâ altı kararlı belgeyi tarif ediyor ve **beş farklı kapanma sayısı** dolaşıyor;
+(b) §6.1 — K-4'ün kapanış tablosu **ölçümle yanlışlandı**.
+İkisi de metinsel/kapsam kusurudur; **karar tasarımları sağlamdır.**
+
+> `SKR-051` (Scientific) bağımsız olarak **`refuted`** verdi. Bu ölçüm (Engineering) ona
+> **karşı çıkmıyor**; farklı bir eksende ölçtü ve aynı yöne çıktı. İki boyutun yakınsaması
+> G4 anlamında anlamlıdır — ama §0'daki uyarı geçerli: bu, Engineering'in **üçüncü** turudur
+> ve tek bir boyut sayılır.
+
+**Karar düzeyinde:**
+
+| Karar | Verdict | Gerekçe (ölçüm) |
+|---|---|---|
+| **K-3** — saat portu + kabul aralığı | **koşullu** | Tasarım sağlam; K-2'den bağımsız (§2.1). Koşul **kapatılabilir ve ölçüldü** (§7.2 — doğrulayıcı test çalıştı). Koşul: Faz 0'ın üç yüzeyi (§7.5) kapanış ölçütü olarak **yazılmalı**; M-1 "derleme zorlaması" değil "iz bırakan test" olarak sınıflanmalı (T-11); `OccurredAt` → `Timestamp` düzeltilmeli (T-1) |
+| **K-4** — "kapalı" bir varyanttır | **hazır değil** | İki bloke edici: (1) `default(DecayRate).Value == 0.0` ölçüldü → **`A5` geri açılıyor**, kapanış tablosu (`:1073`) bugün **yanlış** (T-9); (2) R12'nin tek azaltması K-1 mührü, K-1 `ADR-0004`'e taşındı ve **orada zayıflatıldı**, `ADR-0003` bunu anmıyor (T-3). Ayrıca `Identity Approver` hiçbir ADR'nin sahiplenmediği, doğrulamasız bir tip (§2.2) |
+| **K-5** — mühürlü snapshot | **koşullu** | En temiz kapanış; kap kararı `ADR-0005`'ten **bağımsız** (§2.3). Koşullar: R15'in azaltması reflection ile **uygulanamaz** (T-10); maliyet tablosu 5 → **7 dosya** (T-12); `W5b` giriş tarafında açık kalıyor (§8.3); `AllowedTools` ikinci bir kırılma dalgası alacak (T-4) |
+| **K-6** — çıktı kapısı `Measured` | **koşullu** | Ölçümün en sağlam çıkanı: `ADR-0004`'ten **ve** `ADR-0005`'ten tümüyle bağımsız (§2.4); `default(Measured)` **değişmezi ihlal etmiyor** — R20 K-6 için gerçek risk değil (§6.2). Tek koşul: **OQ2 açık** ve ADR bunu kendi `failure condition §7/7`'sinde *"bu çelişki çözülmemiştir"* diye kaydediyor. Hangi çıktı reddedilir hangisi kırpılır cevaplanmadan kod yazılamaz. Maliyet 6 → **9 dosya** (T-12) |
+
+### 9.1 v0.5.0 neyi gerçekten kazandı — kaydedilmesi gereken
+
+Saldırı sadece kusuru değil, kazanımı da raporlamak zorundadır:
+
+1. **Bölmenin teknik gerekçesi ölçümle DOĞRULANDI.** Dört kararın hiçbiri `ADR-0005`'in
+   kanonik kimlik tipine bağımlı değil. `ADR-0005` reddedilse K-3/K-4/K-5/K-6 ayakta kalır.
+   Bu, v0.5.0'ın ana iddiasıdır ve **tutuyor**.
+2. **Aritmetik ilk kez doğru.** `6+5+5+6 = 22` — `SKR-049` T-A'nın (41≠47) yakaladığı türden
+   bir hata yok (§3).
+3. **Yanlışlanma yolu tam.** 22 kimliğin **22'sinde** `AUDIT_DEFECT_*` testi var (§3.1).
+   `K-0`'ı düşüren hata tekrarlanmadı.
+4. **D-6 düzeltmesi ölçümle tuttu.** `Nullable` kategorisi `CS8600`'ü gerçekten hataya
+   çeviriyor; ve ADR'nin *"`default(struct)`/`new T[n]` sessiz"* uyarısı **birebir doğru**
+   (§5). İddia, tam olarak kanıtın izin verdiği kadar — bu belgede nadir bir erdemdir.
+5. **Sonlanma ölçütü ("iki ardışık turda yeni bloke edici bulgu almazsa kapanır") iyi bir
+   kuraldır.** Ama bu tur K-4'e **yeni bloke edici bulgu** getirdi (§6.1) — yani ölçüt
+   K-4 için **sıfırlanmıştır**, `§0.10:448`'in "✅ ölçüt sağlandı" satırı düzeltilmelidir.
 
 ## 10. Talepler
 
-[BEKLİYOR]
+Şiddet sırasıyla. **Mühendislik boyutunun talepleridir; onay değildir (G3).**
+
+### Bloke edici — bunlar kapanmadan `Accepted` olmamalı
+
+| # | Talep | Kanıt |
+|---|---|---|
+| **T-0** | **Bölmeyi gövdeye TAM uygula.** v0.6.0 normatif K-1/K-2 bölümlerini çıkardı (✅) ama **§3 Kapsam**, **§7/1'in kalan üç satırı**, **§7/2**, **§7/3**, **§8 TRACE tablosunun K-1/K-2 satırları** ve **§1'in "41"i** aynen duruyor. Gövdede hâlâ **31** `K-1`/`K-2` atfı var. Düzeltme notu eklemek yetmez — **eski metin silinmelidir** | §2.0, §4.1 |
+| **T-9** | **K-4'ün kapanış tablosu bugün yanlış.** `default(DecayRate).Value == 0.0` ölçüldü — `A5`'in yasakladığı sentinel tipin `default`'u olarak geri geliyor. `new DecayRate[3]` üç tanesini tek satırda üretiyor ve **hiçbir tanı yok**. Ya OQ1 `class` lehine kapatılır (ölçüldü: `class` için `CS8602` **hata**), ya `A5`/`E4`/`G2`/`H3` satırlarına koşul yazılır | §6.1 |
+| **T-3** | **K-4'ün R12'si `ADR-0004`'ün bulgusuna göre yeniden yazılmalı.** R12'nin tek azaltması *"`Disabled` üretimi K-1 mührü ister"*; `ADR-0004` mührün **kararlı saldırganı durdurmadığını** ölçtü. `ADR-0003` bunu hiç anmadan K-4'ü "✅ ölçüt sağlandı" ilan ediyor | §2.2 |
+| **T-5** | **Yanlışlanma koşulu ad-eşleşmesi olamaz.** 22'nin **6'sında** (`A1` `A2` `B4` `D4` `E4` `G2`) **zaten yeşil** bir `AUDIT_FIXED_<ID>` var ve **bambaşka bir kusuru** doğruluyor. Koşul `dosya+ad` olmalı ya da §12.2'nin `T9` benzersizleştirmesi uygulama öncesi kapanmalı | §3.2 |
+| **T-7** | **Manşet sayı `§7 Failure conditions`'a yazılmalı.** Bugün §7/1 hâlâ *"**K-1…K-6** uygulandığında **40** kimlik kapanır"* diyor. Yani ADR'nin resmî yanlışlanma iddiası **40 ve altı karar**; `22` yalnız bir changelog satırı | §4 |
+
+### Yüksek — bloke etmez, açık borç olarak kaydedilmeli
+
+| # | Talep |
+|---|---|
+| **T-6** | **22 mi 21 mi?** Eski manşet netti (44 brüt − caveat = 40), yeni manşet brüt. `W3`'ün düşük şiddeti gövdede (`:1257`, `:1263`) hâlâ yazılı. Tek sayma kuralı seçilmeli |
+| **T-10** | **R15'in azaltması uygulanamaz.** *"Mimari test bunu da tarar"* — reflection bir alanın **başlatıcısı olup olmadığını göremez** (derleyici onu kurucuya gömer). Roslyn analyzer'a çıkarılmalı ya da `readonly` + kurucuda zorunlu atama ile korunmalı |
+| **T-11** | **K-3'ün M-1'i "derleme zorlaması" değildir.** `#pragma` ve `<NoWarn>` ikisi de iptal ediyor (ölçüldü). §6 meta-kalıp tablosunda K-5/K-6 ile aynı ("iz bırakan test") kategoriye yazılmalı |
+| **T-12** | **Maliyet tabloları ölçümle değiştirilmeli:** K-5 `5 → 7` dosya (`CapabilityRegistry.cs`, `ProofTrace.cs`, `DecisionEvents.cs`, `ReflectiveDoubleLoop.cs` eksik), K-6 `6 → 9` dosya |
+| **T-8** | **D-6 bir kontrol testi ister.** `<NoWarn>` proje düzeyinde kategoriyi sessizce kapatıyor ve `#pragma`'nın aksine kod incelemesinde göze çarpmıyor |
+| **T-13** | **OQ1 "tek cevap" değildir.** Ölçüm üç ayrı risk gösterdi: R14 `class` ister, R20 `struct` **kalabilir** (`default(Measured)` değişmezi ihlal etmiyor), R15'in **seçimi yok** (BCL struct). `§7 OQ1` yeniden yazılmalı — `§0.10:464` bunu zaten biliyor, gövde bilmiyor |
+| **T-14** | **`Identity` hiçbir ADR'nin sahibi olmadığı bir tip.** Kernel'de **16** kullanım noktası; `readonly record struct Identity(string Value)` — public kurucu, doğrulama yok, `default(Identity).Value == null`. K-2'nin altı rolünde **yok**, `ADR-0005` §5 kapsamında **yok**. K-4'ün `Approver`'ı buna dayanıyor |
+
+### Orta
+
+| # | Talep |
+|---|---|
+| **T-1** | `OccurredAt` diye bir alan yok — kernel'de ad **`Timestamp`** (`DomainEvent.cs:19`). K-3 M-4 düzeltilmeli |
+| **T-2** | `CompanyMemory.Retrieve(string purposeType, DateTimeOffset asOf, double contextDecayRate = 0.01)` — **tek imza, üç belge**. Uygulama sırası bölme sonrası **hiçbir belgede yok** (eski OQ6 hiç değilse soruyordu) |
+| **T-4** | `CapabilityPack.AllowedTools` K-5 ile bir, `ADR-0005` ile ikinci kez kırılacak. Çift dalga yazılmalı |
+| **T-15** | ~~`§0.10:448` — K-4 için *"✅ ölçüt sağlandı"*~~ → **v0.6.0'da kapandı**: sonlanma ölçütünün kendisi `SKR-051` ile çürütülüp geri çekildi (`§0.11`). Bu turun T-9 bulgusu geri çekmeyi **bağımsız olarak destekler**: ölçüt yürürlükte olsaydı K-4 "iki tur temiz" diye kapanacaktı, oysa `default(DecayRate)` deliği **ilk kez bu turda ölçüldü** |
+| **T-17** | **`§4.4:930` düzeltilmeli** — *"`default(DecayRate)` geçersizdir ve **tip bunu ctor'da yakalar**"* ölçümle çürütüldü: `struct` `default`'unda **ctor hiç çalışmaz**. Aynı cümlenin devamı sorunu zaten kabul ediyor; iki satır kendi içinde çelişiyor |
+| **T-16** | `ADR-0004` künyesi: `principles: [P6, P7]` — K-1 `DP1`/P1 kararıdır, P6/P7 K-5/K-6'nındır. Ayrıca `ADR-0004`/`ADR-0005` `depends_on: [ADR-0003]` diyor ama `ADR-0003`'ün `referenced_by`'ı boş — graf tek yönlü kırık |
+
+### Tekrar-sınav koşulu
+
+T-0, T-3, T-5, T-7, T-9 kapandığında **yeni bir tur** gerekir — ama **Engineering boyutundan
+değil.** Bu boyut üç tur harcadı ve G4 anlamında **tek validator sayılır**. Sıradaki tur
+`SKR-051`'in (Scientific) sonucuyla birleştirilmeli; `Accepted` kararı iki boyutun
+**birlikte** karşılanmasını ister (GOV-000 G4).
+
+**Ölçemediklerim — dürüstlük gereği:**
+- **`SKR-051`'in gövdesini okumadım.** Varlığını ve verdict'ini (`refuted`, 8 bloke edici)
+  yalnızca v0.6.0'ın `§0.11` changelog'undan öğrendim; bulgularını bu belgeye taşımadım.
+  §2.0 ve §2.2'nin `SKR-051` ile yakınsadığını **kendim tespit edip kaydettim** —
+  önceliği ona verdim.
+- **Bu ölçüm iki sürüme yayıldı.** v0.5.0'da başladı, v0.6.0'da bitti. Her bulgu v0.6.0'a
+  karşı yeniden ölçüldü, ama **tek bir tam okuma** yerine iki kısmi okuma yapıldı; v0.6.0'ın
+  değiştirdiği 380 satırın tamamını satır satır incelemedim — yalnız bulgularımın dokunduğu
+  bölümleri. Kaçırdığım bir v0.6.0 değişikliği olabilir.
+- `Ens.Kernel`'e hiçbir karar **uygulanmadı** (ADR `draft`, Madde VII). Yukarıdaki "kapanır /
+  kapanmaz" değerlendirmeleri **tasarım ölçümüdür**, uygulama sonucu değil. 22 kimliğin
+  gerçekten kapanıp kapanmadığı ancak uygulama sonrası ölçülebilir.
+- `ADR-0004`'ün `failure condition 2`'sini (**`BannedApiAnalyzers` `Unsafe`'i yasaklayabilir
+  mi**) bu turda sınamadım — o `ADR-0004`'ün mühendislik turunun işidir. §7'nin ölçümü
+  (analyzer'ın `#pragma` ile bastırılabildiği) o soruya **kısmi** bir olumsuz sinyal verir,
+  ama **DOĞRULANMADI** olarak kayda geçiyorum.
